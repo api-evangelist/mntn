@@ -1,19 +1,146 @@
 aid: mntn
 name: MNTN
-description: MNTN is a company surfaced via the API Evangelist marketing integration graph — named as
-  an integration by 2 members of the programmable-marketing cohort — and added to the network as a stub
-  for full-pipeline profiling.
+description: >-
+  MNTN (mountain.com) is a Connected TV performance marketing platform that lets brands plan, launch,
+  target, measure, and optimize outcome-based TV advertising across streaming inventory. Its programmable
+  surface is two distinct HTTP APIs: the Performance TV (PTV) platform API at api.mountain.com, an
+  OpenAPI 3.1 contract covering advertisers, organizations, campaigns, flights, creatives, audiences and
+  geo-lists, conversion pixel setup and verification, attribution windows and estimates, private
+  marketplace (PMP) partners/deals/deal-groups/channels, reference vocabularies, and reporting; and the
+  Reporting API 3.0 at api3.mountain.com, a partner reporting surface (/apilist metadata, /apidata query
+  execution) plus an asynchronous /batch CSV export API that returns time-limited signed download URLs.
+  Both are documented with published OpenAPI definitions rendered through Scalar. Authentication is an
+  MNTN-issued advertiser API key (X-API-Key header on the platform API, key query parameter on the
+  reporting API) or a bearer JWT. Errors are RFC 9457 problem+json with traceId and errorCode.
+image: https://mountain.com/wp-content/uploads/2025/02/MNTN_Homepage_Open-Graph-1200x630-1.jpg
 url: https://raw.githubusercontent.com/api-evangelist/mntn/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:marketing-integration-graph
-x-tier: stub
-x-tier-reason: harvest
-specificationVersion: '0.20'
+specificationVersion: '0.21'
 created: '2026-08-12'
 modified: '2026-08-12'
 tags:
-- Company
-apis: []
+- connected-tv
+- ctv-advertising
+- advertising
+- performance-marketing
+- streaming-tv
+- media-buying
+- attribution
+- audience-targeting
+- conversion-tracking
+- programmatic-advertising
+- private-marketplace
+- marketing-reporting
+- adtech
+apis:
+- name: MNTN Performance TV (PTV) API
+  description: >-
+    OpenAPI 3.1 platform API for MNTN Performance TV. Covers advertisers and organizations, campaign
+    and flight lifecycle (create, update, launch, pause, archive), creatives, audiences including geo
+    lists, keyword and location search and recommended audiences, conversion pixel configuration,
+    GA4 id storage, pixel health/verification tooling, attribution windows, sales cycle and estimates,
+    private marketplace partners, deals, deal groups and channels, reference vocabularies (budget
+    types and goals, campaign objectives and statuses, geo types, audience segment types), and
+    reporting including asynchronous batch exports. 85 operations across 61 paths and 15 tags.
+  humanURL: https://api.mountain.com/docs
+  baseURL: https://api.mountain.com/ptv
+  tags:
+  - connected-tv
+  - ctv-advertising
+  - performance-marketing
+  - campaign-management
+  - audience-targeting
+  - attribution
+  - conversion-tracking
+  - private-marketplace
+  - marketing-reporting
+  properties:
+  - type: APIReference
+    url: https://api.mountain.com/docs
+  - type: Documentation
+    url: https://api.mountain.com/docs
+  - type: OpenAPI
+    url: openapi/mntn-ptv-advertisers-openapi.yml
+  - type: OpenAPI
+    url: openapi/mntn-ptv-organizations-openapi.yml
+  - type: OpenAPI
+    url: openapi/mntn-ptv-campaigns-openapi.yml
+  - type: OpenAPI
+    url: openapi/mntn-ptv-flights-openapi.yml
+  - type: OpenAPI
+    url: openapi/mntn-ptv-creatives-openapi.yml
+  - type: OpenAPI
+    url: openapi/mntn-ptv-audiences-openapi.yml
+  - type: OpenAPI
+    url: openapi/mntn-ptv-pixel-openapi.yml
+  - type: OpenAPI
+    url: openapi/mntn-ptv-attribution-openapi.yml
+  - type: OpenAPI
+    url: openapi/mntn-ptv-reporting-openapi.yml
+  - type: OpenAPI
+    url: openapi/mntn-ptv-reference-openapi.yml
+  - type: OpenAPI
+    url: openapi/mntn-ptv-pmp-partners-openapi.yml
+  - type: OpenAPI
+    url: openapi/mntn-ptv-pmp-deals-openapi.yml
+  - type: OpenAPI
+    url: openapi/mntn-ptv-pmp-deal-groups-openapi.yml
+  - type: OpenAPI
+    url: openapi/mntn-ptv-pmp-campaign-deals-openapi.yml
+  - type: OpenAPI
+    url: openapi/mntn-ptv-pmp-channels-openapi.yml
+  - type: Overlay
+    url: overlays/mntn-ptv-overlay.yaml
+  - type: DataModel
+    url: data-model/mntn-data-model.yml
+- name: MNTN Reporting API 3.0
+  description: >-
+    Public partner reporting surface at api3.mountain.com. GET /apilist returns the tables and columns
+    available to the authenticated advertiser; GET and POST /apidata execute multidimensional queries
+    over Info (dimension) and Summary (metric) tables joined on shared keys, with JSON-encoded filter
+    syntax, fully qualified column identifiers such as campaigninfo.name and graph.impressions, and
+    json, csv, human and Excel output formats. Authenticated with the advertiser API key as a key query
+    parameter. API 3.0 defaults to First Touch attribution; API 1.0 stopped returning data 2026-04-01.
+  humanURL: https://api3.mountain.com/docs
+  baseURL: https://api3.mountain.com
+  tags:
+  - marketing-reporting
+  - analytics
+  - connected-tv
+  - attribution
+  properties:
+  - type: APIReference
+    url: https://api3.mountain.com/docs
+  - type: Documentation
+    url: https://help.mountain.com/en/collections/13086998-apis
+  - type: GettingStarted
+    url: https://help.mountain.com/en/articles/6511970-access-your-reporting-api-key
+  - type: OpenAPI
+    url: openapi/mntn-reporting-api-openapi.yml
+  - type: Overlay
+    url: overlays/mntn-reporting-overlay.yaml
+- name: MNTN Async Batch Export API
+  description: >-
+    Asynchronous CSV export API under /batch on api3.mountain.com, for reporting queries too large or
+    slow to run synchronously (a 413 on /apidata is the documented trigger). POST /batch enqueues a job
+    and returns 202 with a batchId; GET /batch/{batchId} polls status and returns a fresh time-limited
+    signed download URL when the job SUCCEEDED; POST /batch/{batchId}/regenerate-url reissues a signed
+    URL without re-running the query; GET /batch lists recent jobs with status, limit and offset paging.
+    Gated behind the r2ds.exports.enabled entitlement.
+  humanURL: https://api3.mountain.com/docs
+  baseURL: https://api3.mountain.com
+  tags:
+  - marketing-reporting
+  - bulk-data
+  - analytics
+  properties:
+  - type: APIReference
+    url: https://api3.mountain.com/docs
+  - type: OpenAPI
+    url: openapi/mntn-batch-export-openapi.yml
+  - type: Overlay
+    url: overlays/mntn-batch-overlay.yaml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -21,8 +148,73 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://mntn.com/
+  url: https://mountain.com/
+- type: Documentation
+  url: https://help.mountain.com/en/collections/13086998-apis
+- type: APIReference
+  url: https://api.mountain.com/docs
+- type: GettingStarted
+  url: https://help.mountain.com/en/articles/6511970-access-your-reporting-api-key
+- type: Support
+  url: https://help.mountain.com/en/
+- type: HelpCenter
+  url: https://help.mountain.com/en/
+- type: Blog
+  url: https://mountain.com/blog/
+- type: SignUp
+  url: https://auth.mountain.com/sign-up
+- type: Login
+  url: https://auth.mountain.com/
+- type: TermsOfService
+  url: https://mountain.com/terms-and-conditions/
+- type: TermsOfUse
+  url: https://mountain.com/terms-of-use/
+- type: PrivacyPolicy
+  url: https://mountain.com/privacy-policy/
+- type: Integrations
+  url: https://mountain.com/performance-tv/integrations/
+- type: ChangeLog
+  url: https://help.mountain.com/en/collections/16047071-track-releases
+- type: ChangeLog
+  url: changelog/mntn-changelog.yml
+- type: Lifecycle
+  url: lifecycle/mntn-lifecycle.yml
+- type: Deprecation
+  url: lifecycle/mntn-lifecycle.yml
+- type: Authentication
+  url: authentication/mntn-authentication.yml
+- type: Conventions
+  url: conventions/mntn-conventions.yml
+- type: ErrorCatalog
+  url: errors/mntn-problem-types.yml
+- type: RateLimits
+  url: rate-limits/mntn-rate-limits.yml
+- type: Plans
+  url: plans/mntn-plans-pricing.yml
+- type: Conformance
+  url: conformance/mntn-conformance.yml
+- type: Compliance
+  url: security/mntn-trust-center.yml
+- type: TrustCenter
+  url: security/mntn-trust-center.yml
+- type: Security
+  url: security/mntn-vulnerability-disclosure.yml
+- type: VulnerabilityDisclosure
+  url: security/mntn-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/mntn-domain-security.yml
+- type: Components
+  url: components/mntn-components.yml
+- type: LLMsTxt
+  url: llms/mntn-llms.txt
+- type: AgentSkill
+  url: skills/_index.yml
 x-vouched-by:
 - Improvado
 - Triple Whale
 x-vouch-count: 2
+x-enrichment:
+  date: '2026-08-12'
+  status: enriched
+  artifacts_added: 46
+  pass: local-v1

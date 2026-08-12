@@ -1,0 +1,57 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enrichment overlay for the MNTN Async Batch Export API
+  version: 1.0.0
+extends: https://api3.mountain.com/api-docs/Batch
+x-generated: '2026-08-12'
+x-method: generated
+x-source: openapi/_original/mntn-batch-export-api-openapi.json
+actions:
+- target: $.info
+  description: Attach provenance and the artifact map.
+  update:
+    x-apis-io-slug: mntn
+    x-artifacts:
+      authentication: authentication/mntn-authentication.yml
+      conventions: conventions/mntn-conventions.yml
+      errors: errors/mntn-problem-types.yml
+      rate_limits: rate-limits/mntn-rate-limits.yml
+- target: $.servers
+  description: Record the real host behind the relative "/" server the provider publishes.
+  update:
+  - url: /
+    description: Reporting API
+    x-observed-hosts:
+    - https://api3.mountain.com
+    - https://api2.mountain.com
+- target: $.info
+  description: Record the async contract and its gaps in one place.
+  update:
+    x-async-contract:
+      pattern: enqueue-poll-signed-download
+      entitlement: r2ds.exports.enabled
+      steps:
+      - 'POST /batch -> 202 Accepted, returns batchId'
+      - 'GET /batch/{batchId} -> status; SUCCEEDED includes a time-limited signed download URL'
+      - 'POST /batch/{batchId}/regenerate-url -> reissue the signed URL without re-running the query'
+      - 'GET /batch -> list recent jobs (status, limit, offset)'
+      terminal_states: [SUCCEEDED, 'terminal non-downloadable (409 on regenerate-url)', 'expired (410 Gone)']
+    x-gaps:
+      polling_interval: >-
+        No recommended poll interval, no Retry-After on the status response, and no maximum job
+        duration is published, so a client cannot choose a backoff without guessing.
+      rate_limit_429: >-
+        POST /batch declares 429 but returns the ExportResponse schema rather than an RFC 9457
+        problem document, and declares no Retry-After or RateLimit-* header.
+      url_lifetime: >-
+        The download URL is described as time-limited but no TTL is published; a consumer cannot
+        know how long it has before needing regenerate-url.
+      duplicate_submission: >-
+        POST /batch has no idempotency key, so a retried submission enqueues a second export of the
+        same query rather than returning the original batchId.
+- target: $.paths['/batch'].post
+  description: Flag retry semantics for agent use.
+  update:
+    x-agent-guidance: >-
+      Submission is not idempotent. On a timeout, call GET /batch and match on your query before
+      resubmitting, or you will queue a duplicate export.

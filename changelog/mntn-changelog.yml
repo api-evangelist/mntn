@@ -1,0 +1,124 @@
+generated: '2026-08-12'
+method: searched
+source: https://help.mountain.com/en/collections/16047071-track-releases
+docs:
+- https://help.mountain.com/en/collections/16047071-track-releases
+- https://help.mountain.com/en/articles/13728265-mntn-updates-january-june-2026
+scheme:
+  format: help-center release-notes articles, one per half-year, dated entries within
+  cadence: rolling, batched into semi-annual articles
+  machine_readable: false
+  feed: null
+  note: >-
+    MNTN keeps a genuine dated changelog, but publishes it as Intercom help-center prose grouped into
+    half-year articles with no RSS/Atom feed, no per-entry permalink, and no version tags. A consumer
+    cannot subscribe to it or diff it programmatically.
+current_version:
+  reporting_api: 3.7.0
+  reporting_api_major: '3.0'
+  ptv_api: '1.0'
+  source: 'openapi info.version across the three published definitions'
+archives:
+- {period: 'July-December 2026', url: 'https://help.mountain.com/en/articles/16046159-mntn-updates-july-december-2026'}
+- {period: 'January-June 2026', url: 'https://help.mountain.com/en/articles/13728265-mntn-updates-january-june-2026'}
+- {period: 'July-December 2025', url: 'https://help.mountain.com/en/articles/12590590-mntn-updates-july-december-2025'}
+entries:
+- date: '2026-06-30'
+  title: AppsFlyer Integration v2
+  type: integration
+  breaking: false
+  highlight: >-
+    Two-way sync -- MNTN sends impressions to AppsFlyer and receives app install and in-app event data back.
+- date: '2026-06-15'
+  title: HubSpot Attribution Integration v2
+  type: integration
+  breaking: false
+  highlight: 'Matches ad impressions to HubSpot contacts and creates an mntn_saw_ad segment.'
+- date: '2026-06-01'
+  title: Location Performance
+  type: feature
+  breaking: false
+  highlight: 'State, Media Market, City and Zip Code reporting combined in an interactive map.'
+- date: '2026-06-01'
+  title: Goal Advisor
+  type: feature
+  breaking: false
+  highlight: 'Guided campaign goal setup with warnings on unrealistic values.'
+- date: '2026-05-27'
+  title: Creative Sequencing
+  type: feature
+  breaking: false
+  highlight: 'Control the delivery order of up to four creatives to a household.'
+- date: '2026-05-01'
+  title: 'MNTN Select: Reached Audiences'
+  type: feature
+  breaking: false
+  highlight: 'Build audiences from viewers reached by prior Select campaigns.'
+- date: '2026-04-29'
+  title: Batch API Requests
+  type: api
+  breaking: false
+  highlight: >-
+    New /batch endpoint for asynchronous API data pulls when standard /apidata requests fail on memory
+    or size constraints; returns a batch_id to poll for status and retrieve completed files.
+  artifacts: [openapi/mntn-batch-export-openapi.yml]
+- date: '2026-03-23'
+  title: 'Interest Segments: Improved Discovery and Search'
+  type: feature
+  breaking: false
+- date: '2026-03-13'
+  title: Upload Error Handling Improvements
+  type: feature
+  breaking: false
+  highlight: 'Enhanced validation, downloadable error reports, row-level feedback.'
+- date: '2026-03-12'
+  title: Creative Upload Enhancements
+  type: feature
+  breaking: false
+- date: '2026-03-06'
+  title: API 3.0 Reporting Enhancements
+  type: api
+  breaking: true
+  highlight: >-
+    Multidimensional querying, simplified API definitions, First Touch reporting by default, and full
+    data parity including Audience Segment Data. Announced with the API 1.0 sunset date of 2026-04-01.
+  breaking_changes:
+  - Default attribution moved from Last Touch to First Touch
+  - Non-INFO/DETAIL tables must be converted to graph format
+  - JSON-encoded filter syntax
+  - CampaignGroupInfo renamed CampaignInfo, CreativeGroupInfo renamed CreativeInfo
+  - Data before 2023-01-01 unavailable in the new dimensional dataset
+  artifacts: [lifecycle/mntn-lifecycle.yml]
+- date: '2026-03-02'
+  title: Account-Level Audience Exclusions
+  type: feature
+  breaking: false
+  highlight: 'Centralised blocking of recent visitors and converters with a 30-365 day lookback.'
+- date: '2026-02-26'
+  title: Sales Cycle Metric
+  type: feature
+  breaking: false
+  highlight: 'Average days between first site visit and conversion; exposed at GET /api/v1/advertisers/{advertiserId}/attribution/sales-cycle.'
+- date: '2026-02-17'
+  title: Frequency Controls for Prospecting Campaigns
+  type: feature
+  breaking: false
+- date: '2026-02-17'
+  title: Deliverability for Prospecting Campaigns
+  type: feature
+  breaking: false
+- date: '2026-02-13'
+  title: HubSpot Integration
+  type: integration
+  breaking: false
+  highlight: 'Direct CRM list imports with automatic daily syncing for audience targeting.'
+- date: '2026-02-05'
+  title: 'MNTN Matched Narrowing (AND logic)'
+  type: feature
+  breaking: false
+window:
+  from: '2026-02-05'
+  to: '2026-06-30'
+  note: >-
+    Recent window only, taken from the January-June 2026 release-notes article. The July-December 2026
+    article exists and will carry newer entries.

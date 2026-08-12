@@ -1,0 +1,85 @@
+generated: '2026-08-12'
+method: searched
+source: https://help.mountain.com/en/collections/16045180-install-pixels
+docs:
+- https://help.mountain.com/en/collections/16045180-install-pixels
+- https://help.mountain.com/en/articles/8055666-understand-mntn-pixels
+- https://help.mountain.com/en/articles/6633922-install-pixels-manually
+component_count: 3
+families:
+- family: MNTN Pixel
+  kind: client-side tracking tag
+  description: >-
+    A per-account JavaScript snippet placed in a site's HTML that collects visitor behaviour, builds
+    retargeting audiences, and records conversions for attribution. This is MNTN's primary client-side
+    surface -- there is no embeddable dashboard or UI element library.
+  variants:
+  - name: Tracking pixel
+    type: javascript
+    purpose: site-visitor collection and audience building
+  - name: Conversion pixel
+    type: javascript
+    purpose: conversion event capture for attribution
+  - name: Image pixel
+    type: img
+    purpose: fallback for environments where JavaScript cannot be injected
+    docs: https://help.mountain.com/en/articles/7251381-install-image-pixels
+  distribution:
+    registry: none
+    pinned: false
+    version: null
+    published: null
+    note: >-
+      The snippet is generated per account inside the MNTN platform and pasted into the customer's
+      site. It is not distributed through npm or a versioned CDN path, so there is no version a
+      consumer can pin or audit -- the loader floats to whatever MNTN serves. Recorded as null with
+      this note rather than omitted.
+  api_surface:
+    note: >-
+      The pixel is configurable and observable through the Performance TV API's pixel tag -- 12
+      operations covering GA4 id storage, conversion opt-out, signal strategies, a health overview,
+      and a verification suite (event listing, page scrape, order-id handling, live pageview and
+      conversion listeners, warning checks).
+    operations:
+    - pixel.getGa4Ids
+    - pixel.storeGa4Ids
+    - pixel.updateConversionOptOut
+    - pixel.getSignalStrategies
+    - pixel.getHealthOverview
+    - pixel.events
+    - pixel.scrapePage
+    - pixel.handleOrderIds
+    - pixel.listenPageviews
+    - pixel.listenConversions
+    - pixel.checkRedisEvents
+    - pixel.checkWarnings
+    spec: openapi/mntn-ptv-pixel-openapi.yml
+- family: Installation surfaces
+  kind: no-code loaders
+  description: Vendor-maintained ways to deploy the pixel without touching site code.
+  variants:
+  - name: MNTN Shopify app
+    type: platform-app
+    marketplace: https://apps.shopify.com/mntn
+    docs: https://help.mountain.com/en/articles/8121892-install-pixels-in-shopify
+    purpose: installs the tracking and conversion pixels into a Shopify storefront automatically
+  - name: MNTN Google Tag Manager template
+    type: gtm-template
+    docs: https://help.mountain.com/en/articles/8284705-install-mntn-pixels-using-google-tag-manager
+    purpose: deploys the pixel through a GTM container
+- family: Pixel Dashboard
+  kind: hosted UI (in-platform)
+  description: >-
+    A dashboard inside the MNTN platform for pixel health, event verification and warnings. It is an
+    in-product screen rather than an embeddable component -- it cannot be mounted in a customer app.
+  docs: https://help.mountain.com/en/articles/10684899-understand-the-pixel-dashboard
+  embeddable: false
+not_present:
+- Embeddable dashboard or reporting iframe
+- Web component or element library
+- Hosted checkout/onboarding surface
+- Design system or UI package
+note: >-
+  MNTN's client-side surface is a tracking tag, not a UI toolkit. It is recorded here because it is a
+  genuine first-party, customer-deployed browser artifact with a matching 12-operation API tag, and
+  because its unpinned distribution is a real finding for anyone assessing supply-chain exposure.

@@ -1,0 +1,104 @@
+generated: '2026-08-12'
+method: searched
+docs:
+- https://help.mountain.com/en/articles/6511970-access-your-reporting-api-key
+- https://api.mountain.com/docs
+- https://api3.mountain.com/docs
+source: openapi/mntn-batch-export-openapi.yml, openapi/mntn-ptv-advertisers-openapi.yml, openapi/mntn-ptv-attribution-openapi.yml,
+  openapi/mntn-ptv-audiences-openapi.yml, openapi/mntn-ptv-campaigns-openapi.yml, openapi/mntn-ptv-creatives-openapi.yml,
+  openapi/mntn-ptv-flights-openapi.yml, openapi/mntn-ptv-organizations-openapi.yml, openapi/mntn-ptv-pixel-openapi.yml,
+  openapi/mntn-ptv-pmp-campaign-deals-openapi.yml, openapi/mntn-ptv-pmp-channels-openapi.yml,
+  openapi/mntn-ptv-pmp-deal-groups-openapi.yml ...
+summary:
+  types:
+  - apiKey
+  - http
+  api_key_in:
+  - header
+  - query
+schemes:
+- name: API Key
+  type: apiKey
+  in: query
+  parameter: key
+  description: MNTN-issued advertiser API key. Available in Account Settings.
+  sources:
+  - openapi/mntn-batch-export-openapi.yml
+  - openapi/mntn-reporting-api-openapi.yml
+- name: Bearer
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  sources:
+  - openapi/mntn-ptv-advertisers-openapi.yml
+  - openapi/mntn-ptv-attribution-openapi.yml
+  - openapi/mntn-ptv-audiences-openapi.yml
+  - openapi/mntn-ptv-campaigns-openapi.yml
+  - openapi/mntn-ptv-creatives-openapi.yml
+  - openapi/mntn-ptv-flights-openapi.yml
+  - openapi/mntn-ptv-organizations-openapi.yml
+  - openapi/mntn-ptv-pixel-openapi.yml
+  - openapi/mntn-ptv-pmp-campaign-deals-openapi.yml
+  - openapi/mntn-ptv-pmp-channels-openapi.yml
+  - openapi/mntn-ptv-pmp-deal-groups-openapi.yml
+  - openapi/mntn-ptv-pmp-deals-openapi.yml
+  - openapi/mntn-ptv-pmp-partners-openapi.yml
+  - openapi/mntn-ptv-reference-openapi.yml
+  - openapi/mntn-ptv-reporting-openapi.yml
+- name: API Key
+  type: apiKey
+  in: header
+  parameter: X-API-Key
+  sources:
+  - openapi/mntn-ptv-advertisers-openapi.yml
+  - openapi/mntn-ptv-attribution-openapi.yml
+  - openapi/mntn-ptv-audiences-openapi.yml
+  - openapi/mntn-ptv-campaigns-openapi.yml
+  - openapi/mntn-ptv-creatives-openapi.yml
+  - openapi/mntn-ptv-flights-openapi.yml
+  - openapi/mntn-ptv-organizations-openapi.yml
+  - openapi/mntn-ptv-pixel-openapi.yml
+  - openapi/mntn-ptv-pmp-campaign-deals-openapi.yml
+  - openapi/mntn-ptv-pmp-channels-openapi.yml
+  - openapi/mntn-ptv-pmp-deal-groups-openapi.yml
+  - openapi/mntn-ptv-pmp-deals-openapi.yml
+  - openapi/mntn-ptv-pmp-partners-openapi.yml
+  - openapi/mntn-ptv-reference-openapi.yml
+  - openapi/mntn-ptv-reporting-openapi.yml
+
+key_issuance:
+  self_service: true
+  where: MNTN platform UI, My Account / Account Settings -> API tab
+  docs: https://help.mountain.com/en/articles/6511970-access-your-reporting-api-key
+  note: >-
+    MNTN issues one advertiser-scoped Reporting API key per account from the platform UI. The help
+    center instructs customers to "treat it like a password and only share it with platforms you
+    trust" -- there is no published key rotation, expiry, or scoping model, and no OAuth 2.0 or
+    OpenID Connect surface is documented on any MNTN host.
+surfaces:
+- api: MNTN Performance TV (PTV) API
+  host: https://api.mountain.com
+  accepted:
+  - {scheme: Bearer, transport: 'Authorization: Bearer <JWT>', format: JWT}
+  - {scheme: API Key, transport: 'X-API-Key: <key>', format: opaque}
+  unauthenticated_behavior:
+    status: 401
+    body: '{"error":"Authentication required"}'
+    content_type: application/json
+    note: >-
+      The api.mountain.com gateway (istio-envoy) answers 401 for every path except /openapi.json,
+      /openapi.yaml and /docs, which are served anonymously.
+- api: MNTN Reporting API 3.0 and Async Batch Export API
+  host: https://api3.mountain.com
+  accepted:
+  - {scheme: API Key, transport: 'key=<key> query parameter', format: opaque}
+  unauthenticated_behavior:
+    status: 401
+    body: RFC 9457 application/problem+json
+  note: >-
+    The reporting API carries the credential in the URL query string, which leaks the key into proxy
+    logs, browser history, and referrer headers. A header-borne alternative is not documented.
+oauth2: false
+openid_connect: false
+mutual_tls: false
+scopes: none published

@@ -1,0 +1,575 @@
+openapi: 3.1.0
+info:
+  title: PTV API - attribution
+  description: PTV API authoritative source of truth for PTV data.
+  version: '1.0'
+  contact:
+    name: MNTN Platform
+    url: https://api.mountain.com
+    email: support@mountain.com
+  license:
+    name: Proprietary
+servers:
+- url: https://api.mountain.com/ptv
+  description: MNTN Performance TV API gateway
+tags:
+- name: attribution
+  description: Advertiser attribution windows, estimates, sales cycle, and verified-visit blacklist settings.
+paths:
+  /api/v1/advertisers/{advertiserId}/attribution/windows:
+    get:
+      description: Returns the advertiser's retargeting, prospecting, and conversion attribution windows.
+      operationId: attribution.windows.get
+      parameters:
+      - name: advertiserId
+        required: true
+        in: path
+        description: Advertiser identifier.
+        schema:
+          type: number
+      responses:
+        '200':
+          description: Single attribution windows payload.
+          content:
+            application/json:
+              example:
+                data:
+                  retargetingVerifiedViewWindow:
+                    days: 7
+                    hours: 0
+                    minutes: 0
+                  prospectingVerifiedViewWindow:
+                    days: 14
+                    hours: 0
+                    minutes: 0
+                  conversionWindow:
+                    days: 30
+                    hours: 0
+                    minutes: 0
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttributionWindowsSingleResponseDto_Output'
+      summary: Get Attribution Windows
+      tags:
+      - attribution
+    patch:
+      description: Updates one or more advertiser attribution windows. Omitted windows are left unchanged.
+      operationId: attribution.windows.update
+      parameters:
+      - name: advertiserId
+        required: true
+        in: path
+        description: Advertiser identifier.
+        schema:
+          type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchAttributionWindowsBodyDto'
+      responses:
+        '200':
+          description: Updated attribution windows payload.
+          content:
+            application/json:
+              example:
+                data:
+                  retargetingVerifiedViewWindow:
+                    days: 7
+                    hours: 0
+                    minutes: 0
+                  prospectingVerifiedViewWindow:
+                    days: 14
+                    hours: 0
+                    minutes: 0
+                  conversionWindow:
+                    days: 30
+                    hours: 0
+                    minutes: 0
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttributionWindowsSingleResponseDto_Output'
+      summary: Update Attribution Windows
+      tags:
+      - attribution
+  /api/v1/advertisers/{advertiserId}/attribution/estimates:
+    post:
+      description: 'Estimates visit and conversion impact for proposed attribution windows by objective.
+
+
+        **Notes:**
+
+        - `retargetingWindowMinutes`, `prospectingWindowMinutes`, and `conversionWindowMinutes` are all in minutes (including
+        conversion).'
+      operationId: attribution.estimates.run
+      parameters:
+      - name: advertiserId
+        required: true
+        in: path
+        description: Advertiser identifier.
+        schema:
+          type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RunAttributionEstimatesBodyDto'
+      responses:
+        '200':
+          description: Single visit and conversion estimates payload.
+          content:
+            application/json:
+              example:
+                data:
+                  retargeting:
+                    visits: 1200
+                    estimatedVisits: 1350
+                    conversions: 40
+                    estimatedConversions: 48
+                  prospecting:
+                    visits: 3400
+                    estimatedVisits: 3600
+                    conversions: 90
+                    estimatedConversions: 102
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VisitConversionEstimatesSingleResponseDto_Output'
+      summary: Run Visit And Conversion Estimates
+      tags:
+      - attribution
+  /api/v1/advertisers/{advertiserId}/attribution/sales-cycle:
+    get:
+      description: Returns the advertiser's current sales-cycle length derived from the last 30 days of activity.
+      operationId: attribution.salesCycle.get
+      parameters:
+      - name: advertiserId
+        required: true
+        in: path
+        description: Advertiser identifier.
+        schema:
+          type: number
+      responses:
+        '200':
+          description: Single sales-cycle payload.
+          content:
+            application/json:
+              example:
+                data:
+                  salesCycleLast30Days: 4.61
+                  salesCycleLast30DaysText: 4 days 14 hours 45 mins
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SalesCycleSingleResponseDto_Output'
+      summary: Get Current Sales Cycle
+      tags:
+      - attribution
+  /api/v1/advertisers/{advertiserId}/attribution/blacklist-query-params:
+    get:
+      description: Returns verified-visit blacklist query parameters for the advertiser.
+      operationId: attribution.blacklistQueryParams.get
+      parameters:
+      - name: advertiserId
+        required: true
+        in: path
+        description: Advertiser identifier.
+        schema:
+          type: number
+      responses:
+        '200':
+          description: Single blacklist query params payload.
+          content:
+            application/json:
+              example:
+                data:
+                  blacklistQueryParams:
+                  - utm_source=partner
+                  - ref=affiliate
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlacklistQueryParamsSingleResponseDto_Output'
+      summary: Get Blacklist Query Params
+      tags:
+      - attribution
+    put:
+      description: Fully replaces verified-visit blacklist query parameters for the advertiser.
+      operationId: attribution.blacklistQueryParams.update
+      parameters:
+      - name: advertiserId
+        required: true
+        in: path
+        description: Advertiser identifier.
+        schema:
+          type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutBlacklistQueryParamsBodyDto'
+      responses:
+        '200':
+          description: Updated blacklist query params payload.
+          content:
+            application/json:
+              example:
+                data:
+                  blacklistQueryParams:
+                  - utm_source=partner
+                  - ref=affiliate
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlacklistQueryParamsSingleResponseDto_Output'
+      summary: Replace Blacklist Query Params
+      tags:
+      - attribution
+security:
+- Bearer: []
+- API Key: []
+components:
+  schemas:
+    PatchAttributionWindowsBodyDto:
+      type: object
+      properties:
+        retargetingVerifiedViewWindow:
+          type: object
+          properties:
+            days:
+              type: integer
+              minimum: 0
+              maximum: 9007199254740991
+              description: Days component of the window.
+            hours:
+              type: integer
+              minimum: 0
+              maximum: 23
+              description: Hours component of the window (0–23).
+            minutes:
+              type: integer
+              minimum: 0
+              maximum: 59
+              description: Minutes component of the window (0–59).
+          required:
+          - days
+          - hours
+          - minutes
+          description: Attribution time window expressed as days, hours, and minutes.
+        prospectingVerifiedViewWindow:
+          type: object
+          properties:
+            days:
+              type: integer
+              minimum: 0
+              maximum: 9007199254740991
+              description: Days component of the window.
+            hours:
+              type: integer
+              minimum: 0
+              maximum: 23
+              description: Hours component of the window (0–23).
+            minutes:
+              type: integer
+              minimum: 0
+              maximum: 59
+              description: Minutes component of the window (0–59).
+          required:
+          - days
+          - hours
+          - minutes
+          description: Attribution time window expressed as days, hours, and minutes.
+        conversionWindow:
+          type: object
+          properties:
+            days:
+              type: integer
+              minimum: 0
+              maximum: 9007199254740991
+              description: Days component of the window.
+            hours:
+              type: integer
+              minimum: 0
+              maximum: 23
+              description: Hours component of the window (0–23).
+            minutes:
+              type: integer
+              minimum: 0
+              maximum: 59
+              description: Minutes component of the window (0–59).
+          required:
+          - days
+          - hours
+          - minutes
+          description: Attribution time window expressed as days, hours, and minutes.
+      description: Partial update for advertiser attribution windows.
+    PutBlacklistQueryParamsBodyDto:
+      type: object
+      properties:
+        blacklistQueryParams:
+          type: array
+          items:
+            type: string
+          description: Full replacement list of verified-visit blacklist query parameters.
+      required:
+      - blacklistQueryParams
+      description: Replace verified-visit blacklist query parameters.
+    BlacklistQueryParamsSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            blacklistQueryParams:
+              type: array
+              items:
+                type: string
+              description: Verified-visit blacklist query parameters.
+          required:
+          - blacklistQueryParams
+          additionalProperties: false
+          description: Verified-visit blacklist query parameters for the advertiser.
+      required:
+      - data
+      additionalProperties: false
+    RunAttributionEstimatesBodyDto:
+      type: object
+      properties:
+        retargetingWindowMinutes:
+          type: integer
+          minimum: 0
+          maximum: 9007199254740991
+          description: Proposed retargeting verified-view window in minutes.
+        prospectingWindowMinutes:
+          type: integer
+          minimum: 0
+          maximum: 9007199254740991
+          description: Proposed prospecting verified-view window in minutes.
+        conversionWindowMinutes:
+          type: integer
+          minimum: 0
+          maximum: 9007199254740991
+          description: Proposed conversion window in minutes (not days). Matches the estimation join grain.
+        oldAllowReferralTraffic:
+          description: Whether the current (old) estimate baseline allows referral traffic.
+          type: boolean
+        newAllowReferralTraffic:
+          description: Whether the proposed (new) estimate scenario allows referral traffic.
+          type: boolean
+      required:
+      - retargetingWindowMinutes
+      - prospectingWindowMinutes
+      - conversionWindowMinutes
+      description: Filter for visit and conversion estimates by objective. All window fields are minutes.
+    SalesCycleSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            salesCycleLast30Days:
+              type:
+              - number
+              - 'null'
+              description: Sales-cycle length in days (fractional, max 2 decimal places) derived from the last 30 days of
+                activity.
+            salesCycleLast30DaysText:
+              type:
+              - string
+              - 'null'
+              description: Human-readable sales-cycle duration from reporting (e.g. "4 days 14 hours 45 mins").
+          required:
+          - salesCycleLast30Days
+          - salesCycleLast30DaysText
+          additionalProperties: false
+          description: Current sales-cycle metric for the advertiser.
+      required:
+      - data
+      additionalProperties: false
+    AttributionWindowsSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            retargetingVerifiedViewWindow:
+              type: object
+              properties:
+                days:
+                  type: integer
+                  minimum: 0
+                  maximum: 9007199254740991
+                  description: Days component of the window.
+                hours:
+                  type: integer
+                  minimum: 0
+                  maximum: 23
+                  description: Hours component of the window (0–23).
+                minutes:
+                  type: integer
+                  minimum: 0
+                  maximum: 59
+                  description: Minutes component of the window (0–59).
+              required:
+              - days
+              - hours
+              - minutes
+              additionalProperties: false
+              description: Retargeting verified-view attribution window.
+            prospectingVerifiedViewWindow:
+              type: object
+              properties:
+                days:
+                  type: integer
+                  minimum: 0
+                  maximum: 9007199254740991
+                  description: Days component of the window.
+                hours:
+                  type: integer
+                  minimum: 0
+                  maximum: 23
+                  description: Hours component of the window (0–23).
+                minutes:
+                  type: integer
+                  minimum: 0
+                  maximum: 59
+                  description: Minutes component of the window (0–59).
+              required:
+              - days
+              - hours
+              - minutes
+              additionalProperties: false
+              description: Prospecting verified-view attribution window.
+            conversionWindow:
+              type: object
+              properties:
+                days:
+                  type: integer
+                  minimum: 0
+                  maximum: 9007199254740991
+                  description: Days component of the window.
+                hours:
+                  type: integer
+                  minimum: 0
+                  maximum: 23
+                  description: Hours component of the window (0–23).
+                minutes:
+                  type: integer
+                  minimum: 0
+                  maximum: 59
+                  description: Minutes component of the window (0–59).
+              required:
+              - days
+              - hours
+              - minutes
+              additionalProperties: false
+              description: Conversion attribution window.
+          required:
+          - retargetingVerifiedViewWindow
+          - prospectingVerifiedViewWindow
+          - conversionWindow
+          additionalProperties: false
+          description: Advertiser attribution windows.
+      required:
+      - data
+      additionalProperties: false
+    VisitConversionEstimatesSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            retargeting:
+              type: object
+              properties:
+                visits:
+                  type: integer
+                  minimum: -9007199254740991
+                  maximum: 9007199254740991
+                  description: Observed visits in the baseline window.
+                estimatedVisits:
+                  type: integer
+                  minimum: -9007199254740991
+                  maximum: 9007199254740991
+                  description: Estimated visits under the proposed windows.
+                conversions:
+                  type: integer
+                  minimum: -9007199254740991
+                  maximum: 9007199254740991
+                  description: Observed conversions in the baseline window.
+                estimatedConversions:
+                  type: integer
+                  minimum: -9007199254740991
+                  maximum: 9007199254740991
+                  description: Estimated conversions under the proposed windows.
+              required:
+              - visits
+              - estimatedVisits
+              - conversions
+              - estimatedConversions
+              additionalProperties: false
+              description: Estimates for the retargeting objective.
+            prospecting:
+              type: object
+              properties:
+                visits:
+                  type: integer
+                  minimum: -9007199254740991
+                  maximum: 9007199254740991
+                  description: Observed visits in the baseline window.
+                estimatedVisits:
+                  type: integer
+                  minimum: -9007199254740991
+                  maximum: 9007199254740991
+                  description: Estimated visits under the proposed windows.
+                conversions:
+                  type: integer
+                  minimum: -9007199254740991
+                  maximum: 9007199254740991
+                  description: Observed conversions in the baseline window.
+                estimatedConversions:
+                  type: integer
+                  minimum: -9007199254740991
+                  maximum: 9007199254740991
+                  description: Estimated conversions under the proposed windows.
+              required:
+              - visits
+              - estimatedVisits
+              - conversions
+              - estimatedConversions
+              additionalProperties: false
+              description: Estimates for the prospecting objective.
+          required:
+          - retargeting
+          - prospecting
+          additionalProperties: false
+          description: Visit and conversion estimates by objective.
+      required:
+      - data
+      additionalProperties: false
+  securitySchemes:
+    Bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+    API Key:
+      type: apiKey
+      in: header
+      name: X-API-Key

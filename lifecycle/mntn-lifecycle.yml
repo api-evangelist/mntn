@@ -1,0 +1,78 @@
+generated: '2026-08-12'
+method: searched
+source: https://help.mountain.com/en/articles/9106215-upgrade-to-api-3-0
+docs:
+- https://help.mountain.com/en/articles/9106215-upgrade-to-api-3-0
+- https://help.mountain.com/en/collections/16047071-track-releases
+- https://api3.mountain.com/docs
+versioning:
+  scheme: host-based major versions plus a semantic spec version
+  detail: >-
+    MNTN versions the reporting API by hostname rather than by path or header -- api.mountain.com was
+    API 1.0, api2.mountain.com is API 2.0, api3.mountain.com is API 3.0. The Reporting and Batch
+    OpenAPI definitions both declare info.version 3.7.0. The Performance TV platform API is separately
+    versioned in-path as /api/v1/ and declares info.version 1.0.
+  versions:
+  - {version: '1.0', host: 'https://api.mountain.com', state: sunset, sunset_date: '2026-04-01'}
+  - {version: '2.0', host: 'https://api2.mountain.com', state: available, note: 'serves the same 3.7.0 OpenAPI as api3; effectively an alias'}
+  - {version: '3.0', host: 'https://api3.mountain.com', state: current, spec_version: 3.7.0}
+  - {version: 'v1', host: 'https://api.mountain.com/ptv', state: current, note: 'Performance TV platform API, path-versioned /api/v1/, separate product from the reporting versions above'}
+  note: >-
+    The api.mountain.com hostname was reused: it was the API 1.0 reporting host that stopped returning
+    data on 2026-04-01, and it now fronts the Performance TV platform API. A consumer holding an old
+    integration against that host gets a live gateway serving a different contract, not a 410.
+deprecation:
+  policy_published: true
+  policy_url: https://help.mountain.com/en/articles/9106215-upgrade-to-api-3-0
+  mechanism: help-center notice and dated release notes
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  note: >-
+    MNTN publishes a real, dated deprecation with a migration guide -- but announces it in the help
+    center only. Neither RFC 8594 Sunset nor the Deprecation header is emitted, and no operation in any
+    of the three OpenAPI definitions carries deprecated: true, so a machine consumer gets no runtime
+    signal.
+  events:
+  - date: '2026-04-01'
+    version: '1.0'
+    action: sunset
+    statement: 'After April 1, 2026, requests made to API 1.0 will no longer return reporting data.'
+    source: https://help.mountain.com/en/articles/9106215-upgrade-to-api-3-0
+  - date: '2026-03-06'
+    version: '3.0'
+    action: general-availability
+    statement: >-
+      API 3.0 reporting enhancements shipped with multidimensional querying and full data parity
+      including Audience Segment Data; announced alongside the 1.0 deprecation date.
+    source: https://help.mountain.com/en/articles/13728265-mntn-updates-january-june-2026
+breaking_changes:
+- from: '1.0/2.0'
+  to: '3.0'
+  changes:
+  - Default reporting attribution moved from Last Touch to First Touch.
+  - Non-INFO/DETAIL tables must be converted to graph format.
+  - Filter syntax changed to JSON encoding, for example {"campaigninfo.id":{"in":["200"]}}.
+  - Table renames -- CampaignGroupInfo became CampaignInfo, CreativeGroupInfo became CreativeInfo.
+  - Data before 2023-01-01 is unavailable in the new dimensional dataset.
+  source: https://help.mountain.com/en/articles/9106215-upgrade-to-api-3-0
+deprecated_operations:
+  count: 0
+  source: 'derived from openapi/_original/*.json -- no operation declares deprecated: true'
+status_page:
+  published: false
+  probes:
+  - {url: 'https://status.mountain.com', status: 0, result: NXDOMAIN}
+  - {url: 'https://status.mntn.com', status: 0, result: NXDOMAIN}
+  - {url: 'https://mountain.statuspage.io', status: 200, result: 'redirects to /inactive -- "Your page is inactive"'}
+  - {url: 'https://mntn.statuspage.io', status: 200, result: 'redirects to atlassian.com marketing page -- subdomain not claimed'}
+  note: >-
+    No status page. A Statuspage tenant exists at mountain.statuspage.io but is inactive. No
+    type: StatusPage pointer is wired, because there is nothing for a consumer to subscribe to.
+sla:
+  published: false
+  note: No public SLA, uptime commitment, or support-response target is published for either API.
+support:
+  channel: https://help.mountain.com/en/
+  contact: support@mountain.com
+  source: 'openapi info.contact, openapi/_original/mntn-ptv-openapi.json'

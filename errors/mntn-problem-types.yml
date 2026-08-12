@@ -1,0 +1,119 @@
+generated: '2026-08-12'
+method: derived
+source: >-
+  openapi/_original/mntn-reporting-api-openapi.json, openapi/_original/mntn-batch-export-api-openapi.json,
+  openapi/_original/mntn-ptv-openapi.json, plus live unauthenticated probes of api3.mountain.com
+docs: https://api3.mountain.com/docs
+format: rfc9457
+media_type: application/problem+json
+envelope:
+  schema: ProblemDetail
+  title: Problem Detail (RFC 9457)
+  fields:
+  - {name: type, type: string, description: URI reference identifying the problem type, example: 'https://api3.mountain.com/problems/not-found'}
+  - {name: title, type: string, description: Short human-readable summary, stable across occurrences}
+  - {name: status, type: integer, description: HTTP status code}
+  - {name: detail, type: string, description: Human-readable explanation specific to this occurrence}
+  - {name: instance, type: string, description: URI reference identifying the specific occurrence (request path)}
+  - {name: timestamp, type: string, description: ISO 8601 timestamp when the error occurred}
+  - {name: errorCode, type: string, description: Internal error code for support reference, example: QUERY_TIMEOUT}
+  - {name: traceId, type: string, description: OpenTelemetry trace ID for debugging and support}
+  - {name: errors, type: array, description: 'Field-level validation errors on 400 Bad Request (field, message)'}
+  note: >-
+    The reporting and batch APIs return a genuine RFC 9457 document with the full member set plus three
+    useful extensions -- timestamp, errorCode and an OpenTelemetry traceId that a caller can quote to
+    support. This is above the norm for adtech reporting APIs.
+problem_types:
+- id: not-found
+  type: https://api3.mountain.com/problems/not-found
+  status: 404
+  title: Not Found
+  observed: true
+  evidence: 'GET https://api3.mountain.com/ -> 404 application/problem+json'
+  remediation: Check the path; the reporting API exposes only /apilist, /apidata and /batch.
+- id: general-request-error
+  type: https://api3.mountain.com/problems/general-request-error
+  status: 400
+  title: Bad Request
+  observed: true
+  evidence: 'GET https://api3.mountain.com/apidata -> 400 application/problem+json'
+  remediation: >-
+    Supply the required key, data/sum column list and date range. Field-level detail arrives in errors[].
+- id: query-timeout
+  type: https://api3.mountain.com/problems/query-timeout
+  status: 504
+  title: Gateway Timeout
+  errorCode: QUERY_TIMEOUT
+  observed: false
+  evidence: 'documented in the ProblemDetail schema example, openapi/_original/mntn-batch-export-api-openapi.json'
+  remediation: Narrow the date range or column set, or resubmit the query through POST /batch.
+- id: unauthorized
+  status: 401
+  title: Unauthorized
+  media_type: application/problem+json
+  operations: [getData, postData, list, submitExport, listExports, getExportStatus, regenerateUrl]
+  remediation: Pass a valid advertiser API key as the key query parameter.
+- id: forbidden
+  status: 403
+  title: Forbidden
+  media_type: application/problem+json
+  operations: [getData, postData, list, submitExport, listExports, getExportStatus, regenerateUrl]
+  remediation: >-
+    The key is valid but the advertiser lacks entitlement. Batch endpoints require r2ds.exports.enabled.
+- id: payload-too-large
+  status: 413
+  title: Payload Too Large
+  media_type: application/problem+json
+  detail: The query exceeds server memory limits.
+  operations: [getData, postData, list, submitExport, listExports, getExportStatus, regenerateUrl]
+  remediation: >-
+    Documented escalation path -- resubmit the same query asynchronously through POST /batch. This is
+    the one place MNTN publishes an explicit recovery route rather than only an error.
+- id: rate-limit-exceeded
+  status: 429
+  title: Rate limit exceeded
+  media_type: application/json
+  schema: ExportResponse
+  operations: [submitExport]
+  remediation: Back off and resubmit. No Retry-After or RateLimit-* header is declared in the spec.
+  gap: >-
+    429 is declared with the ExportResponse schema rather than ProblemDetail, and carries no
+    rate-limit response headers -- an agent cannot compute a wait from the response.
+- id: batch-conflict
+  status: 409
+  title: Batch is in a terminal non-downloadable state
+  media_type: application/json
+  schema: RegenerateUrlResponse
+  operations: [regenerateUrl]
+  remediation: Resubmit the export with POST /batch; the original result cannot be re-signed.
+- id: batch-gone
+  status: 410
+  title: Result is permanently unavailable
+  media_type: application/json
+  schema: RegenerateUrlResponse
+  operations: [regenerateUrl]
+  remediation: The export has aged out. Resubmit with POST /batch.
+- id: signing-unavailable
+  status: 503
+  title: Signing subsystem temporarily unavailable
+  media_type: application/json
+  operations: [getExportStatus, regenerateUrl]
+  remediation: Retry; the job itself is unaffected, only the signed-URL issuance failed.
+- id: internal-server-error
+  status: 500
+  title: Internal Server Error
+  media_type: application/problem+json
+  operations: [getData, postData, list, submitExport, listExports, getExportStatus, regenerateUrl]
+ptv_api:
+  note: >-
+    The Performance TV API at api.mountain.com is markedly weaker on error semantics than the reporting
+    API. Of its 85 operations, 78 declare only a bare `default` response of application/json and just
+    two operations each declare 400, 401 or 404. No problem+json media type, no error schema, and no
+    error registry is published for that surface.
+  declared_status_codes: {'200': 53, '201': 5, '202': 1, '204': 7, '400': 2, '401': 2, '404': 2, default: 78}
+  observed:
+  - {request: 'GET https://api.mountain.com/', status: 401, body: '{"error":"Authentication required"}', format: 'ad-hoc, not RFC 9457'}
+gaps:
+- No published error-code registry enumerating errorCode values; QUERY_TIMEOUT is the only one named anywhere.
+- The two API families use two different error formats (RFC 9457 on api3, a bare {"error": string} on api).
+- No 429 or Retry-After semantics on the synchronous reporting surface.

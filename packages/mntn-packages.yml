@@ -1,0 +1,32 @@
+generated: '2026-08-12'
+method: searched
+source: >-
+  registry searches against npm, PyPI, RubyGems, Packagist, crates.io, NuGet, Maven Central and
+  pkg.go.dev, plus the MNTN help center API collection and the mountain.com integrations page
+package_count: 0
+packages: []
+registries_checked:
+- {registry: npm, query: 'mntn, mountain-api, performance-tv, @mntn, @mountain', result: no first-party package}
+- {registry: pypi, query: 'mntn, mountain', result: no first-party package}
+- {registry: rubygems, query: mntn, result: no first-party package}
+- {registry: packagist, query: mntn, result: no first-party package}
+- {registry: crates.io, query: mntn, result: no first-party package}
+- {registry: nuget, query: mntn, result: no first-party package}
+- {registry: maven-central, query: mntn, result: no first-party package}
+- {registry: pkg.go.dev, query: mntn, result: no first-party package}
+- {registry: cdn, query: 'mountain.com pixel snippet', result: 'unpinned; see components/mntn-components.yml'}
+note: >-
+  MNTN publishes no first-party client library in any public package registry, and no SDK, CLI or
+  source-code link appears anywhere in the help center, on the integrations page, or in the three
+  published OpenAPI definitions. Every named integration on mountain.com/performance-tv/integrations/
+  is a third-party connector that calls the MNTN Reporting API on the customer's behalf (Improvado,
+  Windsor.ai, Bright Analytics, Daton, Triple Whale, Elevar, Supermetrics-class ETL vendors) rather
+  than an MNTN-authored package. Third-party GitHub accounts named "mntn"/"mountain" belong to
+  unrelated individuals, not the company; there is no MNTN GitHub organization.
+  version and published are recorded as null across the board because there is no package to read
+  metadata for -- checked, nothing to record, not a guess.
+version: null
+published: null
+sdks_pointer_emitted: false
+sdks_pointer_reason: >-
+  No official SDK exists, so no type: SDKs pointer is wired in apis.yml. The absence is the finding.

@@ -1,0 +1,30 @@
+generated: '2026-08-12'
+method: searched
+source: https://mountain.com/page-sitemap.xml
+docs: https://mountain.com/performance-tv/
+plan_count: 0
+plans: []
+pricing_model:
+  published: false
+  model: 'media spend / managed CTV ad budget, quoted per account'
+  self_serve_signup: true
+  signup_url: https://auth.mountain.com/sign-up
+  note: >-
+    MNTN publishes no pricing page and no plan tiers. mountain.com/pricing/ returns 404 and no
+    pricing, plans, or cost page appears anywhere in the site page-sitemap. Commercial terms are an
+    advertising-spend arrangement quoted per advertiser, with self-serve signup into the Express
+    product but no published rate card, minimum, or platform fee.
+  api_pricing:
+    metered: false
+    note: >-
+      The Reporting API and Performance TV API are entitlements of a platform account rather than
+      separately priced products. The one entitlement flag visible in the specs is
+      r2ds.exports.enabled, which gates the asynchronous /batch export endpoints -- evidence that API
+      capability is packaged by account tier, but the tiers themselves are not published.
+probes:
+- {url: 'https://mountain.com/pricing/', status: 404}
+- {url: 'https://mountain.com/page-sitemap.xml', status: 200, result: 'no pricing or plans page listed'}
+- {url: 'https://auth.mountain.com/sign-up', status: 200, result: 'self-serve signup form, no pricing shown'}
+no_pricing_pointer_reason: >-
+  No type: Pricing link-property pointer is wired in apis.yml because MNTN publishes no pricing page
+  to point at. Recording plan_count 0 with the probes above is the honest result.

@@ -1,0 +1,443 @@
+openapi: 3.1.0
+info:
+  title: PTV API - creatives
+  description: PTV API authoritative source of truth for PTV data.
+  version: '1.0'
+  contact:
+    name: MNTN Platform
+    url: https://api.mountain.com
+    email: support@mountain.com
+  license:
+    name: Proprietary
+servers:
+- url: https://api.mountain.com/ptv
+  description: MNTN Performance TV API gateway
+tags:
+- name: creatives
+  description: Creative library lookup, with normalized video processing status.
+paths:
+  /api/v1/creatives:
+    get:
+      description: 'Returns the advertiser''s creative library, newest first, with each creative''s normalized processing
+        status.
+
+
+        **Filters:** `advertiserId` (required), `status`.
+
+
+        **Notes:** Freshly uploaded creatives appear with `status: processing` and are unusable until it becomes `ready`;
+        poll `GET /v1/creatives/{id}` for a single creative''s status. The stored `videoUrl` is returned only at the full
+        field scope.'
+      operationId: creatives.list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: 1-based page number.
+        schema:
+          minimum: 1
+          type: number
+      - name: perPage
+        required: false
+        in: query
+        description: Results per page (maximum 100).
+        schema:
+          minimum: 1
+          maximum: 100
+          type: number
+      - name: advertiserId
+        required: true
+        in: query
+        description: Advertiser whose creative library to list. Required; the read is authorized and scoped to this advertiser.
+        schema:
+          exclusiveMinimum: true
+          type: number
+          minimum: 0
+      - name: status
+        required: false
+        in: query
+        description: 'Filter by normalized processing status: `processing`, `ready`, `rejected`, or `in_review`.'
+        schema:
+          type: string
+          enum:
+          - processing
+          - ready
+          - rejected
+          - in_review
+      responses:
+        '200':
+          description: Paginated creative list.
+          content:
+            application/json:
+              example:
+                data:
+                - id: 44823
+                  name: Q3 Hero 15s Cutdown
+                  status: processing
+                  videoUrl: https://cdn.example/storage/video/12345/44823/hero-15.mp4
+                  posterUrl: null
+                  durationSeconds: 15
+                  rejectionReasons: null
+                  advertiserId: 12345
+                  createdAt: '2026-06-27T00:00:00.000Z'
+                - id: 44821
+                  name: Q3 Hero 30s
+                  status: ready
+                  videoUrl: https://cdn.example/storage/video/12345/44821/hero.mp4
+                  posterUrl: https://cdn.example/storage/video/12345/44821/poster.jpg
+                  durationSeconds: 30
+                  rejectionReasons: null
+                  advertiserId: 12345
+                  createdAt: '2026-06-26T00:00:00.000Z'
+                pagination:
+                  total: 2
+                  perPage: 25
+                  page: 1
+                  previousPageUrl: null
+                  nextPageUrl: null
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCreativesResponseDto_Output'
+      summary: List creatives
+      tags:
+      - creatives
+    post:
+      description: 'Uploads a video into the advertiser''s creative library. The request is `multipart/form-data` with the
+        plain fields `advertiserId` (required) and `name` (optional display name), followed by `file` (the video bytes, streamed).
+        Field parts must precede the `file` part.
+
+
+        **Notes:** Processing is asynchronous — the response returns the created creative with `status: processing`; poll
+        `GET /v1/creatives/{id}` with backoff until a terminal status (`ready` or `rejected`). Accepted content types are
+        `video/mp4`, `video/quicktime`, and `video/webm`. The upload is not idempotent: a client retry after a timeout may
+        create a duplicate library entry. The stored `videoUrl` is returned only at the full field scope.'
+      operationId: creatives.create
+      parameters: []
+      requestBody:
+        required: true
+        description: 'Multipart upload: plain `advertiserId` and `name` fields followed by the `file` part.'
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - advertiserId
+              - file
+              properties:
+                advertiserId:
+                  type: integer
+                  description: Advertiser whose library receives the creative. Must precede the `file` part.
+                name:
+                  type: string
+                  description: Optional display name; defaults to the uploaded file's name. Must precede the `file` part.
+                file:
+                  type: string
+                  format: binary
+                  description: The video bytes (`video/mp4`, `video/quicktime`, or `video/webm`). Must be the final part.
+      responses:
+        '201':
+          description: Created creative; analysis is still processing.
+          content:
+            application/json:
+              example:
+                data:
+                  id: 44898
+                  name: Q3 Hero 30s
+                  status: processing
+                  videoUrl: https://cdn.example/storage/video/12345/2c0efc70-9f2e-4f6b-8a48-1f1de6a3c9d1/2c0efc70-9f2e-4f6b-8a48-1f1de6a3c9d1.mp4
+                  posterUrl: null
+                  durationSeconds: null
+                  rejectionReasons: null
+                  advertiserId: 12345
+                  createdAt: '2026-06-26T00:00:00.000Z'
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreativeSingleResponseDto_Output'
+      summary: Upload a creative
+      tags:
+      - creatives
+  /api/v1/creatives/{id}:
+    get:
+      description: 'Returns a creative from the advertiser''s library, including its normalized processing status.
+
+
+        **Notes:** Upload is asynchronous, so a freshly uploaded creative starts as `processing` and is unusable until `status`
+        becomes `ready`; poll this endpoint with backoff until a terminal status (`ready` or `rejected`). The stored `videoUrl`
+        is returned only at the full field scope.'
+      operationId: creatives.get
+      parameters:
+      - name: id
+        required: true
+        in: path
+        description: Creative identifier.
+        schema:
+          type: number
+      - name: advertiserId
+        required: true
+        in: query
+        description: Advertiser that owns the creative. Required; the read is authorized and scoped to this advertiser.
+        schema:
+          exclusiveMinimum: true
+          type: number
+          minimum: 0
+      responses:
+        '200':
+          description: Single creative.
+          content:
+            application/json:
+              example:
+                data:
+                  id: 44821
+                  name: Q3 Hero 30s
+                  status: ready
+                  videoUrl: https://cdn.example/storage/video/12345/44821/hero.mp4
+                  posterUrl: https://cdn.example/storage/video/12345/44821/poster.jpg
+                  durationSeconds: 30
+                  rejectionReasons: null
+                  advertiserId: 12345
+                  createdAt: '2026-06-26T00:00:00.000Z'
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreativeSingleResponseDto_Output'
+      summary: Get a creative
+      tags:
+      - creatives
+    delete:
+      description: 'Deletes a creative from the advertiser''s library. This is a soft delete: the creative is archived and
+        no longer appears in library listings, but its stored assets are not immediately purged.
+
+
+        **Notes:** A creative that is still `processing` can be deleted; its analysis result is discarded. Deleting a creative
+        does not affect campaigns it was previously associated with.'
+      operationId: creatives.delete
+      parameters:
+      - name: id
+        required: true
+        in: path
+        description: Creative identifier.
+        schema:
+          type: number
+      - name: advertiserId
+        required: true
+        in: query
+        description: Advertiser that owns the creative. Required; the delete is authorized and scoped to this advertiser.
+        schema:
+          exclusiveMinimum: true
+          type: number
+          minimum: 0
+      responses:
+        '204':
+          description: Creative deleted.
+      summary: Delete a creative
+      tags:
+      - creatives
+security:
+- Bearer: []
+- API Key: []
+components:
+  schemas:
+    PaginatedCreativesResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                minimum: -9007199254740991
+                maximum: 9007199254740991
+                description: Creative identifier (mycreative_video_group_id).
+              name:
+                type: string
+                description: Display name of the creative.
+              status:
+                type: string
+                description: 'Normalized processing status: `processing`, `ready`, `rejected`, or `in_review`. Treat any unknown
+                  value as non-terminal.'
+              videoUrl:
+                type:
+                - string
+                - 'null'
+                description: Full CDN URL of the stored video asset, or null when none.
+              posterUrl:
+                type:
+                - string
+                - 'null'
+                description: Full CDN URL of the poster image, or null when none.
+              durationSeconds:
+                type:
+                - number
+                - 'null'
+                description: Creative duration in seconds, or null when unknown.
+              rejectionReasons:
+                type:
+                - array
+                - 'null'
+                items:
+                  type: object
+                  properties:
+                    reason:
+                      type: string
+                      description: Rejection category reported by analysis.
+                    description:
+                      type: array
+                      items:
+                        type: string
+                      description: Human-readable detail lines for the rejection.
+                  required:
+                  - reason
+                  - description
+                  additionalProperties: false
+                description: Present only when `status` is `rejected`; otherwise null.
+              advertiserId:
+                type:
+                - integer
+                - 'null'
+                minimum: -9007199254740991
+                maximum: 9007199254740991
+                description: Advertiser that owns the creative.
+              createdAt:
+                type:
+                - string
+                - 'null'
+                description: Creation timestamp (ISO-8601), or null when unknown.
+            required:
+            - id
+            - name
+            - status
+            additionalProperties: false
+        pagination:
+          type: object
+          properties:
+            total:
+              type: integer
+              minimum: 0
+              maximum: 9007199254740991
+              description: Total rows available for this query.
+            perPage:
+              type: integer
+              exclusiveMinimum: true
+              maximum: 9007199254740991
+              description: Maximum rows per page.
+              minimum: 0
+            page:
+              default: 1
+              description: Current 1-based page index.
+              type: integer
+              exclusiveMinimum: true
+              maximum: 9007199254740991
+              minimum: 0
+            previousPageUrl:
+              type:
+              - string
+              - 'null'
+              description: URL for the previous page, or null when none.
+            nextPageUrl:
+              type:
+              - string
+              - 'null'
+              description: URL for the next page, or null when none.
+          required:
+          - total
+          - perPage
+          - page
+          - previousPageUrl
+          - nextPageUrl
+          additionalProperties: false
+      required:
+      - data
+      - pagination
+      additionalProperties: false
+    CreativeSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: Creative identifier (mycreative_video_group_id).
+            name:
+              type: string
+              description: Display name of the creative.
+            status:
+              type: string
+              description: 'Normalized processing status: `processing`, `ready`, `rejected`, or `in_review`. Treat any unknown
+                value as non-terminal.'
+            videoUrl:
+              type:
+              - string
+              - 'null'
+              description: Full CDN URL of the stored video asset, or null when none.
+            posterUrl:
+              type:
+              - string
+              - 'null'
+              description: Full CDN URL of the poster image, or null when none.
+            durationSeconds:
+              type:
+              - number
+              - 'null'
+              description: Creative duration in seconds, or null when unknown.
+            rejectionReasons:
+              type:
+              - array
+              - 'null'
+              items:
+                type: object
+                properties:
+                  reason:
+                    type: string
+                    description: Rejection category reported by analysis.
+                  description:
+                    type: array
+                    items:
+                      type: string
+                    description: Human-readable detail lines for the rejection.
+                required:
+                - reason
+                - description
+                additionalProperties: false
+              description: Present only when `status` is `rejected`; otherwise null.
+            advertiserId:
+              type:
+              - integer
+              - 'null'
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: Advertiser that owns the creative.
+            createdAt:
+              type:
+              - string
+              - 'null'
+              description: Creation timestamp (ISO-8601), or null when unknown.
+          required:
+          - id
+          - name
+          - status
+          additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
+  securitySchemes:
+    Bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+    API Key:
+      type: apiKey
+      in: header
+      name: X-API-Key

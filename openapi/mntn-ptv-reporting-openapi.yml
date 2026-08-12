@@ -1,0 +1,1125 @@
+openapi: 3.1.0
+info:
+  title: PTV API - reporting
+  description: PTV API authoritative source of truth for PTV data.
+  version: '1.0'
+  contact:
+    name: MNTN Platform
+    url: https://api.mountain.com
+    email: support@mountain.com
+  license:
+    name: Proprietary
+servers:
+- url: https://api.mountain.com/ptv
+  description: MNTN Performance TV API gateway
+tags:
+- name: reporting
+  description: Custom and metadata reporting endpoints.
+paths:
+  /api/v1/reports:
+    post:
+      description: 'Runs a custom report against the reporting warehouse with caller-supplied parameters.
+
+
+        **Notes:** Call `GET /reports/meta` first to discover available tables and columns.'
+      operationId: reporting.runCustom
+      parameters:
+      - name: advertiserId
+        required: true
+        in: query
+        description: Run reports against the specified advertiser.
+        schema:
+          exclusiveMinimum: true
+          type: number
+          minimum: 0
+      - name: campaignIds
+        required: false
+        in: query
+        description: Optional campaign group IDs. Defaults to all campaigns owned by the advertiser. Intersected with the
+          authenticated actor's campaign scope.
+        schema:
+          maxItems: 100
+          type: array
+          items:
+            type: integer
+            exclusiveMinimum: true
+            maximum: 9007199254740991
+            minimum: 0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomReportBody'
+            examples:
+              attributedConversionsByZip:
+                summary: Attributed conversions by ZIP (last 30 days)
+                value:
+                  data:
+                  - Graph.Day
+                  - Graph.Conversions
+                  - Graph.OrderValue
+                  sum:
+                  - Graph.PostalCode
+                  preset: LAST_30_DAYS
+                  period: DAYS
+      responses:
+        '200':
+          description: Report rows.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportSingleResponseDto'
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportSingleResponseDto_Output'
+      summary: Run a custom report
+      tags:
+      - reporting
+  /api/v1/reports/meta:
+    get:
+      description: 'Returns available tables, columns, and metadata for the requesting advertiser.
+
+
+        **Filters:** `advertiserId`, `tables` (repeatable).'
+      operationId: reporting.getMeta
+      parameters:
+      - name: advertiserId
+        required: true
+        in: query
+        description: Advertiser identifier whose reporting metadata will be returned.
+        schema:
+          exclusiveMinimum: true
+          type: number
+          minimum: 0
+      - name: tables
+        required: false
+        in: query
+        description: Filter to specific table names.
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: Reporting metadata.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportMetaSingleResponseDto'
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportMetaSingleResponseDto_Output'
+      summary: Get reporting metadata
+      tags:
+      - reporting
+  /api/v1/reports/batch:
+    post:
+      description: 'Queues an asynchronous CSV export for the advertiser. Returns a `batchId` immediately;
+
+        poll `GET /reports/batch/:batchId` until `SUCCEEDED`, then use the signed `downloadUrl`.'
+      operationId: reporting.submitExport
+      parameters:
+      - name: advertiserId
+        required: true
+        in: query
+        description: Run reports against the specified advertiser.
+        schema:
+          exclusiveMinimum: true
+          type: number
+          minimum: 0
+      - name: campaignIds
+        required: false
+        in: query
+        description: Optional campaign group IDs. Defaults to all campaigns owned by the advertiser. Intersected with the
+          authenticated actor's campaign scope.
+        schema:
+          maxItems: 100
+          type: array
+          items:
+            type: integer
+            exclusiveMinimum: true
+            maximum: 9007199254740991
+            minimum: 0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchExportBody'
+      responses:
+        '202':
+          description: Job accepted in envelope shape `{ data }`.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchExportSubmitSingleResponseDto'
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchExportSubmitSingleResponseDto_Output'
+      summary: Submit a CSV export job
+      tags:
+      - reporting
+    get:
+      description: 'Returns a paginated list of recent batch jobs for the advertiser.
+
+
+        **Filters:** `advertiserId`, `status` (comma-separated or repeated).'
+      operationId: reporting.listExports
+      parameters:
+      - name: advertiserId
+        required: true
+        in: query
+        description: List batch exports owned by the specified advertiser.
+        schema:
+          exclusiveMinimum: true
+          type: number
+          minimum: 0
+      - name: status
+        required: false
+        in: query
+        description: Comma-separated or repeated status filter (QUEUED, PROCESSING, SUCCEEDED, FAILED).
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - QUEUED
+            - PROCESSING
+            - SUCCEEDED
+            - FAILED
+      - name: page
+        required: false
+        in: query
+        description: 1-based page number.
+        schema:
+          minimum: 1
+          type: number
+      - name: perPage
+        required: false
+        in: query
+        description: Results per page (maximum 100).
+        schema:
+          minimum: 1
+          maximum: 100
+          type: number
+      responses:
+        '200':
+          description: Paginated batch export list.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBatchExportsResponseDto'
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBatchExportsResponseDto_Output'
+      summary: List export jobs
+      tags:
+      - reporting
+  /api/v1/reports/batch/{batchId}:
+    get:
+      description: Returns batch status. When `SUCCEEDED` and within retention, a freshly-signed `downloadUrl` is included;
+        clients should not treat the URL as stable.
+      operationId: reporting.getExportStatus
+      parameters:
+      - name: batchId
+        required: true
+        in: path
+        description: Batch identifier.
+        schema:
+          type: number
+      - name: advertiserId
+        required: true
+        in: query
+        description: Advertiser identifier owning the batch export.
+        schema:
+          exclusiveMinimum: true
+          type: number
+          minimum: 0
+      responses:
+        '200':
+          description: Batch status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchExportStatusSingleResponseDto'
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchExportStatusSingleResponseDto_Output'
+      summary: Get batch status
+      tags:
+      - reporting
+  /api/v1/reports/batch/{batchId}/regenerate-url:
+    post:
+      description: Returns a new signed URL for the result file without re-executing the query.
+      operationId: reporting.regenerateExportUrl
+      parameters:
+      - name: batchId
+        required: true
+        in: path
+        description: Batch identifier.
+        schema:
+          type: number
+      - name: advertiserId
+        required: true
+        in: query
+        description: Advertiser identifier owning the batch export.
+        schema:
+          exclusiveMinimum: true
+          type: number
+          minimum: 0
+      responses:
+        '200':
+          description: Fresh signed URL in envelope shape `{ data }`.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegenerateBatchUrlSingleResponseDto'
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegenerateBatchUrlSingleResponseDto_Output'
+      summary: Regenerate a new signed URL
+      tags:
+      - reporting
+security:
+- Bearer: []
+- API Key: []
+components:
+  schemas:
+    PaginatedBatchExportsResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              batchId:
+                type: number
+                description: Batch identifier.
+              status:
+                type: string
+                description: Current status, e.g. `QUEUED`, `PROCESSING`, `SUCCEEDED`, `FAILED`.
+              submittedAt:
+                description: Timestamp the job was queued (ISO-8601).
+                type: string
+              reportName:
+                description: Optional report name.
+                type: string
+              requestParams:
+                description: 'Snapshot of the original request body as parsed JSON. When chapi returns a stringified body,
+                  papi parses it; if parsing fails the raw string is wrapped as `{ raw: <string> }`.'
+                type: object
+                additionalProperties: {}
+              startedAt:
+                description: Timestamp the job started executing (ISO-8601).
+                type: string
+              completedAt:
+                description: Timestamp the job finished (ISO-8601).
+                type: string
+              downloadUrl:
+                description: Time-limited signed URL for the result file. Regenerated on every read; clients must not treat
+                  it as stable.
+                type: string
+              downloadExpiresAt:
+                description: Timestamp when `downloadUrl` expires (ISO-8601).
+                type: string
+              error:
+                description: Error details when `status` is `FAILED`.
+                type: object
+                properties:
+                  code:
+                    description: Upstream error code.
+                    type: string
+                  message:
+                    description: Human-readable error message.
+                    type: string
+                  retryable:
+                    description: Whether the failure is retryable.
+                    type: boolean
+                additionalProperties: false
+            required:
+            - batchId
+            - status
+            additionalProperties: false
+        pagination:
+          type: object
+          properties:
+            total:
+              type: integer
+              minimum: 0
+              maximum: 9007199254740991
+              description: Total rows available for this query.
+            perPage:
+              type: integer
+              exclusiveMinimum: true
+              maximum: 9007199254740991
+              description: Maximum rows per page.
+              minimum: 0
+            page:
+              default: 1
+              description: Current 1-based page index.
+              type: integer
+              exclusiveMinimum: true
+              maximum: 9007199254740991
+              minimum: 0
+            previousPageUrl:
+              type:
+              - string
+              - 'null'
+              description: URL for the previous page, or null when none.
+            nextPageUrl:
+              type:
+              - string
+              - 'null'
+              description: URL for the next page, or null when none.
+          required:
+          - total
+          - perPage
+          - page
+          - previousPageUrl
+          - nextPageUrl
+          additionalProperties: false
+      required:
+      - data
+      - pagination
+      additionalProperties: false
+    ReportMetaSingleResponseDto:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            tables:
+              type: array
+              items:
+                type: object
+                properties:
+                  table:
+                    type: string
+                  type:
+                    type: string
+                  friendly:
+                    type: string
+                  exclude-list:
+                    type: array
+                    items:
+                      type: string
+                  columns:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        friendly:
+                          type: string
+                        format:
+                          type: string
+                        help:
+                          type: string
+                        hide:
+                          type: boolean
+                        icon:
+                          type: string
+                        friendly-suffix:
+                          type: string
+                        period:
+                          type: string
+                        target_direction_negative:
+                          type: boolean
+                        compatible-dimensions:
+                          type: array
+                          items:
+                            type: string
+                        column_filters:
+                          type: array
+                          items:
+                            type: string
+                        tags:
+                          type: array
+                          items:
+                            type: string
+                      required:
+                      - name
+                      - friendly
+                      - format
+                      - help
+                      - hide
+                      - icon
+                      - friendly-suffix
+                      - column_filters
+                required:
+                - table
+                - type
+                - friendly
+                - columns
+          required:
+          - tables
+      required:
+      - data
+    RegenerateBatchUrlSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            downloadUrl:
+              description: Freshly-signed download URL for the result file.
+              type: string
+            downloadExpiresAt:
+              description: Timestamp when `downloadUrl` expires (ISO-8601).
+              type: string
+          additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
+    BatchExportSubmitSingleResponseDto:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            batchId:
+              type: number
+              description: Identifier assigned to the queued batch.
+            status:
+              type: string
+              description: Initial job status, typically `QUEUED`.
+            submittedAt:
+              description: Timestamp the job was queued (ISO-8601).
+              type: string
+            reportName:
+              description: Optional report name echoed back from submission.
+              type: string
+          required:
+          - batchId
+          - status
+      required:
+      - data
+    PaginatedBatchExportsResponseDto:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              batchId:
+                type: number
+                description: Batch identifier.
+              status:
+                type: string
+                description: Current status, e.g. `QUEUED`, `PROCESSING`, `SUCCEEDED`, `FAILED`.
+              submittedAt:
+                description: Timestamp the job was queued (ISO-8601).
+                type: string
+              reportName:
+                description: Optional report name.
+                type: string
+              requestParams:
+                description: 'Snapshot of the original request body as parsed JSON. When chapi returns a stringified body,
+                  papi parses it; if parsing fails the raw string is wrapped as `{ raw: <string> }`.'
+                type: object
+                additionalProperties: {}
+              startedAt:
+                description: Timestamp the job started executing (ISO-8601).
+                type: string
+              completedAt:
+                description: Timestamp the job finished (ISO-8601).
+                type: string
+              downloadUrl:
+                description: Time-limited signed URL for the result file. Regenerated on every read; clients must not treat
+                  it as stable.
+                type: string
+              downloadExpiresAt:
+                description: Timestamp when `downloadUrl` expires (ISO-8601).
+                type: string
+              error:
+                description: Error details when `status` is `FAILED`.
+                type: object
+                properties:
+                  code:
+                    description: Upstream error code.
+                    type: string
+                  message:
+                    description: Human-readable error message.
+                    type: string
+                  retryable:
+                    description: Whether the failure is retryable.
+                    type: boolean
+            required:
+            - batchId
+            - status
+        pagination:
+          type: object
+          properties:
+            total:
+              type: integer
+              minimum: 0
+              maximum: 9007199254740991
+              description: Total rows available for this query.
+            perPage:
+              type: integer
+              exclusiveMinimum: true
+              maximum: 9007199254740991
+              description: Maximum rows per page.
+              minimum: 0
+            page:
+              default: 1
+              description: Current 1-based page index.
+              type: integer
+              exclusiveMinimum: true
+              maximum: 9007199254740991
+              minimum: 0
+            previousPageUrl:
+              type:
+              - string
+              - 'null'
+              description: URL for the previous page, or null when none.
+            nextPageUrl:
+              type:
+              - string
+              - 'null'
+              description: URL for the next page, or null when none.
+          required:
+          - total
+          - perPage
+          - previousPageUrl
+          - nextPageUrl
+      required:
+      - data
+      - pagination
+    BatchExportBody:
+      type: object
+      properties:
+        data:
+          maxItems: 50
+          type: array
+          items:
+            anyOf:
+            - type: string
+            - type: object
+              properties:
+                name:
+                  type: string
+                filter: {}
+                alias:
+                  type: string
+                friendly:
+                  type: string
+                nullReplacement:
+                  type: string
+              required:
+              - name
+          description: Columns to return. Accepts `Table.Column` strings or filtered column objects.
+        sum:
+          description: Dimensions to group by, e.g. `["Graph.PostalCode"]`.
+          type: array
+          items:
+            type: string
+        filter:
+          description: Nested filter object keyed by column name or AND/OR/NOT.
+          type: object
+          additionalProperties: {}
+        begin:
+          description: Start date (ISO `YYYY-MM-DD`).
+          type: string
+        end:
+          description: End date (ISO `YYYY-MM-DD`).
+          type: string
+        preset:
+          description: Relative date-range preset. Mutually exclusive with `begin`/`end`. When set, computes the window using
+            the advertiser's timezone and week_start_day and honors `includeToday` for the end edge.
+          type: string
+          enum:
+          - TODAY
+          - YESTERDAY
+          - WTD
+          - MTD
+          - QTD
+          - YTD
+          - LAST_7_DAYS
+          - LAST_30_DAYS
+          - LAST_WEEK
+          - LAST_MONTH
+          - LAST_QUARTER
+        period:
+          description: Aggregation period. Currently only supports `DAYS`, if omitted defaults to `DAYS`.
+          type: string
+          enum:
+          - DAYS
+        limit:
+          description: Row limit for pagination.
+          type: integer
+          exclusiveMinimum: true
+          maximum: 10000
+          minimum: 0
+        offset:
+          description: Row offset for pagination.
+          type: integer
+          minimum: 0
+          maximum: 9007199254740991
+        sort:
+          description: Sort directives, e.g. `["Graph.Day desc"]`.
+          maxItems: 10
+          type: array
+          items:
+            type: string
+        includeToday:
+          description: Include the current day's partial data in the response.
+          type: boolean
+        formatData:
+          description: Format numeric/money/time values in the response.
+          type: boolean
+        fullName:
+          description: Return fully-qualified column names in the response.
+          type: boolean
+        allowNull:
+          description: Allow null values in the response rows.
+          type: boolean
+        reportName:
+          description: Optional human-readable name returned alongside the queued job.
+          type: string
+      description: Async CSV export request body.
+      required:
+      - data
+    CustomReportBody:
+      type: object
+      properties:
+        data:
+          maxItems: 50
+          type: array
+          items:
+            anyOf:
+            - type: string
+            - type: object
+              properties:
+                name:
+                  type: string
+                filter: {}
+                alias:
+                  type: string
+                friendly:
+                  type: string
+                nullReplacement:
+                  type: string
+              required:
+              - name
+          description: Columns to return. Accepts `Table.Column` strings or filtered column objects.
+        sum:
+          description: Dimensions to group by, e.g. `["Graph.PostalCode"]`.
+          type: array
+          items:
+            type: string
+        filter:
+          description: Nested filter object keyed by column name or AND/OR/NOT.
+          type: object
+          additionalProperties: {}
+        begin:
+          description: Start date (ISO `YYYY-MM-DD`).
+          type: string
+        end:
+          description: End date (ISO `YYYY-MM-DD`).
+          type: string
+        preset:
+          description: Relative date-range preset. Mutually exclusive with `begin`/`end`. When set, computes the window using
+            the advertiser's timezone and week_start_day and honors `includeToday` for the end edge.
+          type: string
+          enum:
+          - TODAY
+          - YESTERDAY
+          - WTD
+          - MTD
+          - QTD
+          - YTD
+          - LAST_7_DAYS
+          - LAST_30_DAYS
+          - LAST_WEEK
+          - LAST_MONTH
+          - LAST_QUARTER
+        period:
+          description: Aggregation period. Currently only supports `DAYS`, if omitted defaults to `DAYS`.
+          type: string
+          enum:
+          - DAYS
+        limit:
+          description: Row limit for pagination.
+          type: integer
+          exclusiveMinimum: true
+          maximum: 10000
+          minimum: 0
+        offset:
+          description: Row offset for pagination.
+          type: integer
+          minimum: 0
+          maximum: 9007199254740991
+        sort:
+          description: Sort directives, e.g. `["Graph.Day desc"]`.
+          maxItems: 10
+          type: array
+          items:
+            type: string
+        includeToday:
+          description: Include the current day's partial data in the response.
+          type: boolean
+        formatData:
+          description: Format numeric/money/time values in the response.
+          type: boolean
+        fullName:
+          description: Return fully-qualified column names in the response.
+          type: boolean
+        allowNull:
+          description: Allow null values in the response rows.
+          type: boolean
+      description: Custom report body to fulfill various reporting needs.
+      required:
+      - data
+    RegenerateBatchUrlSingleResponseDto:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            downloadUrl:
+              description: Freshly-signed download URL for the result file.
+              type: string
+            downloadExpiresAt:
+              description: Timestamp when `downloadUrl` expires (ISO-8601).
+              type: string
+      required:
+      - data
+    BatchExportStatusSingleResponseDto:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            batchId:
+              type: number
+              description: Batch identifier.
+            status:
+              type: string
+              description: Current status, e.g. `QUEUED`, `PROCESSING`, `SUCCEEDED`, `FAILED`.
+            submittedAt:
+              description: Timestamp the job was queued (ISO-8601).
+              type: string
+            reportName:
+              description: Optional report name.
+              type: string
+            requestParams:
+              description: 'Snapshot of the original request body as parsed JSON. When chapi returns a stringified body, papi
+                parses it; if parsing fails the raw string is wrapped as `{ raw: <string> }`.'
+              type: object
+              additionalProperties: {}
+            startedAt:
+              description: Timestamp the job started executing (ISO-8601).
+              type: string
+            completedAt:
+              description: Timestamp the job finished (ISO-8601).
+              type: string
+            downloadUrl:
+              description: Time-limited signed URL for the result file. Regenerated on every read; clients must not treat
+                it as stable.
+              type: string
+            downloadExpiresAt:
+              description: Timestamp when `downloadUrl` expires (ISO-8601).
+              type: string
+            error:
+              description: Error details when `status` is `FAILED`.
+              type: object
+              properties:
+                code:
+                  description: Upstream error code.
+                  type: string
+                message:
+                  description: Human-readable error message.
+                  type: string
+                retryable:
+                  description: Whether the failure is retryable.
+                  type: boolean
+          required:
+          - batchId
+          - status
+      required:
+      - data
+    ReportSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            report-name:
+              type: string
+            advertiser-name:
+              type: string
+            begin:
+              type: string
+            end:
+              type: string
+            columns:
+              type: array
+              items:
+                type: object
+                properties:
+                  table:
+                    type: string
+                  name:
+                    type: string
+                  friendly:
+                    type: string
+                  help:
+                    type: string
+                  format:
+                    type: string
+                  alias:
+                    type: string
+                required:
+                - name
+                additionalProperties: false
+            rows:
+              type: array
+              items:
+                type: object
+                additionalProperties:
+                  anyOf:
+                  - type: string
+                  - type: number
+                  - type: boolean
+          additionalProperties: false
+          description: Report response body.
+      required:
+      - data
+      additionalProperties: false
+    BatchExportSubmitSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            batchId:
+              type: number
+              description: Identifier assigned to the queued batch.
+            status:
+              type: string
+              description: Initial job status, typically `QUEUED`.
+            submittedAt:
+              description: Timestamp the job was queued (ISO-8601).
+              type: string
+            reportName:
+              description: Optional report name echoed back from submission.
+              type: string
+          required:
+          - batchId
+          - status
+          additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
+    ReportMetaSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            tables:
+              type: array
+              items:
+                type: object
+                properties:
+                  table:
+                    type: string
+                  type:
+                    type: string
+                  friendly:
+                    type: string
+                  exclude-list:
+                    type: array
+                    items:
+                      type: string
+                  columns:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        friendly:
+                          type: string
+                        format:
+                          type: string
+                        help:
+                          type: string
+                        hide:
+                          type: boolean
+                        icon:
+                          type: string
+                        friendly-suffix:
+                          type: string
+                        period:
+                          type: string
+                        target_direction_negative:
+                          type: boolean
+                        compatible-dimensions:
+                          type: array
+                          items:
+                            type: string
+                        column_filters:
+                          type: array
+                          items:
+                            type: string
+                        tags:
+                          type: array
+                          items:
+                            type: string
+                      required:
+                      - name
+                      - friendly
+                      - format
+                      - help
+                      - hide
+                      - icon
+                      - friendly-suffix
+                      - column_filters
+                      additionalProperties: false
+                required:
+                - table
+                - type
+                - friendly
+                - columns
+                additionalProperties: false
+          required:
+          - tables
+          additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
+    BatchExportStatusSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            batchId:
+              type: number
+              description: Batch identifier.
+            status:
+              type: string
+              description: Current status, e.g. `QUEUED`, `PROCESSING`, `SUCCEEDED`, `FAILED`.
+            submittedAt:
+              description: Timestamp the job was queued (ISO-8601).
+              type: string
+            reportName:
+              description: Optional report name.
+              type: string
+            requestParams:
+              description: 'Snapshot of the original request body as parsed JSON. When chapi returns a stringified body, papi
+                parses it; if parsing fails the raw string is wrapped as `{ raw: <string> }`.'
+              type: object
+              additionalProperties: {}
+            startedAt:
+              description: Timestamp the job started executing (ISO-8601).
+              type: string
+            completedAt:
+              description: Timestamp the job finished (ISO-8601).
+              type: string
+            downloadUrl:
+              description: Time-limited signed URL for the result file. Regenerated on every read; clients must not treat
+                it as stable.
+              type: string
+            downloadExpiresAt:
+              description: Timestamp when `downloadUrl` expires (ISO-8601).
+              type: string
+            error:
+              description: Error details when `status` is `FAILED`.
+              type: object
+              properties:
+                code:
+                  description: Upstream error code.
+                  type: string
+                message:
+                  description: Human-readable error message.
+                  type: string
+                retryable:
+                  description: Whether the failure is retryable.
+                  type: boolean
+              additionalProperties: false
+          required:
+          - batchId
+          - status
+          additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
+    ReportSingleResponseDto:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            report-name:
+              type: string
+            advertiser-name:
+              type: string
+            begin:
+              type: string
+            end:
+              type: string
+            columns:
+              type: array
+              items:
+                type: object
+                properties:
+                  table:
+                    type: string
+                  name:
+                    type: string
+                  friendly:
+                    type: string
+                  help:
+                    type: string
+                  format:
+                    type: string
+                  alias:
+                    type: string
+                required:
+                - name
+            rows:
+              type: array
+              items:
+                type: object
+                additionalProperties:
+                  anyOf:
+                  - type: string
+                  - type: number
+                  - type: boolean
+          description: Report response body.
+      required:
+      - data
+  securitySchemes:
+    Bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+    API Key:
+      type: apiKey
+      in: header
+      name: X-API-Key

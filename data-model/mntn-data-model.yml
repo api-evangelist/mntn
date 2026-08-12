@@ -1,0 +1,112 @@
+generated: '2026-08-12'
+method: derived
+source: >-
+  openapi/_original/mntn-ptv-openapi.json -- path hierarchy, id-reference fields in request bodies,
+  and the 118 component schemas
+docs: https://api.mountain.com/docs
+note: >-
+  Derived from the Performance TV OpenAPI. MNTN's spec carries almost no $ref links between entity
+  schemas -- relationships are expressed through the URL hierarchy and through id-reference fields on
+  request bodies (orgId, advertiserId, audienceIds, channelId, partnerId, dealGroupId, pmpDealId,
+  geoListId, campaignId, flight_id). The graph below is read from those two signals, not invented.
+id_conventions:
+  style: 'opaque path ids; organizations use a distinct publicOrgId, flights use snake_case flight_id'
+  inconsistency: >-
+    Identifier parameter naming is inconsistent across the surface -- {id}, {advertiserId},
+    {campaignId}, {publicOrgId}, {pmpDealId}, {dealGroupId}, {partnerId}, {geoListId} and
+    {flight_id} all appear, with flight_id the only snake_case path parameter in 61 paths.
+  prefixes_published: false
+entities:
+- name: Organization
+  path: /api/v1/orgs/{publicOrgId}
+  operations: [organizations.patch, organizations.updateMode]
+  note: Top of the tenancy tree. Read is not exposed -- only PATCH and a mode switch.
+- name: Advertiser
+  path: /api/v1/advertisers
+  operations: [advertisers.list, advertisers.get]
+  note: The primary scoping key across the platform. Read-only through the public API.
+- name: Campaign
+  path: /api/v1/campaigns
+  operations: [campaigns.list, campaigns.create, campaigns.get, campaigns.update, campaigns.archive, campaigns.launch, campaigns.pause, CampaignsController_createRecommendedAudience_v1]
+  lifecycle: [create, launch, pause, archive]
+- name: Flight
+  path: /api/v1/campaigns/{id}/flight/{flight_id}
+  operations: [flights.get, flights.patch]
+  note: A campaign's scheduled delivery window. Subordinate to Campaign; no independent collection.
+- name: Creative
+  path: /api/v1/creatives
+  operations: [creatives.list, creatives.create, creatives.get, creatives.delete]
+  note: No update operation -- creatives are replace-and-delete only.
+- name: Audience
+  path: /api/v1/audiences
+  operations: [audiences.list, AudiencesController_create_v1, audiences.get, audiences.patch, audiences.getByCampaign, AudiencesController_searchKeywords_v1, audiences.locations.list]
+- name: GeoList
+  path: /api/v1/audiences/geo-lists
+  operations: [audiences.geoLists.list, audiences.geoLists.create, audiences.getGeoListLocations, audiences.geoLists.disassociate, audiences.geoLists.disassociateBulk]
+- name: Pixel
+  path: /api/v1/advertisers/{advertiserId}/pixel
+  operations: [pixel.getGa4Ids, pixel.storeGa4Ids, pixel.updateConversionOptOut, pixel.getSignalStrategies, pixel.getHealthOverview, pixel.events, pixel.scrapePage, pixel.handleOrderIds, pixel.listenPageviews, pixel.listenConversions, pixel.checkRedisEvents, pixel.checkWarnings]
+  note: A singleton configuration + verification surface under an advertiser, not a collection.
+- name: AttributionSettings
+  path: /api/v1/advertisers/{advertiserId}/attribution
+  operations: [attribution.windows.get, attribution.windows.update, attribution.salesCycle.get, attribution.estimates.run, attribution.blacklistQueryParams.get, attribution.blacklistQueryParams.update]
+  note: Singleton under an advertiser.
+- name: PmpPartner
+  path: /api/v1/partners
+  operations: [pmp.partners.list, pmp.partners.create, pmp.partners.get, pmp.partners.update, pmp.partners.delete]
+- name: PmpDeal
+  path: /api/v1/deals
+  operations: [pmp.deals.list, pmp.deals.create, pmp.deals.get, pmp.deals.update, pmp.deals.delete, pmp.deals.bulkDeactivate, pmp.deals.listGroups]
+- name: PmpDealGroup
+  path: /api/v1/deal-groups
+  operations: [pmp.dealGroups.list, pmp.dealGroups.create, pmp.dealGroups.get, pmp.dealGroups.update, pmp.dealGroups.delete, pmp.dealGroups.bulkDelete, pmp.dealGroups.addDeal, pmp.dealGroups.removeDeal]
+- name: PmpChannel
+  path: /api/v1/channels
+  operations: [pmp.channels.list]
+  note: Reference collection; list-only.
+- name: Report
+  path: /api/v1/reports
+  operations: [reporting.runCustom, reporting.getMeta]
+- name: BatchExport
+  path: /api/v1/reports/batch
+  operations: [reporting.submitExport, reporting.listExports, reporting.getExportStatus, reporting.regenerateExportUrl]
+  mirrors: 'the standalone /batch surface on api3.mountain.com (openapi/mntn-batch-export-openapi.yml)'
+relationships:
+- {from: Organization, to: Advertiser, type: has_many, via: orgId, evidence: 'CreateAdvertiserBodyDto.orgId'}
+- {from: Advertiser, to: Campaign, type: has_many, via: advertiserId, evidence: 'CreateCampaignDto.advertiserId; query param advertiserId on 14 operations'}
+- {from: Advertiser, to: Audience, type: has_many, via: advertiserId, evidence: 'CreateAudienceDto.advertiserId'}
+- {from: Advertiser, to: GeoList, type: has_many, via: advertiserId, evidence: 'CreateGeoListDto.advertiserId'}
+- {from: Advertiser, to: Pixel, type: has_one, via: 'path /api/v1/advertisers/{advertiserId}/pixel'}
+- {from: Advertiser, to: AttributionSettings, type: has_one, via: 'path /api/v1/advertisers/{advertiserId}/attribution'}
+- {from: Campaign, to: Flight, type: has_many, via: flight_id, evidence: 'path /api/v1/campaigns/{id}/flight/{flight_id}'}
+- {from: Campaign, to: Audience, type: has_many, via: audienceIds, evidence: 'CreateCampaignDto.audienceIds, UpdateCampaignDto.audienceIds'}
+- {from: Audience, to: Campaign, type: has_many, via: 'path /api/v1/audiences/{id}/campaigns', evidence: 'audiences.campaigns.list'}
+- {from: Audience, to: GeoList, type: has_many, via: geoListIds, evidence: 'DisassociateGeoListsDto.geoListIds; DELETE /api/v1/audiences/{id}/geo-lists/{geoListId}'}
+- {from: Campaign, to: PmpDealGroup, type: has_many, via: dealGroupId, evidence: 'PUT/DELETE /api/v1/campaigns/{campaignId}/deal-groups/{dealGroupId}'}
+- {from: PmpDealGroup, to: PmpDeal, type: has_many, via: pmpDealId, evidence: 'PUT/DELETE /api/v1/deal-groups/{dealGroupId}/deals/{pmpDealId}'}
+- {from: PmpDeal, to: PmpDealGroup, type: has_many, via: 'path /api/v1/deals/{pmpDealId}/deal-groups', evidence: 'pmp.deals.listGroups -- the relationship is many-to-many'}
+- {from: PmpDealGroup, to: PmpChannel, type: belongs_to, via: channelId, evidence: 'CreateDealGroupBodyDto.channelId, UpdateDealGroupBodyDto.channelId'}
+- {from: PmpDeal, to: PmpPartner, type: belongs_to, via: partnerId, evidence: 'CreateDealBodyDto.partnerId, dspPartnerId, publisherId'}
+- {from: Report, to: BatchExport, type: has_many, via: batchId, evidence: 'path /api/v1/reports/batch/{batchId}'}
+reference_vocabularies:
+  note: >-
+    Six reference endpoints publish the controlled vocabularies the write operations validate against.
+    This is a genuine strength -- an agent can enumerate legal values rather than guess them.
+  endpoints:
+  - {operation: reference.listBudgetTypes, path: /api/v1/reference/budget/types}
+  - {operation: reference.listGoalTypes, path: /api/v1/reference/budget/goals}
+  - {operation: reference.listCampaignObjectives, path: /api/v1/reference/campaign/objectives}
+  - {operation: reference.listCampaignStatuses, path: /api/v1/reference/campaign/statuses}
+  - {operation: reference.listGeoTypes, path: /api/v1/reference/geo/types}
+  - {operation: reference.listAudienceSegmentTypes, path: /api/v1/reference/audience/segment-types}
+reporting_model:
+  source: 'openapi/_original/mntn-reporting-api-openapi.json info.description'
+  shape: >-
+    A separate star-schema query model, not the resource graph above. Info tables carry dimensions,
+    Summary tables carry metrics, joined on shared keys, addressed with fully qualified identifiers
+    such as campaigninfo.name and graph.impressions. GET /apilist enumerates the tables and columns
+    available to the authenticated advertiser -- the reporting equivalent of a reference vocabulary.
+gaps:
+- No schema-level $ref links between entities, so relationship discovery requires reading URL structure.
+- No id prefix scheme and no published object-reference page, so ids are not self-describing.
+- Organizations expose no GET; a caller cannot read the tenancy root it is writing to.

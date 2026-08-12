@@ -1,0 +1,58 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enrichment overlay for the MNTN Reporting API 3.0
+  version: 1.0.0
+extends: https://api3.mountain.com/api-docs/API
+x-generated: '2026-08-12'
+x-method: generated
+x-source: openapi/_original/mntn-reporting-api-openapi.json plus live probes of api3.mountain.com
+actions:
+- target: $.info
+  description: Attach provenance and the artifact map.
+  update:
+    x-apis-io-slug: mntn
+    x-artifacts:
+      authentication: authentication/mntn-authentication.yml
+      conventions: conventions/mntn-conventions.yml
+      errors: errors/mntn-problem-types.yml
+      lifecycle: lifecycle/mntn-lifecycle.yml
+      rate_limits: rate-limits/mntn-rate-limits.yml
+- target: $.servers
+  description: >-
+    The published specification declares servers[0].url as "/" -- a relative server that names no
+    host. Record the real host observed serving this document, without replacing the provider's value.
+  update:
+  - url: /
+    description: Reporting API
+    x-observed-hosts:
+    - {url: 'https://api3.mountain.com', version: '3.0', state: current}
+    - {url: 'https://api2.mountain.com', version: '2.0', state: available, note: serves an identical 3.7.0 document}
+    - {url: 'https://api.mountain.com', version: '1.0', state: sunset, sunset_date: '2026-04-01', note: 'hostname reused; now fronts the Performance TV platform API'}
+- target: $.info
+  description: Record observed runtime behaviour and gaps.
+  update:
+    x-observed:
+      error_format: RFC 9457 application/problem+json
+      problem_types:
+      - https://api3.mountain.com/problems/not-found
+      - https://api3.mountain.com/problems/general-request-error
+      error_extensions: [timestamp, errorCode, traceId, errors]
+    x-gaps:
+      credential_in_url: >-
+        The API key travels as the `key` query parameter, so it lands in proxy logs, browser history
+        and referrer headers. No header-borne alternative is documented.
+      rate_limit_headers: >-
+        No RateLimit-*, X-RateLimit-* or Retry-After header is declared. The only published guidance
+        is a connector vendor's advice not to poll more than once per two hours per advertiser.
+      pagination: >-
+        The description advises using limit/offset "where supported" but declares only query, key and
+        format parameters -- the pagination contract is prose, not specification.
+      row_cap: >-
+        "CSV/Excel exports may be row-capped; see rate limits in platform documentation" -- the
+        referenced documentation is not publicly reachable, so the cap is unknowable to a caller.
+- target: $.paths['/apidata'].get
+  description: Record the documented escalation path off the 413.
+  update:
+    x-agent-guidance: >-
+      A 413 Payload Too Large is the documented signal to resubmit the same query asynchronously
+      through POST /batch. Treat it as a routing instruction, not a failure.

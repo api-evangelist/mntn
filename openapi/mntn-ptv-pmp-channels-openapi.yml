@@ -1,0 +1,72 @@
+openapi: 3.1.0
+info:
+  title: PTV API - pmp-channels
+  description: PTV API authoritative source of truth for PTV data.
+  version: '1.0'
+  contact:
+    name: MNTN Platform
+    url: https://api.mountain.com
+    email: support@mountain.com
+  license:
+    name: Proprietary
+servers:
+- url: https://api.mountain.com/ptv
+  description: MNTN Performance TV API gateway
+tags:
+- name: pmp-channels
+  description: Private marketplace channel reference set.
+paths:
+  /api/v1/channels:
+    get:
+      description: Channels a deal or deal group can be assigned to, sorted by name.
+      operationId: pmp.channels.list
+      parameters: []
+      responses:
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelsListResponseDto_Output'
+      summary: List channels
+      tags:
+      - pmp-channels
+      x-hide-from-docs: true
+security:
+- Bearer: []
+- API Key: []
+components:
+  schemas:
+    ChannelsListResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              channelId:
+                type: integer
+                minimum: -9007199254740991
+                maximum: 9007199254740991
+                description: Channel ID.
+              name:
+                type: string
+                description: Channel name.
+            required:
+            - channelId
+            - name
+            additionalProperties: false
+            description: A PMP channel.
+      required:
+      - data
+      additionalProperties: false
+  securitySchemes:
+    Bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+    API Key:
+      type: apiKey
+      in: header
+      name: X-API-Key

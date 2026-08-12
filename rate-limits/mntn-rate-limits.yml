@@ -1,0 +1,65 @@
+generated: '2026-08-12'
+method: searched
+source: https://improvado.io/docs/mountain
+docs:
+- https://improvado.io/docs/mountain
+- https://api3.mountain.com/docs
+- https://help.mountain.com/en/collections/13086998-apis
+limit_count: 0
+limits: []
+guidance:
+- scope: per-advertiser (AID)
+  window: 2 hours
+  limit: null
+  type: advisory
+  statement: >-
+    "No formal rate limits are in place. However, MNTN recommends not running the connector more than
+    once every two hours per Advertiser ID (AID) for repeated queries, as the data will not have changed."
+  source: https://improvado.io/docs/mountain
+  note: >-
+    This is a recommendation relayed by a connector vendor, not an MNTN-published enforced quota. It is
+    recorded as advisory guidance, not as a limit, which is why limit_count is 0.
+enforcement:
+  status_on_exhaustion: 429
+  scope: 'POST /batch (submitExport) only'
+  declared_in: openapi/mntn-batch-export-openapi.yml
+  response_schema: ExportResponse
+  media_type: application/json
+  note: >-
+    429 is declared on exactly one operation out of 92 across the three APIs, and it returns the batch
+    ExportResponse schema rather than an RFC 9457 problem document.
+response_headers:
+  published: []
+  checked:
+  - X-RateLimit-Limit
+  - X-RateLimit-Remaining
+  - X-RateLimit-Reset
+  - RateLimit-Limit
+  - RateLimit-Remaining
+  - RateLimit-Reset
+  - RateLimit-Policy
+  - Retry-After
+  result: none declared
+  evidence: >-
+    Zero response headers of any kind are declared across all 92 operations in the three OpenAPI
+    definitions (openapi/_original/*.json). Confirmed by parsing every responses[].headers block.
+  note: >-
+    This is the material agent-readiness gap on MNTN's API surface. A client that hits the batch 429
+    is given no Retry-After and no reset time, so correct backoff cannot be computed from the response
+    and has to be guessed.
+size_limits:
+- scope: per-request payload
+  status: 413
+  statement: 'Payload Too Large -- the query exceeds server memory limits. Use the asynchronous /batch endpoint for large requests.'
+  applies_to: [getData, postData, list, submitExport, listExports, getExportStatus, regenerateUrl]
+  source: openapi/mntn-reporting-api-openapi.yml
+  note: >-
+    MNTN throttles by result size rather than by request rate, and publishes an explicit escape hatch
+    (the async /batch export) instead of a quota. That is the real shape of the control here.
+- scope: export row cap
+  statement: 'CSV/Excel exports may be row-capped; see rate limits in platform documentation.'
+  value: null
+  source: 'openapi/_original/mntn-reporting-api-openapi.json info.description'
+  note: >-
+    The spec points at "platform documentation" for the cap, but no public page states a number --
+    the referenced documentation is not reachable without a platform login.

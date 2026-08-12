@@ -1,0 +1,56 @@
+generated: '2026-08-12'
+method: generated
+source: >-
+  openapi/_original/mntn-ptv-openapi.json, openapi/_original/mntn-reporting-api-openapi.json,
+  openapi/_original/mntn-batch-export-api-openapi.json, grounded in real published operationIds
+provider_published_skills:
+  exists: false
+  checked: [https://mountain.com/llms.txt, 'help.mountain.com API collection', 'AGENTS.md on mountain.com and api.mountain.com']
+  note: >-
+    MNTN publishes no Agent Skills, AGENTS.md, or agent-facing operating instructions. The skills
+    below are authored by API Evangelist from the provider's own published OpenAPI definitions --
+    every operationId referenced was grepped out of the specs in openapi/, none invented.
+skill_count: 4
+skills:
+- name: mntn-launch-ctv-campaign
+  file: mntn-launch-ctv-campaign.md
+  api: MNTN Performance TV (PTV) API
+  operations: 13
+  consequence: spends-budget
+  summary: >-
+    Stand up and launch a Connected TV campaign -- resolve the advertiser, validate against MNTN's
+    reference vocabularies, attach audience and creatives, launch, verify, pause or archive.
+- name: mntn-pull-reporting-data
+  file: mntn-pull-reporting-data.md
+  api: MNTN Reporting API 3.0 + Async Batch Export API
+  operations: 7
+  consequence: read-only
+  summary: >-
+    Discover the per-advertiser reporting schema with /apilist, run multidimensional /apidata
+    queries, and escalate a 413 into the asynchronous /batch export and signed-URL download flow.
+- name: mntn-verify-conversion-pixel
+  file: mntn-verify-conversion-pixel.md
+  api: MNTN Performance TV (PTV) API
+  operations: 17
+  consequence: mostly-read
+  summary: >-
+    Diagnose a pixel that is not firing or not attributing -- health, warnings, event capture, page
+    scrape, live listeners, then the attribution windows and query-param blocklist that decide what
+    actually gets credited.
+- name: mntn-manage-pmp-deals
+  file: mntn-manage-pmp-deals.md
+  api: MNTN Performance TV (PTV) API
+  operations: 24
+  consequence: mutating
+  summary: >-
+    Wire up private marketplace inventory -- partners, deals, deal groups against a channel, and the
+    campaign link -- including the two bulk operations that affect many objects at once.
+cross_cutting_notes:
+  idempotency: >-
+    No MNTN operation accepts an idempotency key. Every skill that writes tells the agent to re-read
+    state before retrying rather than resubmitting blind.
+  error_formats: >-
+    Two formats on one vendor's surface -- RFC 9457 problem+json on api3.mountain.com, ad-hoc
+    {"error": string} on api.mountain.com. Each skill says which one it will get.
+  rate_limits: >-
+    No rate-limit response headers anywhere, so no skill can compute a backoff from a response.

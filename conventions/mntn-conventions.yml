@@ -1,0 +1,123 @@
+generated: '2026-08-12'
+method: derived
+source: >-
+  openapi/_original/mntn-ptv-openapi.json, openapi/_original/mntn-reporting-api-openapi.json,
+  openapi/_original/mntn-batch-export-api-openapi.json
+docs:
+- https://api.mountain.com/docs
+- https://api3.mountain.com/docs
+- https://help.mountain.com/en/collections/13086998-apis
+auth:
+  style: 'API key (X-API-Key header on api.mountain.com, key query parameter on api3.mountain.com) or bearer JWT'
+  detail: authentication/mntn-authentication.yml
+idempotency:
+  supported: false
+  header: null
+  evidence: >-
+    No Idempotency-Key, Idempotency-Token, X-Idempotency-Key or equivalent parameter or header appears
+    in any of the three OpenAPI definitions, and no idempotency guidance exists in the help center.
+  affected_operations:
+  - campaigns.create
+  - campaigns.launch
+  - campaigns.pause
+  - creatives.create
+  - AudiencesController_create_v1
+  - audiences.geoLists.create
+  - pmp.dealGroups.create
+  - pmp.deals.create
+  - pmp.partners.create
+  - reporting.submitExport
+  - submitExport
+  note: >-
+    Eleven state-changing POST operations -- including campaign launch and pause, which spend money --
+    have no retry-safety contract. A client that times out on campaigns.launch cannot safely retry.
+    No type: Idempotency pointer is wired in apis.yml because the support is genuinely absent.
+pagination:
+  styles:
+  - api: MNTN Performance TV (PTV) API
+    style: page-number
+    params: [page, perPage]
+    used_by_operations: 12
+    sort_params: [sortBy, sortOrder]
+    search_param: search
+    note: 'page/perPage appear on 12 list operations; no cursor, no Link header, no declared page-size ceiling.'
+  - api: MNTN Async Batch Export API
+    style: offset-limit
+    params: [limit, offset]
+    used_by_operations: 1
+    operation: listExports
+  - api: MNTN Reporting API 3.0
+    style: none-declared
+    note: >-
+      The /apidata description advises using "pagination (limit / offset) where supported" but the
+      OpenAPI declares only query, key and format parameters -- the pagination contract is prose, not spec.
+  inconsistency: >-
+    Two different pagination idioms across two APIs from the same vendor (page/perPage vs limit/offset),
+    with a third surface where pagination is documented in prose only.
+field_expansion:
+  supported: true
+  param: expand
+  used_by_operations: 6
+  api: MNTN Performance TV (PTV) API
+  note: An expand query parameter on six operations lets a caller inline related resources.
+filtering:
+  ptv: 'per-operation query parameters -- status, objective, campaignIds, segmentTypes, partnershipDealType, geoTypeId, geoTypeName, companyName, companyUrl'
+  reporting: >-
+    JSON-encoded filter expressions in the query parameter, for example
+    {"campaigninfo.id":{"in":["200"]}}, with And / Or / Not composition schemas declared in the spec.
+  note: The reporting filter language is a real declared grammar (And, Or, Not, Filter, FilteredColumn, Value, SimpleColumn).
+column_naming:
+  scheme: fully qualified table.column identifiers
+  examples: [campaigninfo.name, graph.impressions, graph.day]
+  tables: 'Info tables carry dimensions, Summary tables carry metrics, joined on shared keys'
+  source: 'openapi/_original/mntn-reporting-api-openapi.json info.description'
+content_negotiation:
+  mechanism: format query parameter (not Accept header)
+  values: [json, csv, human, excel]
+  media_types:
+  - application/json
+  - text/csv
+  - text/plain
+  - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+  note: >-
+    Format is selected by query parameter rather than content negotiation, so a standard HTTP client's
+    Accept header is ignored.
+request_id_tracing:
+  supported: true
+  field: traceId
+  location: error response body
+  format: OpenTelemetry trace ID
+  note: >-
+    Present on the RFC 9457 error envelope for api3 only. There is no request-id request header a
+    caller can set, and no correlation identifier on successful responses.
+error_envelope:
+  api3: 'RFC 9457 application/problem+json with type, title, status, detail, instance, timestamp, errorCode, traceId, errors[]'
+  ptv: 'ad-hoc {"error": "<message>"} application/json; 78 of 85 operations declare only a bare default response'
+  detail: errors/mntn-problem-types.yml
+rate_limit_signaling:
+  headers_declared: false
+  status_on_exhaustion: 429
+  scope: 'POST /batch only'
+  retry_after: false
+  detail: rate-limits/mntn-rate-limits.yml
+  note: >-
+    No X-RateLimit-*, RateLimit-* or Retry-After header is declared on any response in any of the
+    three specs, so an agent has no runtime backoff signal.
+async_pattern:
+  name: enqueue-poll-signed-download
+  steps:
+  - 'POST /batch -> 202 Accepted with batchId and initial status'
+  - 'GET /batch/{batchId} -> status; when SUCCEEDED includes a time-limited signed download URL'
+  - 'POST /batch/{batchId}/regenerate-url -> reissue a signed URL without re-running the query'
+  - 'GET /batch -> list recent jobs with status, limit, offset'
+  entitlement: r2ds.exports.enabled
+  trigger: 'a 413 Payload Too Large on the synchronous /apidata call'
+  mirrored_on_ptv: 'the same shape exists as reporting.submitExport / getExportStatus / regenerateExportUrl under /api/v1/reports/batch'
+versioning:
+  detail: lifecycle/mntn-lifecycle.yml
+  summary: host-based major versions (api / api2 / api3) plus path versioning (/api/v1/) on the platform API
+webhooks:
+  supported: false
+  evidence: >-
+    No webhooks object in any OpenAPI, no callbacks, no event or subscription endpoints, and no
+    webhook documentation in the help center. Outbound integrations are pull-based ETL connectors.

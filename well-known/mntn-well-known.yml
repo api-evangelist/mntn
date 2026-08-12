@@ -1,0 +1,80 @@
+generated: '2026-08-12'
+method: probed
+source: live probes of /.well-known/ on every MNTN host named in apis.yml and in the OpenAPI servers[]
+summary:
+  documents_found: 0
+  note: >-
+    MNTN serves no /.well-known/ document of its own on any host. mountain.com and www.mountain.com
+    404 on every path. auth.mountain.com and express.mountain.com are single-page apps whose catch-all
+    route answers 200 with the app HTML shell for ANY /.well-known/* path -- these are soft-200s, not
+    documents, and are recorded as misses. api.mountain.com and api3.mountain.com return the API
+    gateway's 401 / RFC 9457 404 respectively. help.mountain.com serves a security.txt, but it is
+    Intercom's (the help-desk vendor whose CNAME backs that subdomain), naming Intercom's own
+    disclosure program -- it is not MNTN's document and earns MNTN no SecurityTxt pointer.
+    No WellKnown or SecurityTxt pointer is wired in apis.yml as a result.
+hosts:
+- host: https://mountain.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+- host: https://www.mountain.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+- host: https://api.mountain.com
+  note: API gateway (istio-envoy) requires authentication on every path except /openapi.json, /openapi.yaml, /docs
+  documents:
+  - {path: /.well-known/security.txt, status: 401}
+  - {path: /.well-known/openid-configuration, status: 401}
+  - {path: /.well-known/oauth-authorization-server, status: 401}
+  - {path: /.well-known/oauth-protected-resource, status: 401}
+  - {path: /.well-known/api-catalog, status: 401}
+  - {path: /.well-known/agent-card.json, status: 401}
+  - {path: /.well-known/agent.json, status: 401}
+- host: https://api3.mountain.com
+  note: returns RFC 9457 application/problem+json on 404, which is itself a positive finding for errors/
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+- host: https://auth.mountain.com
+  note: SPA catch-all returns 200 text/html for every path; all entries below are soft-200 shells, not documents
+  documents:
+  - {path: /.well-known/security.txt, status: 200, document: false, content_type: text/html}
+  - {path: /.well-known/openid-configuration, status: 200, document: false, content_type: text/html}
+  - {path: /.well-known/oauth-authorization-server, status: 200, document: false, content_type: text/html}
+  - {path: /.well-known/api-catalog, status: 200, document: false, content_type: text/html}
+  - {path: /.well-known/ai-plugin.json, status: 200, document: false, content_type: text/html}
+  - {path: /.well-known/agent-card.json, status: 200, document: false, content_type: text/html}
+  - {path: /.well-known/agent.json, status: 200, document: false, content_type: text/html}
+- host: https://express.mountain.com
+  note: SPA catch-all returns 200 text/html for every path; all entries below are soft-200 shells, not documents
+  documents:
+  - {path: /.well-known/security.txt, status: 200, document: false, content_type: text/html}
+  - {path: /.well-known/openid-configuration, status: 200, document: false, content_type: text/html}
+  - {path: /.well-known/oauth-authorization-server, status: 200, document: false, content_type: text/html}
+  - {path: /.well-known/api-catalog, status: 200, document: false, content_type: text/html}
+  - {path: /.well-known/agent-card.json, status: 200, document: false, content_type: text/html}
+  - {path: /.well-known/agent.json, status: 200, document: false, content_type: text/html}
+- host: https://help.mountain.com
+  note: Intercom-hosted help center; its security.txt is Intercom's, not MNTN's
+  documents:
+  - {path: /.well-known/security.txt, status: 200, document: true, third_party: Intercom}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+agent_card:
+  found: false
+  note: >-
+    No A2A Agent Card on any host. Per the pipeline's search-only rule no a2a/ artifact was authored --
+    an agent card asserts the provider serves the document, and deriving one would destroy that property.

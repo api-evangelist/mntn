@@ -1,0 +1,110 @@
+generated: '2026-08-12'
+method: derived
+source: >-
+  openapi/_original/*.json, live probes of api.mountain.com and api3.mountain.com,
+  https://mountain.com/security/
+docs:
+- https://api.mountain.com/docs
+- https://api3.mountain.com/docs
+- https://mountain.com/security/
+standards:
+- id: openapi-3.1
+  conforms: true
+  evidence: >-
+    https://api.mountain.com/openapi.json declares openapi 3.1.0 with 61 paths, 85 operations,
+    118 component schemas, 15 tags, and unique operationIds on every operation. Also served as YAML
+    at /openapi.yaml.
+- id: openapi-3.0
+  conforms: true
+  evidence: >-
+    https://api3.mountain.com/api-docs/API and /api-docs/Batch declare openapi 3.0.1, info.version
+    3.7.0, rendered through Scalar at https://api3.mountain.com/docs.
+- id: rfc9457
+  name: Problem Details for HTTP APIs
+  conforms: true
+  partial: true
+  evidence: >-
+    api3.mountain.com returns application/problem+json with type, title, status, detail on live
+    unauthenticated 404 and 400 probes, and the ProblemDetail schema is declared in both api3 specs
+    with instance, timestamp, errorCode, traceId and a field-level errors[] extension. The Performance
+    TV API at api.mountain.com does NOT conform -- it returns an ad-hoc {"error": string} body.
+- id: rfc9110
+  name: HTTP Semantics
+  conforms: true
+  partial: true
+  evidence: >-
+    Correct use of 200/201/202/204 and 400/401/403/404/409/410/413/429/500/503/504 on the reporting
+    and batch surfaces, including a semantically correct 202 Accepted plus poll pattern for async
+    exports and 410 Gone for expired results. The PTV API declares only a bare `default` response on
+    78 of 85 operations, which is a weaker use of the status vocabulary.
+- id: rfc6750
+  name: OAuth 2.0 Bearer Token Usage
+  conforms: partial
+  evidence: >-
+    The PTV API declares an http/bearer securityScheme with bearerFormat JWT, but no authorization
+    server, no token endpoint, and no WWW-Authenticate challenge -- the 401 body is a plain JSON
+    object. Bearer tokens are accepted; the surrounding OAuth machinery is not published.
+- id: oauth2
+  conforms: false
+  evidence: >-
+    No oauth2 securityScheme in any spec, no /.well-known/oauth-authorization-server (401 on
+    api.mountain.com, 404 on api3.mountain.com), no documented authorization or token endpoint.
+- id: oidc
+  conforms: false
+  evidence: 'No openIdConnect securityScheme; /.well-known/openid-configuration 404s on every first-party host.'
+- id: rfc9116
+  name: security.txt
+  conforms: false
+  evidence: '404 on mountain.com, www.mountain.com and api3.mountain.com; 401 on api.mountain.com.'
+- id: rfc8594
+  name: Sunset HTTP Header
+  conforms: false
+  evidence: >-
+    A real deprecation exists (API 1.0 stopped returning data 2026-04-01) but is announced only in the
+    help center; no Sunset or Deprecation header, and no operation carries deprecated: true.
+- id: rfc6585-429
+  name: Too Many Requests
+  conforms: partial
+  evidence: '429 is declared on POST /batch only, with no Retry-After and no RateLimit-* headers.'
+- id: idempotency-key
+  conforms: false
+  evidence: 'No Idempotency-Key header or equivalent on any of the 11 state-changing POST operations.'
+- id: asyncapi
+  conforms: false
+  applicable: false
+  evidence: 'No event, streaming, or webhook surface exists to describe. Not penalised.'
+- id: json-api
+  conforms: false
+  evidence: 'Plain JSON resource representations; no JSON:API media type or document structure.'
+- id: openapi-overlay-1.0.0
+  conforms: true
+  evidence: 'API Evangelist overlays in overlays/ -- our artifact, not the provider''s.'
+- id: opentelemetry
+  name: OpenTelemetry trace context
+  conforms: partial
+  evidence: >-
+    Error responses on api3 carry a traceId documented as an OpenTelemetry trace ID, but no traceparent
+    request header is documented and no trace identifier appears on successful responses.
+compliance:
+- id: soc2-type2
+  conforms: true
+  period_ending: '2025-09-30'
+  evidence: 'https://mountain.com/security/ -- "We achieved our SOC2 Type II for the period ending 9/30/2025."'
+  report_self_service: false
+- id: gdpr
+  conforms: claimed-partial
+  evidence: 'Regional Privacy Notice and Cookie Policy published; no DPA URL and no subprocessor list URL published.'
+- id: iso-27001
+  conforms: false
+  evidence: not claimed on the security page
+- id: pci-dss
+  conforms: false
+  applicable: false
+  evidence: 'MNTN does not process cardholder data through these APIs.'
+industry:
+- id: iab-tech-lab
+  note: >-
+    MNTN operates private marketplace (PMP) deals through pmp-partners, pmp-deals, pmp-deal-groups and
+    pmp-channels endpoints, which implies OpenRTB deal-id interoperability with SSPs. No IAB Tech Lab
+    conformance, ads.txt/sellers.json publication, or OpenRTB version is claimed in the specs or docs.
+  conforms: unknown

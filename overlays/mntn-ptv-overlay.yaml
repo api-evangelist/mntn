@@ -1,0 +1,72 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enrichment overlay for the MNTN Performance TV API
+  version: 1.0.0
+extends: https://api.mountain.com/openapi.json
+x-generated: '2026-08-12'
+x-method: generated
+x-source: >-
+  openapi/_original/mntn-ptv-openapi.json plus the API Evangelist artifacts in this repo. Records
+  API Evangelist's enhancements without mutating the provider's published specification.
+actions:
+- target: $.info
+  description: Attach provenance and the API Evangelist artifact map.
+  update:
+    x-apis-io-slug: mntn
+    x-artifacts:
+      authentication: authentication/mntn-authentication.yml
+      conventions: conventions/mntn-conventions.yml
+      errors: errors/mntn-problem-types.yml
+      lifecycle: lifecycle/mntn-lifecycle.yml
+      rate_limits: rate-limits/mntn-rate-limits.yml
+      data_model: data-model/mntn-data-model.yml
+      conformance: conformance/mntn-conformance.yml
+      skills: skills/_index.yml
+- target: $.servers
+  description: >-
+    Record the observed host facts. The published server https://api.mountain.com/ptv is left intact.
+  update:
+  - url: https://api.mountain.com/ptv
+    description: API gateway
+    x-observed:
+      gateway: istio-envoy
+      anonymous_paths: [/openapi.json, /openapi.yaml, /docs]
+      unauthenticated_response: '401 {"error":"Authentication required"}'
+- target: $.info
+  description: >-
+    Record the gaps API Evangelist found, so a consumer sees them next to the contract.
+  update:
+    x-gaps:
+      idempotency: >-
+        No Idempotency-Key on any of the 11 state-changing POST operations, including campaigns.launch
+        and campaigns.create, which commit advertising budget.
+      error_semantics: >-
+        78 of 85 operations declare only a bare `default` response with no error schema. The sibling
+        reporting API on api3.mountain.com returns RFC 9457 problem+json; this surface does not.
+      rate_limit_headers: >-
+        No response headers are declared on any operation, so no rate-limit or retry signal is
+        machine-readable.
+      deprecation_signalling: >-
+        A real deprecation exists (reporting API 1.0, sunset 2026-04-01) but is announced only in the
+        help center; no Sunset or Deprecation header and no deprecated:true anywhere in the spec.
+      examples: No request or response examples are declared in the specification.
+- target: $.paths['/api/v1/campaigns/{id}/launch'].post
+  description: Flag the highest-consequence operation for agent use.
+  update:
+    x-consequence: spends-budget
+    x-agent-guidance: >-
+      Launching a campaign commits advertising spend. There is no idempotency key, so a retry after a
+      timeout can launch twice. Confirm state with campaigns.get before retrying.
+- target: $.paths['/api/v1/campaigns'].post
+  description: Flag campaign creation for agent use.
+  update:
+    x-consequence: creates-billable-object
+    x-agent-guidance: >-
+      Validate budget type, goal and objective against the reference endpoints
+      (reference.listBudgetTypes, reference.listGoalTypes, reference.listCampaignObjectives) before
+      creating. No idempotency key is available.
+- target: $.paths['/api/v1/campaigns/{id}'].delete
+  description: Flag the destructive operation.
+  update:
+    x-consequence: destructive
+    x-agent-guidance: 'Archives the campaign. No published undo path.'

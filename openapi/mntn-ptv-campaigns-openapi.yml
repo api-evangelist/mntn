@@ -1,0 +1,2067 @@
+openapi: 3.1.0
+info:
+  title: PTV API - campaigns
+  description: PTV API authoritative source of truth for PTV data.
+  version: '1.0'
+  contact:
+    name: MNTN Platform
+    url: https://api.mountain.com
+    email: support@mountain.com
+  license:
+    name: Proprietary
+servers:
+- url: https://api.mountain.com/ptv
+  description: MNTN Performance TV API gateway
+tags:
+- name: campaigns
+  description: Campaign list, lookup, and lifecycle.
+paths:
+  /api/v1/campaigns:
+    get:
+      description: 'Returns campaigns the caller is authorized to see, filtered by advertiser, campaign, status, objective,
+        or search text.
+
+
+        **Filters:** `advertiserId`, `campaignId` (repeatable), `objective`, `search`, `status` (repeatable).
+
+
+        **Sorting:** `sortBy` (`name`, `status`, `objective`, `totalBudget`, `monthlyBudget`, `spend`, `startTime`, `endTime`,
+        `createdAt`, `updatedAt`) with `sortOrder` (`asc`/`desc`, default `asc`).
+
+
+        **Notes:** Each campaign carries `creativeIds` for its attached creatives; fetch a single campaign with `expand=creatives`
+        for click URLs and weights.'
+      operationId: campaigns.list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: 1-based page number.
+        schema:
+          minimum: 1
+          type: number
+      - name: perPage
+        required: false
+        in: query
+        description: Results per page (maximum 100).
+        schema:
+          minimum: 1
+          maximum: 100
+          type: number
+      - name: status
+        required: false
+        in: query
+        description: Repeatable campaign status filter.
+        schema:
+          type: array
+          items:
+            type: string
+      - name: objective
+        required: false
+        in: query
+        description: Campaign objective filter.
+        schema:
+          type: string
+      - name: sortBy
+        required: false
+        in: query
+        description: 'Field to sort by: `name`, `status`, `objective`, `totalBudget`, `monthlyBudget`, `spend`, `startTime`,
+          `endTime`, `createdAt`, `updatedAt`.'
+        schema:
+          type: string
+          enum:
+          - name
+          - status
+          - objective
+          - totalBudget
+          - monthlyBudget
+          - spend
+          - startTime
+          - endTime
+          - createdAt
+          - updatedAt
+      - name: sortOrder
+        required: false
+        in: query
+        description: Sort order (default `asc` when `sortBy` is set).
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+      - name: search
+        required: false
+        in: query
+        description: Case-insensitive substring match on campaign name. Numeric values also match campaign ID and advertiser
+          ID.
+        schema:
+          type: string
+      - name: campaignId
+        required: false
+        in: query
+        description: Repeatable campaign ID filter.
+        schema:
+          type: array
+          items:
+            type: string
+      - name: advertiserId
+        required: false
+        in: query
+        description: Advertiser ID to retrieve campaigns for.
+        schema:
+          exclusiveMinimum: true
+          type: number
+          minimum: 0
+      responses:
+        '200':
+          description: Paginated campaign list.
+          content:
+            application/json:
+              example:
+                data:
+                - id: '501'
+                  name: Spring prospecting
+                  status: live
+                  objective: PROSPECTING
+                  totalBudget: 10000
+                  monthlyBudget: 2500
+                  spend: 1250.5
+                  startTime: '2026-01-01T00:00:00.000Z'
+                  endTime: '2026-03-31T23:59:59.000Z'
+                  goalType: CPA
+                  goalValue: 25
+                  createdAt: '2025-12-01T10:00:00.000Z'
+                  updatedAt: '2026-01-15T14:30:00.000Z'
+                  snapshotUrl: https://c.mountain.com/storage/video/44821/poster/poster.jpg
+                  videoPreview:
+                    name: Spring prospecting creative
+                    videoUrl: https://c.mountain.com/storage/video/44821/video/video.mp4
+                    posterUrl: https://c.mountain.com/storage/video/44821/poster/poster.jpg
+                  campaignGoal: Traffic & Sales
+                  advertiserId: 44
+                  currentFlightId: 88001
+                  audienceId: 9001
+                  creativeIds:
+                  - 44821
+                  - 44900
+                pagination:
+                  total: 42
+                  perPage: 25
+                  page: 1
+                  previousPageUrl: null
+                  nextPageUrl: https://api.example.com/api/v1/campaigns?page=2&advertiserId=44
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCampaignsResponseDto_Output'
+      summary: List campaigns
+      tags:
+      - campaigns
+    post:
+      description: 'Creates a campaign for an advertiser with the given objective, optionally linking an existing audience,
+        opening an initial budget, and attaching library creatives in the same call.
+
+
+        **Notes:** Creation is a multi-step operation against the campaign provider and is not idempotent, so a client retry
+        may create a duplicate. `audienceIds` accepts at most one audience; an optional `budget` opens the campaign''s first
+        flight.
+
+
+        **Creatives:** `creatives` attaches library creatives after the campaign is created — each entry carries the creative
+        `id`, an optional `clickUrl`, and an optional serving `weight`. Explicit weights are used verbatim and creatives without
+        one split the remaining share of 100 equally, so the attached set always totals 100 (launch-ready). A creative attached
+        without a click-through URL cannot be approved or launched until one is set. Creatives still processing or in review
+        may be attached; they serve once approved. If any creation step fails, the campaign is rolled back and its creatives
+        are released — no partially-created campaign survives.'
+      operationId: campaigns.create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCampaignDto'
+      responses:
+        '201':
+          description: Created campaign.
+          content:
+            application/json:
+              example:
+                data:
+                  id: '501'
+                  name: Spring prospecting
+                  status: live
+                  objective: PROSPECTING
+                  totalBudget: 10000
+                  monthlyBudget: 2500
+                  spend: 1250.5
+                  startTime: '2026-01-01T00:00:00.000Z'
+                  endTime: '2026-03-31T23:59:59.000Z'
+                  goalType: CPA
+                  goalValue: 25
+                  createdAt: '2025-12-01T10:00:00.000Z'
+                  updatedAt: '2026-01-15T14:30:00.000Z'
+                  snapshotUrl: https://c.mountain.com/storage/video/44821/poster/poster.jpg
+                  videoPreview:
+                    name: Spring prospecting creative
+                    videoUrl: https://c.mountain.com/storage/video/44821/video/video.mp4
+                    posterUrl: https://c.mountain.com/storage/video/44821/poster/poster.jpg
+                  campaignGoal: Traffic & Sales
+                  advertiserId: 44
+                  currentFlightId: 88001
+                  audienceId: 9001
+                  creativeIds:
+                  - 44821
+                  - 44900
+                  creatives:
+                  - id: 44821
+                    clickUrl: https://example.com/spring
+                    weight: 60
+                  - id: 44900
+                    clickUrl: https://example.com/spring
+                    weight: 40
+                  currentFlight:
+                    id: 88001
+                    campaignGroupId: 501
+                    budget: 10000
+                    startTime: '2026-01-01T00:00:00.000Z'
+                    endTime: '2026-03-31T23:59:59.000Z'
+                    status: LIVE
+                    budgetTypeId: 1
+                  audience:
+                    id: 9001
+                    name: Holiday shoppers
+                    totalUsers: 50000
+                    createdAt: '2025-11-01T12:00:00.000Z'
+                    geoLists: null
+                    geo: null
+                    updatedTime: null
+                    isTest: false
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignSingleResponseDto_Output'
+      summary: Create a campaign
+      tags:
+      - campaigns
+  /api/v1/campaigns/{id}:
+    get:
+      description: 'Returns the canonical campaign representation for a given campaign ID, including its primary audience
+        link.
+
+
+        **Notes:** Attached creative ids are always present as `creativeIds`. Pass `expand=currentFlight` for the active flight
+        (Gary), `expand=audience` for the full audience record, and `expand=creatives` for the full attached-creative records
+        (click URL, weight).'
+      operationId: campaigns.get
+      parameters:
+      - name: id
+        required: true
+        in: path
+        description: Campaign identifier.
+        schema:
+          type: string
+      - name: expand
+        required: false
+        in: query
+        description: 'Expand relations: `currentFlight`, `audience`, `creatives`. Use `expand=value`, repeat, or `expand[]=value`.'
+        schema:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            enum:
+            - currentFlight
+            - audience
+            - creatives
+      responses:
+        '200':
+          description: Single campaign.
+          content:
+            application/json:
+              example:
+                data:
+                  id: '501'
+                  name: Spring prospecting
+                  status: live
+                  objective: PROSPECTING
+                  totalBudget: 10000
+                  monthlyBudget: 2500
+                  spend: 1250.5
+                  startTime: '2026-01-01T00:00:00.000Z'
+                  endTime: '2026-03-31T23:59:59.000Z'
+                  goalType: CPA
+                  goalValue: 25
+                  createdAt: '2025-12-01T10:00:00.000Z'
+                  updatedAt: '2026-01-15T14:30:00.000Z'
+                  snapshotUrl: https://c.mountain.com/storage/video/44821/poster/poster.jpg
+                  videoPreview:
+                    name: Spring prospecting creative
+                    videoUrl: https://c.mountain.com/storage/video/44821/video/video.mp4
+                    posterUrl: https://c.mountain.com/storage/video/44821/poster/poster.jpg
+                  campaignGoal: Traffic & Sales
+                  advertiserId: 44
+                  currentFlightId: 88001
+                  audienceId: 9001
+                  creativeIds:
+                  - 44821
+                  - 44900
+                  creatives:
+                  - id: 44821
+                    clickUrl: https://example.com/spring
+                    weight: 60
+                  - id: 44900
+                    clickUrl: https://example.com/spring
+                    weight: 40
+                  currentFlight:
+                    id: 88001
+                    campaignGroupId: 501
+                    budget: 10000
+                    startTime: '2026-01-01T00:00:00.000Z'
+                    endTime: '2026-03-31T23:59:59.000Z'
+                    status: LIVE
+                    budgetTypeId: 1
+                  audience:
+                    id: 9001
+                    name: Holiday shoppers
+                    totalUsers: 50000
+                    createdAt: '2025-11-01T12:00:00.000Z'
+                    geoLists: null
+                    geo: null
+                    updatedTime: null
+                    isTest: false
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignSingleResponseDto_Output'
+      summary: Get a campaign
+      tags:
+      - campaigns
+    patch:
+      description: 'Updates an existing campaign''s editable fields. Only the fields present in the request body are changed;
+        omitted fields are left untouched.
+
+
+        **Notes:** A campaign''s `objective` is immutable and any attempt to change it is rejected. `audienceIds` accepts
+        at most one audience; sending an empty array clears the assigned audience.
+
+
+        **Creatives:** `creatives` is the campaign''s desired full creative set — entries not yet attached are attached, attached
+        creatives missing from the array are detached, and weights are applied to the survivors. Explicit weights are used
+        verbatim; entries without one split the remaining share of 100 equally, so the resulting set always totals 100 (a
+        weightless array means an even split, replacing any previous weights). A creative attached without a click-through
+        URL cannot be approved or launched until one is set. Unlike `audienceIds`, an empty array is rejected. The reconcile
+        is not atomic: additions apply one at a time (detachments and weights apply together), so a failure can leave the
+        set partially updated — retrying the same request converges. If creatives are changed concurrently by another client,
+        the request may fail or a concurrently-attached creative may survive; retrying resolves both.'
+      operationId: campaigns.update
+      parameters:
+      - name: id
+        required: true
+        in: path
+        description: Campaign (campaign group) ID.
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCampaignDto'
+      responses:
+        '200':
+          description: Updated campaign.
+          content:
+            application/json:
+              example:
+                data:
+                  id: '501'
+                  name: Spring prospecting
+                  status: live
+                  objective: PROSPECTING
+                  totalBudget: 10000
+                  monthlyBudget: 2500
+                  spend: 1250.5
+                  startTime: '2026-01-01T00:00:00.000Z'
+                  endTime: '2026-03-31T23:59:59.000Z'
+                  goalType: CPA
+                  goalValue: 25
+                  createdAt: '2025-12-01T10:00:00.000Z'
+                  updatedAt: '2026-01-15T14:30:00.000Z'
+                  snapshotUrl: https://c.mountain.com/storage/video/44821/poster/poster.jpg
+                  videoPreview:
+                    name: Spring prospecting creative
+                    videoUrl: https://c.mountain.com/storage/video/44821/video/video.mp4
+                    posterUrl: https://c.mountain.com/storage/video/44821/poster/poster.jpg
+                  campaignGoal: Traffic & Sales
+                  advertiserId: 44
+                  currentFlightId: 88001
+                  audienceId: 9001
+                  creativeIds:
+                  - 44821
+                  - 44900
+                  creatives:
+                  - id: 44821
+                    clickUrl: https://example.com/spring
+                    weight: 60
+                  - id: 44900
+                    clickUrl: https://example.com/spring
+                    weight: 40
+                  currentFlight:
+                    id: 88001
+                    campaignGroupId: 501
+                    budget: 10000
+                    startTime: '2026-01-01T00:00:00.000Z'
+                    endTime: '2026-03-31T23:59:59.000Z'
+                    status: LIVE
+                    budgetTypeId: 1
+                  audience:
+                    id: 9001
+                    name: Holiday shoppers
+                    totalUsers: 50000
+                    createdAt: '2025-11-01T12:00:00.000Z'
+                    geoLists: null
+                    geo: null
+                    updatedTime: null
+                    isTest: false
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignSingleResponseDto_Output'
+      summary: Update a campaign
+      tags:
+      - campaigns
+    delete:
+      description: 'Archives a campaign so it no longer runs or appears in active listings. This is a soft delete: the campaign
+        moves to the `archived` status rather than being permanently removed.
+
+
+        **Notes:** Archiving a live campaign pauses it first, and the campaign''s creatives are disassociated. The archived
+        campaign is returned so the caller can confirm the new status.'
+      operationId: campaigns.archive
+      parameters:
+      - name: id
+        required: true
+        in: path
+        description: Campaign (campaign group) ID.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Archived campaign.
+          content:
+            application/json:
+              example:
+                data:
+                  id: '501'
+                  name: Spring prospecting
+                  status: live
+                  objective: PROSPECTING
+                  totalBudget: 10000
+                  monthlyBudget: 2500
+                  spend: 1250.5
+                  startTime: '2026-01-01T00:00:00.000Z'
+                  endTime: '2026-03-31T23:59:59.000Z'
+                  goalType: CPA
+                  goalValue: 25
+                  createdAt: '2025-12-01T10:00:00.000Z'
+                  updatedAt: '2026-01-15T14:30:00.000Z'
+                  snapshotUrl: https://c.mountain.com/storage/video/44821/poster/poster.jpg
+                  videoPreview:
+                    name: Spring prospecting creative
+                    videoUrl: https://c.mountain.com/storage/video/44821/video/video.mp4
+                    posterUrl: https://c.mountain.com/storage/video/44821/poster/poster.jpg
+                  campaignGoal: Traffic & Sales
+                  advertiserId: 44
+                  currentFlightId: 88001
+                  audienceId: 9001
+                  creativeIds:
+                  - 44821
+                  - 44900
+                  creatives:
+                  - id: 44821
+                    clickUrl: https://example.com/spring
+                    weight: 60
+                  - id: 44900
+                    clickUrl: https://example.com/spring
+                    weight: 40
+                  currentFlight:
+                    id: 88001
+                    campaignGroupId: 501
+                    budget: 10000
+                    startTime: '2026-01-01T00:00:00.000Z'
+                    endTime: '2026-03-31T23:59:59.000Z'
+                    status: LIVE
+                    budgetTypeId: 1
+                  audience:
+                    id: 9001
+                    name: Holiday shoppers
+                    totalUsers: 50000
+                    createdAt: '2025-11-01T12:00:00.000Z'
+                    geoLists: null
+                    geo: null
+                    updatedTime: null
+                    isTest: false
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignSingleResponseDto_Output'
+      summary: Delete a campaign
+      tags:
+      - campaigns
+  /api/v1/campaigns/{id}/recommended-audience:
+    post:
+      description: Creates a new audience for the campaign's advertiser whose keywords are derived server-side from the advertiser's
+        AI-recommended keywords, and links it to the campaign. Rejects with 422 if the campaign already has an audience or
+        if the advertiser has no recommendations available. On link failure after a successful audience-create, the error
+        surfaces the underlying cause (e.g. 403 authz, upstream failure) and reports the orphan audience id so it can be reconciled
+        out-of-band.
+      operationId: CampaignsController_createRecommendedAudience_v1
+      parameters:
+      - name: id
+        required: true
+        in: path
+        description: Campaign identifier.
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRecommendedAudienceDto'
+      responses:
+        '201':
+          description: Created audience in envelope shape `{ data }`.
+          content:
+            application/json:
+              example:
+                data:
+                  id: 1001
+                  name: High-intent shoppers
+                  totalUsers: 125000
+                  createdAt: '2025-11-01T09:00:00.000Z'
+                  geoLists:
+                    include:
+                    - 200
+                    exclude: []
+                  geo:
+                    include:
+                    - 237
+                    exclude: []
+                  updatedTime: '2025-11-02T12:00:00.000Z'
+                  isTest: false
+                  geoLocations:
+                    include:
+                    - id: 237
+                      name: Los Angeles
+                      geoType:
+                        id: 4
+                        name: Media Market
+                    exclude: []
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AudienceSingleResponseDto_Output'
+      summary: Create and link a recommended audience for a campaign
+      tags:
+      - campaigns
+  /api/v1/campaigns/{id}/launch:
+    post:
+      description: 'Launches a campaign so it begins delivering.
+
+
+        **Notes:** Only a campaign in a launchable state can be launched; an `incomplete` campaign is rejected with `422`
+        before anything is sent upstream (it needs an active budget, a goal, an audience, installed pixels, and approved creatives).
+        The launched campaign is returned so the caller can confirm the new status. If the campaign''s budget schedule already
+        started (elapsed or in-flight budget periods will not be recovered), the launch proceeds without additional confirmation
+        — calling this endpoint is the confirmation.'
+      operationId: campaigns.launch
+      parameters:
+      - name: id
+        required: true
+        in: path
+        description: Campaign (campaign group) ID.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Launched campaign.
+          content:
+            application/json:
+              example:
+                data:
+                  id: '501'
+                  name: Spring prospecting
+                  status: live
+                  objective: PROSPECTING
+                  totalBudget: 10000
+                  monthlyBudget: 2500
+                  spend: 1250.5
+                  startTime: '2026-01-01T00:00:00.000Z'
+                  endTime: '2026-03-31T23:59:59.000Z'
+                  goalType: CPA
+                  goalValue: 25
+                  createdAt: '2025-12-01T10:00:00.000Z'
+                  updatedAt: '2026-01-15T14:30:00.000Z'
+                  snapshotUrl: https://c.mountain.com/storage/video/44821/poster/poster.jpg
+                  videoPreview:
+                    name: Spring prospecting creative
+                    videoUrl: https://c.mountain.com/storage/video/44821/video/video.mp4
+                    posterUrl: https://c.mountain.com/storage/video/44821/poster/poster.jpg
+                  campaignGoal: Traffic & Sales
+                  advertiserId: 44
+                  currentFlightId: 88001
+                  audienceId: 9001
+                  creativeIds:
+                  - 44821
+                  - 44900
+                  creatives:
+                  - id: 44821
+                    clickUrl: https://example.com/spring
+                    weight: 60
+                  - id: 44900
+                    clickUrl: https://example.com/spring
+                    weight: 40
+                  currentFlight:
+                    id: 88001
+                    campaignGroupId: 501
+                    budget: 10000
+                    startTime: '2026-01-01T00:00:00.000Z'
+                    endTime: '2026-03-31T23:59:59.000Z'
+                    status: LIVE
+                    budgetTypeId: 1
+                  audience:
+                    id: 9001
+                    name: Holiday shoppers
+                    totalUsers: 50000
+                    createdAt: '2025-11-01T12:00:00.000Z'
+                    geoLists: null
+                    geo: null
+                    updatedTime: null
+                    isTest: false
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignSingleResponseDto_Output'
+      summary: Launch a campaign
+      tags:
+      - campaigns
+  /api/v1/campaigns/{id}/pause:
+    post:
+      description: 'Pauses a live campaign so it stops delivering.
+
+
+        **Notes:** Only a live campaign can be paused. An optional `pause_reason` records why the campaign was paused. The
+        paused campaign is returned so the caller can confirm the new status.'
+      operationId: campaigns.pause
+      parameters:
+      - name: id
+        required: true
+        in: path
+        description: Campaign (campaign group) ID.
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PauseCampaignBodyDto'
+      responses:
+        '200':
+          description: Paused campaign.
+          content:
+            application/json:
+              example:
+                data:
+                  id: '501'
+                  name: Spring prospecting
+                  status: live
+                  objective: PROSPECTING
+                  totalBudget: 10000
+                  monthlyBudget: 2500
+                  spend: 1250.5
+                  startTime: '2026-01-01T00:00:00.000Z'
+                  endTime: '2026-03-31T23:59:59.000Z'
+                  goalType: CPA
+                  goalValue: 25
+                  createdAt: '2025-12-01T10:00:00.000Z'
+                  updatedAt: '2026-01-15T14:30:00.000Z'
+                  snapshotUrl: https://c.mountain.com/storage/video/44821/poster/poster.jpg
+                  videoPreview:
+                    name: Spring prospecting creative
+                    videoUrl: https://c.mountain.com/storage/video/44821/video/video.mp4
+                    posterUrl: https://c.mountain.com/storage/video/44821/poster/poster.jpg
+                  campaignGoal: Traffic & Sales
+                  advertiserId: 44
+                  currentFlightId: 88001
+                  audienceId: 9001
+                  creativeIds:
+                  - 44821
+                  - 44900
+                  creatives:
+                  - id: 44821
+                    clickUrl: https://example.com/spring
+                    weight: 60
+                  - id: 44900
+                    clickUrl: https://example.com/spring
+                    weight: 40
+                  currentFlight:
+                    id: 88001
+                    campaignGroupId: 501
+                    budget: 10000
+                    startTime: '2026-01-01T00:00:00.000Z'
+                    endTime: '2026-03-31T23:59:59.000Z'
+                    status: LIVE
+                    budgetTypeId: 1
+                  audience:
+                    id: 9001
+                    name: Holiday shoppers
+                    totalUsers: 50000
+                    createdAt: '2025-11-01T12:00:00.000Z'
+                    geoLists: null
+                    geo: null
+                    updatedTime: null
+                    isTest: false
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignSingleResponseDto_Output'
+      summary: Pause a campaign
+      tags:
+      - campaigns
+  /api/v1/audiences/{id}/campaigns:
+    get:
+      description: Returns campaigns attached to the given audience. Same response shape as GET /campaigns.
+      operationId: audiences.campaigns.list
+      parameters:
+      - name: id
+        required: true
+        in: path
+        description: Audience identifier.
+        schema:
+          type: number
+      - name: page
+        required: false
+        in: query
+        description: 1-based page number.
+        schema:
+          minimum: 1
+          type: number
+      - name: perPage
+        required: false
+        in: query
+        description: Results per page (maximum 100).
+        schema:
+          minimum: 1
+          maximum: 100
+          type: number
+      responses:
+        '200':
+          description: Paginated campaign list.
+          content:
+            application/json:
+              example:
+                data:
+                - id: '501'
+                  name: Spring prospecting
+                  status: live
+                  objective: PROSPECTING
+                  totalBudget: 10000
+                  monthlyBudget: 2500
+                  spend: 1250.5
+                  startTime: '2026-01-01T00:00:00.000Z'
+                  endTime: '2026-03-31T23:59:59.000Z'
+                  goalType: CPA
+                  goalValue: 25
+                  createdAt: '2025-12-01T10:00:00.000Z'
+                  updatedAt: '2026-01-15T14:30:00.000Z'
+                  snapshotUrl: https://c.mountain.com/storage/video/44821/poster/poster.jpg
+                  videoPreview:
+                    name: Spring prospecting creative
+                    videoUrl: https://c.mountain.com/storage/video/44821/video/video.mp4
+                    posterUrl: https://c.mountain.com/storage/video/44821/poster/poster.jpg
+                  campaignGoal: Traffic & Sales
+                  advertiserId: 44
+                  currentFlightId: 88001
+                  audienceId: 9001
+                  creativeIds:
+                  - 44821
+                  - 44900
+                pagination:
+                  total: 42
+                  perPage: 25
+                  page: 1
+                  previousPageUrl: null
+                  nextPageUrl: https://api.example.com/api/v1/campaigns?page=2&advertiserId=44
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCampaignsResponseDto_Output'
+      summary: List campaigns linked to an audience
+      tags:
+      - campaigns
+security:
+- Bearer: []
+- API Key: []
+components:
+  schemas:
+    UpdateCampaignDto:
+      type: object
+      properties:
+        name:
+          description: Updated campaign display name.
+          type: string
+        audienceIds:
+          description: Updated audience assignment. At most one audience is supported.
+          maxItems: 1
+          type: array
+          items:
+            type: number
+            exclusiveMinimum: true
+            description: Positive integer entity identifier.
+            minimum: 0
+        goalType:
+          description: Updated optimization goal type.
+          type: string
+        goalValue:
+          description: Updated numeric target value for goalType.
+          type: number
+        objective:
+          type: object
+          properties:
+            type:
+              type: string
+              description: Immutable objective type field. Included for compatibility.
+          required:
+          - type
+          description: Objective payload. Objective updates are currently rejected.
+        creatives:
+          description: 'Declarative full set of the campaign''s creatives: entries not yet attached are attached, currently-attached
+            creatives missing from the array are detached, and weights are applied to the survivors (explicit weights verbatim,
+            omitted ones splitting the remainder of 100 equally). Unlike `audienceIds`, an empty array is rejected — omit
+            the field to leave creatives unchanged.'
+          minItems: 1
+          maxItems: 20
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                exclusiveMinimum: true
+                maximum: 9007199254740991
+                description: Creative identifier from the creative library (the `id` returned by `GET /v1/creatives`). A numeric
+                  string is also accepted.
+                minimum: 0
+              clickUrl:
+                description: Click-through (landing page) URL applied to this creative on this campaign. Optional at attach
+                  time, but a creative without a click URL cannot be approved or launched until one is set.
+                type: string
+                format: uri
+              weight:
+                description: Serving weight, 1–100. Explicit weights are used verbatim; creatives without one split the remaining
+                  share of 100 equally. If every creative carries a weight they must sum to exactly 100; otherwise the explicit
+                  weights must leave at least 1 for each unweighted creative. The applied weights are echoed in the response.
+                type: integer
+                minimum: 1
+                maximum: 100
+            required:
+            - id
+    PauseCampaignBodyDto:
+      type: object
+      properties:
+        pause_reason:
+          description: Optional operator-provided reason for pausing the campaign.
+          type: string
+    CampaignSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              description: Campaign identifier.
+            name:
+              type: string
+              description: Display name of the campaign.
+            status:
+              description: Status of the campaign.
+              type: string
+            objective:
+              type:
+              - string
+              - 'null'
+              description: Strategy type of the campaign (PROSPECTING / RETARGETING).
+            totalBudget:
+              type:
+              - number
+              - 'null'
+              description: Total budget of the campaign.
+            monthlyBudget:
+              type:
+              - number
+              - 'null'
+              description: Recurring monthly budget for the campaign.
+            spend:
+              type:
+              - number
+              - 'null'
+              description: Spend of the campaign.
+            startTime:
+              type:
+              - string
+              - 'null'
+              description: Start time of the campaign.
+            endTime:
+              type:
+              - string
+              - 'null'
+              description: End time of the campaign.
+            goalType:
+              type:
+              - string
+              - 'null'
+              description: Goal type of the campaign.
+            goalValue:
+              type:
+              - number
+              - 'null'
+              description: Goal value of the campaign.
+            advertiserId:
+              description: Advertiser identifier of the campaign.
+              type: integer
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+            audienceId:
+              type:
+              - integer
+              - 'null'
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: Primary audience id for this campaign group.
+            createdAt:
+              description: Created time of the campaign.
+              type: string
+            updatedAt:
+              type:
+              - string
+              - 'null'
+              description: Last-edited timestamp of the campaign.
+            snapshotUrl:
+              type:
+              - string
+              - 'null'
+              description: Full CDN URL of the campaign preview snapshot.
+            videoPreview:
+              type:
+              - object
+              - 'null'
+              properties:
+                name:
+                  type:
+                  - string
+                  - 'null'
+                  description: Display name of the preview creative, when available.
+                videoUrl:
+                  type:
+                  - string
+                  - 'null'
+                  description: Full CDN URL of the preview video, when available.
+                posterUrl:
+                  type:
+                  - string
+                  - 'null'
+                  description: Full CDN URL of the preview poster, when available.
+              required:
+              - name
+              - videoUrl
+              - posterUrl
+              additionalProperties: false
+              description: Active campaign creative selected for preview, or null when unavailable.
+            campaignGoal:
+              type:
+              - string
+              - 'null'
+              description: Marketing campaign goal display name, e.g. Traffic & Sales.
+            currentFlightId:
+              type:
+              - integer
+              - 'null'
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: Current active flight id for the campaign; null when none.
+            audience:
+              type:
+              - object
+              - 'null'
+              properties:
+                id:
+                  type: number
+                  description: Audience identifier.
+                name:
+                  type: string
+                  description: Display name of the audience.
+                totalUsers:
+                  type:
+                  - number
+                  - 'null'
+                  description: Estimated audience size, or null when unavailable.
+                createdAt:
+                  type: string
+                  description: Timestamp the audience was created (ISO-8601).
+                geoLists:
+                  type:
+                  - object
+                  - 'null'
+                  properties:
+                    include:
+                      type: array
+                      items:
+                        type: integer
+                        exclusiveMinimum: true
+                        maximum: 9007199254740991
+                        minimum: 0
+                      description: Geo-list identifiers to include in audience targeting.
+                    exclude:
+                      type: array
+                      items:
+                        type: integer
+                        exclusiveMinimum: true
+                        maximum: 9007199254740991
+                        minimum: 0
+                      description: Geo-list identifiers to exclude from audience targeting.
+                  required:
+                  - include
+                  - exclude
+                  additionalProperties: false
+                  description: Geo-list associations. Null when the audience has no geo-list expression.
+                geo:
+                  type:
+                  - object
+                  - 'null'
+                  properties:
+                    include:
+                      type: array
+                      items:
+                        type: integer
+                        exclusiveMinimum: true
+                        maximum: 9007199254740991
+                        minimum: 0
+                      description: Geo-list identifiers to include in audience targeting.
+                    exclude:
+                      type: array
+                      items:
+                        type: integer
+                        exclusiveMinimum: true
+                        maximum: 9007199254740991
+                        minimum: 0
+                      description: Geo-list identifiers to exclude from audience targeting.
+                  required:
+                  - include
+                  - exclude
+                  additionalProperties: false
+                  description: Geo selector expression (resolved location IDs). Null when the audience has no geo expression.
+                updatedTime:
+                  type:
+                  - string
+                  - 'null'
+                  description: Timestamp the audience was last updated (ISO-8601).
+                isTest:
+                  type: boolean
+                  description: True when the audience is flagged as a test.
+                keywords:
+                  type: object
+                  properties:
+                    include:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          keyword:
+                            type: string
+                          selected:
+                            type: boolean
+                          isCustom:
+                            type: boolean
+                        required:
+                        - keyword
+                        - selected
+                        - isCustom
+                        additionalProperties: false
+                  required:
+                  - include
+                  additionalProperties: false
+                geoLocations:
+                  description: Resolved geo locations from the audience's `geo` expression. Present only when the request
+                    includes `?expand[]=geoLocations`.
+                  type: object
+                  properties:
+                    include:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            minimum: -9007199254740991
+                            maximum: 9007199254740991
+                            description: Location identifier.
+                          name:
+                            type: string
+                            description: Display name of the location.
+                          geoType:
+                            type:
+                            - object
+                            - 'null'
+                            properties:
+                              id:
+                                type: integer
+                                minimum: -9007199254740991
+                                maximum: 9007199254740991
+                                description: Location type identifier.
+                              name:
+                                type: string
+                                description: Location type name (e.g. State / Region, City, Media Market).
+                            required:
+                            - id
+                            - name
+                            additionalProperties: false
+                            description: Location type reference. Present only when the request includes `?expand=geoType`.
+                              Null when the location has no resolvable type.
+                        required:
+                        - id
+                        - name
+                        additionalProperties: false
+                      description: Resolved location objects for `geo.include` IDs.
+                    exclude:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            minimum: -9007199254740991
+                            maximum: 9007199254740991
+                            description: Location identifier.
+                          name:
+                            type: string
+                            description: Display name of the location.
+                          geoType:
+                            type:
+                            - object
+                            - 'null'
+                            properties:
+                              id:
+                                type: integer
+                                minimum: -9007199254740991
+                                maximum: 9007199254740991
+                                description: Location type identifier.
+                              name:
+                                type: string
+                                description: Location type name (e.g. State / Region, City, Media Market).
+                            required:
+                            - id
+                            - name
+                            additionalProperties: false
+                            description: Location type reference. Present only when the request includes `?expand=geoType`.
+                              Null when the location has no resolvable type.
+                        required:
+                        - id
+                        - name
+                        additionalProperties: false
+                      description: Resolved location objects for `geo.exclude` IDs.
+                  required:
+                  - include
+                  - exclude
+                  additionalProperties: false
+              required:
+              - id
+              - name
+              - totalUsers
+              - createdAt
+              - geoLists
+              - geo
+              - updatedTime
+              - isTest
+              additionalProperties: false
+              description: Present when `expand=audience` on GET campaign; full audience record for `audienceId`. Null if
+                no primary audience id.
+            currentFlight:
+              type:
+              - object
+              - 'null'
+              properties:
+                id:
+                  type: integer
+                  minimum: -9007199254740991
+                  maximum: 9007199254740991
+                  description: Budget row id.
+                campaignGroupId:
+                  type: integer
+                  minimum: -9007199254740991
+                  maximum: 9007199254740991
+                  description: Campaign group identifier the flight belongs to.
+                budget:
+                  type: number
+                  description: Flight budget amount in currency USD (dollars).
+                startTime:
+                  type: string
+                  description: Inclusive flight start timestamp (ISO-8601).
+                endTime:
+                  type:
+                  - string
+                  - 'null'
+                  description: Inclusive flight end timestamp (ISO-8601), or null when open-ended.
+                status:
+                  type:
+                  - string
+                  - 'null'
+                  description: Flight status, or null when unavailable.
+                budgetTypeId:
+                  type:
+                  - integer
+                  - 'null'
+                  minimum: -9007199254740991
+                  maximum: 9007199254740991
+                  description: Budget type identifier.
+              required:
+              - id
+              - campaignGroupId
+              - budget
+              - startTime
+              - endTime
+              - status
+              - budgetTypeId
+              additionalProperties: false
+              description: Present when `expand=currentFlight` on GET campaign; current active flight (Budget). Null if no
+                active flight.
+            creativeIds:
+              description: IDs of the creatives attached to this campaign (creative library ids — the `id` used by `GET /v1/creatives/{id}`).
+                Present by default on list/get/create/update responses; omitted when the attachment lookup fails.
+              type: array
+              items:
+                type: integer
+                minimum: -9007199254740991
+                maximum: 9007199254740991
+            creatives:
+              description: Full attached-creative records (click URL, weight). Present when `expand=creatives` on GET campaign,
+                and always on create/update responses; omitted on list responses.
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                    description: Creative identifier (creative library) — the `id` used by `GET /v1/creatives/{id}`.
+                  clickUrl:
+                    type:
+                    - string
+                    - 'null'
+                    description: Click-through URL applied to this creative on this campaign.
+                  weight:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                    description: Serving weight; 0 when the creative is unweighted.
+                required:
+                - id
+                - clickUrl
+                - weight
+                additionalProperties: false
+          required:
+          - id
+          - name
+          additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
+    CreateCampaignDto:
+      type: object
+      properties:
+        name:
+          description: Optional campaign display name. A provider default is used when omitted.
+          type: string
+        objective:
+          type: string
+          enum:
+          - CONVERSIONS
+          - RETARGETING
+          - PROSPECTING
+          - AWARENESS
+          description: Campaign objective used for optimization strategy.
+        advertiserId:
+          type: number
+          exclusiveMinimum: true
+          description: Owning advertiser identifier for the campaign.
+          minimum: 0
+        audienceIds:
+          description: Optional audience assignment. At most one audience is supported.
+          maxItems: 1
+          type: array
+          items:
+            type: number
+            exclusiveMinimum: true
+            description: Positive integer entity identifier.
+            minimum: 0
+        goalType:
+          description: Optional optimization goal type.
+          type: string
+        goalValue:
+          description: Optional numeric target value for goalType.
+          type: number
+        budget:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+              - TOTAL
+              - MONTHLY
+              description: Budget mode for the created campaign.
+            amount:
+              type: number
+              exclusiveMinimum: true
+              description: Budget amount in currency USD (dollars only).
+              minimum: 0
+            schedule:
+              type: object
+              properties:
+                startTime:
+                  type: string
+                  description: Inclusive budget start timestamp (ISO-8601).
+                endTime:
+                  description: Optional budget end timestamp (ISO-8601).
+                  type: string
+              required:
+              - startTime
+              description: Optional time range for budget enforcement.
+          required:
+          - type
+          - amount
+          description: Optional initial budget to create with the campaign.
+        creatives:
+          description: Optional creatives to attach after the campaign is created, each with an optional click-through URL
+            and an optional serving weight (omitted weights split the remainder of 100 equally). If any step of creation fails,
+            the campaign is rolled back (no partially-created campaign survives).
+          minItems: 0
+          maxItems: 20
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                exclusiveMinimum: true
+                maximum: 9007199254740991
+                description: Creative identifier from the creative library (the `id` returned by `GET /v1/creatives`). A numeric
+                  string is also accepted.
+                minimum: 0
+              clickUrl:
+                description: Click-through (landing page) URL applied to this creative on this campaign. Optional at attach
+                  time, but a creative without a click URL cannot be approved or launched until one is set.
+                type: string
+                format: uri
+              weight:
+                description: Serving weight, 1–100. Explicit weights are used verbatim; creatives without one split the remaining
+                  share of 100 equally. If every creative carries a weight they must sum to exactly 100; otherwise the explicit
+                  weights must leave at least 1 for each unweighted creative. The applied weights are echoed in the response.
+                type: integer
+                minimum: 1
+                maximum: 100
+            required:
+            - id
+      required:
+      - objective
+      - advertiserId
+    AudienceSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: number
+              description: Audience identifier.
+            name:
+              type: string
+              description: Display name of the audience.
+            totalUsers:
+              type:
+              - number
+              - 'null'
+              description: Estimated audience size, or null when unavailable.
+            createdAt:
+              type: string
+              description: Timestamp the audience was created (ISO-8601).
+            geoLists:
+              type:
+              - object
+              - 'null'
+              properties:
+                include:
+                  type: array
+                  items:
+                    type: integer
+                    exclusiveMinimum: true
+                    maximum: 9007199254740991
+                    minimum: 0
+                  description: Geo-list identifiers to include in audience targeting.
+                exclude:
+                  type: array
+                  items:
+                    type: integer
+                    exclusiveMinimum: true
+                    maximum: 9007199254740991
+                    minimum: 0
+                  description: Geo-list identifiers to exclude from audience targeting.
+              required:
+              - include
+              - exclude
+              additionalProperties: false
+              description: Geo-list associations. Null when the audience has no geo-list expression.
+            geo:
+              type:
+              - object
+              - 'null'
+              properties:
+                include:
+                  type: array
+                  items:
+                    type: integer
+                    exclusiveMinimum: true
+                    maximum: 9007199254740991
+                    minimum: 0
+                  description: Geo-list identifiers to include in audience targeting.
+                exclude:
+                  type: array
+                  items:
+                    type: integer
+                    exclusiveMinimum: true
+                    maximum: 9007199254740991
+                    minimum: 0
+                  description: Geo-list identifiers to exclude from audience targeting.
+              required:
+              - include
+              - exclude
+              additionalProperties: false
+              description: Geo selector expression (resolved location IDs). Null when the audience has no geo expression.
+            updatedTime:
+              type:
+              - string
+              - 'null'
+              description: Timestamp the audience was last updated (ISO-8601).
+            isTest:
+              type: boolean
+              description: True when the audience is flagged as a test.
+            keywords:
+              type: object
+              properties:
+                include:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      keyword:
+                        type: string
+                      selected:
+                        type: boolean
+                      isCustom:
+                        type: boolean
+                    required:
+                    - keyword
+                    - selected
+                    - isCustom
+                    additionalProperties: false
+              required:
+              - include
+              additionalProperties: false
+            geoLocations:
+              description: Resolved geo locations from the audience's `geo` expression. Present only when the request includes
+                `?expand[]=geoLocations`.
+              type: object
+              properties:
+                include:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        minimum: -9007199254740991
+                        maximum: 9007199254740991
+                        description: Location identifier.
+                      name:
+                        type: string
+                        description: Display name of the location.
+                      geoType:
+                        type:
+                        - object
+                        - 'null'
+                        properties:
+                          id:
+                            type: integer
+                            minimum: -9007199254740991
+                            maximum: 9007199254740991
+                            description: Location type identifier.
+                          name:
+                            type: string
+                            description: Location type name (e.g. State / Region, City, Media Market).
+                        required:
+                        - id
+                        - name
+                        additionalProperties: false
+                        description: Location type reference. Present only when the request includes `?expand=geoType`. Null
+                          when the location has no resolvable type.
+                    required:
+                    - id
+                    - name
+                    additionalProperties: false
+                  description: Resolved location objects for `geo.include` IDs.
+                exclude:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        minimum: -9007199254740991
+                        maximum: 9007199254740991
+                        description: Location identifier.
+                      name:
+                        type: string
+                        description: Display name of the location.
+                      geoType:
+                        type:
+                        - object
+                        - 'null'
+                        properties:
+                          id:
+                            type: integer
+                            minimum: -9007199254740991
+                            maximum: 9007199254740991
+                            description: Location type identifier.
+                          name:
+                            type: string
+                            description: Location type name (e.g. State / Region, City, Media Market).
+                        required:
+                        - id
+                        - name
+                        additionalProperties: false
+                        description: Location type reference. Present only when the request includes `?expand=geoType`. Null
+                          when the location has no resolvable type.
+                    required:
+                    - id
+                    - name
+                    additionalProperties: false
+                  description: Resolved location objects for `geo.exclude` IDs.
+              required:
+              - include
+              - exclude
+              additionalProperties: false
+          required:
+          - id
+          - name
+          - totalUsers
+          - createdAt
+          - geoLists
+          - geo
+          - updatedTime
+          - isTest
+          additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
+    PaginatedCampaignsResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: Campaign identifier.
+              name:
+                type: string
+                description: Display name of the campaign.
+              status:
+                description: Status of the campaign.
+                type: string
+              objective:
+                type:
+                - string
+                - 'null'
+                description: Strategy type of the campaign (PROSPECTING / RETARGETING).
+              totalBudget:
+                type:
+                - number
+                - 'null'
+                description: Total budget of the campaign.
+              monthlyBudget:
+                type:
+                - number
+                - 'null'
+                description: Recurring monthly budget for the campaign.
+              spend:
+                type:
+                - number
+                - 'null'
+                description: Spend of the campaign.
+              startTime:
+                type:
+                - string
+                - 'null'
+                description: Start time of the campaign.
+              endTime:
+                type:
+                - string
+                - 'null'
+                description: End time of the campaign.
+              goalType:
+                type:
+                - string
+                - 'null'
+                description: Goal type of the campaign.
+              goalValue:
+                type:
+                - number
+                - 'null'
+                description: Goal value of the campaign.
+              advertiserId:
+                description: Advertiser identifier of the campaign.
+                type: integer
+                minimum: -9007199254740991
+                maximum: 9007199254740991
+              audienceId:
+                type:
+                - integer
+                - 'null'
+                minimum: -9007199254740991
+                maximum: 9007199254740991
+                description: Primary audience id for this campaign group.
+              createdAt:
+                description: Created time of the campaign.
+                type: string
+              updatedAt:
+                type:
+                - string
+                - 'null'
+                description: Last-edited timestamp of the campaign.
+              snapshotUrl:
+                type:
+                - string
+                - 'null'
+                description: Full CDN URL of the campaign preview snapshot.
+              videoPreview:
+                type:
+                - object
+                - 'null'
+                properties:
+                  name:
+                    type:
+                    - string
+                    - 'null'
+                    description: Display name of the preview creative, when available.
+                  videoUrl:
+                    type:
+                    - string
+                    - 'null'
+                    description: Full CDN URL of the preview video, when available.
+                  posterUrl:
+                    type:
+                    - string
+                    - 'null'
+                    description: Full CDN URL of the preview poster, when available.
+                required:
+                - name
+                - videoUrl
+                - posterUrl
+                additionalProperties: false
+                description: Active campaign creative selected for preview, or null when unavailable.
+              campaignGoal:
+                type:
+                - string
+                - 'null'
+                description: Marketing campaign goal display name, e.g. Traffic & Sales.
+              currentFlightId:
+                type:
+                - integer
+                - 'null'
+                minimum: -9007199254740991
+                maximum: 9007199254740991
+                description: Current active flight id for the campaign; null when none.
+              audience:
+                type:
+                - object
+                - 'null'
+                properties:
+                  id:
+                    type: number
+                    description: Audience identifier.
+                  name:
+                    type: string
+                    description: Display name of the audience.
+                  totalUsers:
+                    type:
+                    - number
+                    - 'null'
+                    description: Estimated audience size, or null when unavailable.
+                  createdAt:
+                    type: string
+                    description: Timestamp the audience was created (ISO-8601).
+                  geoLists:
+                    type:
+                    - object
+                    - 'null'
+                    properties:
+                      include:
+                        type: array
+                        items:
+                          type: integer
+                          exclusiveMinimum: true
+                          maximum: 9007199254740991
+                          minimum: 0
+                        description: Geo-list identifiers to include in audience targeting.
+                      exclude:
+                        type: array
+                        items:
+                          type: integer
+                          exclusiveMinimum: true
+                          maximum: 9007199254740991
+                          minimum: 0
+                        description: Geo-list identifiers to exclude from audience targeting.
+                    required:
+                    - include
+                    - exclude
+                    additionalProperties: false
+                    description: Geo-list associations. Null when the audience has no geo-list expression.
+                  geo:
+                    type:
+                    - object
+                    - 'null'
+                    properties:
+                      include:
+                        type: array
+                        items:
+                          type: integer
+                          exclusiveMinimum: true
+                          maximum: 9007199254740991
+                          minimum: 0
+                        description: Geo-list identifiers to include in audience targeting.
+                      exclude:
+                        type: array
+                        items:
+                          type: integer
+                          exclusiveMinimum: true
+                          maximum: 9007199254740991
+                          minimum: 0
+                        description: Geo-list identifiers to exclude from audience targeting.
+                    required:
+                    - include
+                    - exclude
+                    additionalProperties: false
+                    description: Geo selector expression (resolved location IDs). Null when the audience has no geo expression.
+                  updatedTime:
+                    type:
+                    - string
+                    - 'null'
+                    description: Timestamp the audience was last updated (ISO-8601).
+                  isTest:
+                    type: boolean
+                    description: True when the audience is flagged as a test.
+                  keywords:
+                    type: object
+                    properties:
+                      include:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            keyword:
+                              type: string
+                            selected:
+                              type: boolean
+                            isCustom:
+                              type: boolean
+                          required:
+                          - keyword
+                          - selected
+                          - isCustom
+                          additionalProperties: false
+                    required:
+                    - include
+                    additionalProperties: false
+                  geoLocations:
+                    description: Resolved geo locations from the audience's `geo` expression. Present only when the request
+                      includes `?expand[]=geoLocations`.
+                    type: object
+                    properties:
+                      include:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              minimum: -9007199254740991
+                              maximum: 9007199254740991
+                              description: Location identifier.
+                            name:
+                              type: string
+                              description: Display name of the location.
+                            geoType:
+                              type:
+                              - object
+                              - 'null'
+                              properties:
+                                id:
+                                  type: integer
+                                  minimum: -9007199254740991
+                                  maximum: 9007199254740991
+                                  description: Location type identifier.
+                                name:
+                                  type: string
+                                  description: Location type name (e.g. State / Region, City, Media Market).
+                              required:
+                              - id
+                              - name
+                              additionalProperties: false
+                              description: Location type reference. Present only when the request includes `?expand=geoType`.
+                                Null when the location has no resolvable type.
+                          required:
+                          - id
+                          - name
+                          additionalProperties: false
+                        description: Resolved location objects for `geo.include` IDs.
+                      exclude:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              minimum: -9007199254740991
+                              maximum: 9007199254740991
+                              description: Location identifier.
+                            name:
+                              type: string
+                              description: Display name of the location.
+                            geoType:
+                              type:
+                              - object
+                              - 'null'
+                              properties:
+                                id:
+                                  type: integer
+                                  minimum: -9007199254740991
+                                  maximum: 9007199254740991
+                                  description: Location type identifier.
+                                name:
+                                  type: string
+                                  description: Location type name (e.g. State / Region, City, Media Market).
+                              required:
+                              - id
+                              - name
+                              additionalProperties: false
+                              description: Location type reference. Present only when the request includes `?expand=geoType`.
+                                Null when the location has no resolvable type.
+                          required:
+                          - id
+                          - name
+                          additionalProperties: false
+                        description: Resolved location objects for `geo.exclude` IDs.
+                    required:
+                    - include
+                    - exclude
+                    additionalProperties: false
+                required:
+                - id
+                - name
+                - totalUsers
+                - createdAt
+                - geoLists
+                - geo
+                - updatedTime
+                - isTest
+                additionalProperties: false
+                description: Present when `expand=audience` on GET campaign; full audience record for `audienceId`. Null if
+                  no primary audience id.
+              currentFlight:
+                type:
+                - object
+                - 'null'
+                properties:
+                  id:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                    description: Budget row id.
+                  campaignGroupId:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                    description: Campaign group identifier the flight belongs to.
+                  budget:
+                    type: number
+                    description: Flight budget amount in currency USD (dollars).
+                  startTime:
+                    type: string
+                    description: Inclusive flight start timestamp (ISO-8601).
+                  endTime:
+                    type:
+                    - string
+                    - 'null'
+                    description: Inclusive flight end timestamp (ISO-8601), or null when open-ended.
+                  status:
+                    type:
+                    - string
+                    - 'null'
+                    description: Flight status, or null when unavailable.
+                  budgetTypeId:
+                    type:
+                    - integer
+                    - 'null'
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                    description: Budget type identifier.
+                required:
+                - id
+                - campaignGroupId
+                - budget
+                - startTime
+                - endTime
+                - status
+                - budgetTypeId
+                additionalProperties: false
+                description: Present when `expand=currentFlight` on GET campaign; current active flight (Budget). Null if
+                  no active flight.
+              creativeIds:
+                description: IDs of the creatives attached to this campaign (creative library ids — the `id` used by `GET
+                  /v1/creatives/{id}`). Present by default on list/get/create/update responses; omitted when the attachment
+                  lookup fails.
+                type: array
+                items:
+                  type: integer
+                  minimum: -9007199254740991
+                  maximum: 9007199254740991
+              creatives:
+                description: Full attached-creative records (click URL, weight). Present when `expand=creatives` on GET campaign,
+                  and always on create/update responses; omitted on list responses.
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      minimum: -9007199254740991
+                      maximum: 9007199254740991
+                      description: Creative identifier (creative library) — the `id` used by `GET /v1/creatives/{id}`.
+                    clickUrl:
+                      type:
+                      - string
+                      - 'null'
+                      description: Click-through URL applied to this creative on this campaign.
+                    weight:
+                      type: integer
+                      minimum: -9007199254740991
+                      maximum: 9007199254740991
+                      description: Serving weight; 0 when the creative is unweighted.
+                  required:
+                  - id
+                  - clickUrl
+                  - weight
+                  additionalProperties: false
+            required:
+            - id
+            - name
+            additionalProperties: false
+        pagination:
+          type: object
+          properties:
+            total:
+              type: integer
+              minimum: 0
+              maximum: 9007199254740991
+              description: Total rows available for this query.
+            perPage:
+              type: integer
+              exclusiveMinimum: true
+              maximum: 9007199254740991
+              description: Maximum rows per page.
+              minimum: 0
+            page:
+              default: 1
+              description: Current 1-based page index.
+              type: integer
+              exclusiveMinimum: true
+              maximum: 9007199254740991
+              minimum: 0
+            previousPageUrl:
+              type:
+              - string
+              - 'null'
+              description: URL for the previous page, or null when none.
+            nextPageUrl:
+              type:
+              - string
+              - 'null'
+              description: URL for the next page, or null when none.
+          required:
+          - total
+          - perPage
+          - page
+          - previousPageUrl
+          - nextPageUrl
+          additionalProperties: false
+      required:
+      - data
+      - pagination
+      additionalProperties: false
+    CreateRecommendedAudienceDto:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Display name for the audience.
+        isTest:
+          description: When true, the audience is created as a test audience. Defaults to false.
+          type: boolean
+      required:
+      - name
+      description: Inputs for creating a recommended audience.
+      additionalProperties: false
+  securitySchemes:
+    Bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+    API Key:
+      type: apiKey
+      in: header
+      name: X-API-Key

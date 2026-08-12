@@ -42,5 +42,14 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Connected TV Performance Marketing Platform is a company surfaced via the API Evangelist harvest backlog (source: marketing-integration-graph) and added to the network as a stub for full-pipeline profiling.
-- https://mntn.com/
+MNTN is a Connected TV performance marketing platform. It publishes three OpenAPI definitions on its
+own hosts: the Performance TV platform API (OpenAPI 3.1, 85 operations across 15 tags) at
+`https://api.mountain.com/openapi.json`, and the Reporting API 3.0 plus the Async Batch Export API
+(OpenAPI 3.0.1, version 3.7.0) at `https://api3.mountain.com/api-docs/API` and `/api-docs/Batch`,
+rendered through Scalar at `/docs` on both hosts.
+
+- Website: https://mountain.com/ (mntn.com redirects here)
+- API reference: https://api.mountain.com/docs and https://api3.mountain.com/docs
+- Help center API collection: https://help.mountain.com/en/collections/13086998-apis
+- Release notes: https://help.mountain.com/en/collections/16047071-track-releases
+- Security: https://mountain.com/security/

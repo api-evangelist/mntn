@@ -1,0 +1,16 @@
+generated: '2026-08-12'
+method: searched
+source: https://mountain.com/llms.txt
+file: mntn-llms.txt
+http_status: 200
+content_type: text/plain
+bytes: 2356
+generator: Yoast SEO v25.3.1
+note: >-
+  MNTN does serve an llms.txt at the website root, saved here verbatim. It is a Yoast-generated
+  marketing sitemap -- posts, pages, webinars, categories -- and contains no reference to the
+  developer surface: not api.mountain.com, not api3.mountain.com, not the OpenAPI definitions, not
+  the help center API collection. An agent that reads this file learns MNTN sells CTV advertising and
+  learns nothing about how to call it. The file is credited as present because the provider publishes
+  it; the gap between what it advertises and what MNTN actually operates is recorded here rather than
+  papered over.
