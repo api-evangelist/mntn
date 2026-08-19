@@ -1,0 +1,142 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PTV API - creatives",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "creatives",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List creatives",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/creatives",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "1-based page number."
+              },
+              {
+                "name": "perPage",
+                "value": "",
+                "type": "query",
+                "description": "Results per page (maximum 100)."
+              },
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "query",
+                "description": "Advertiser whose creative library to list. Required; the read is authorized and scoped to this advertiser."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by normalized processing status: `processing`, `ready`, `rejected`, or `in_review`."
+              }
+            ]
+          },
+          "docs": "Returns the advertiser's creative library, newest first, with each creative's normalized processing status.\n\n**Filters:** `advertiserId` (required), `status`.\n\n**Notes:** Freshly uploaded creatives appear with `status: processing` and are unusable until it becomes `ready`; poll `GET /v1/creatives/{id}` for a single creative's status. The stored `videoUrl` is returned only at the full field scope."
+        },
+        {
+          "info": {
+            "name": "Upload a creative",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mountain.com/ptv/api/v1/creatives",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "advertiserId",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "name",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Uploads a video into the advertiser's creative library. The request is `multipart/form-data` with the plain fields `advertiserId` (required) and `name` (optional display name), followed by `file` (the video bytes, streamed). Field parts must precede the `file` part.\n\n**Notes:** Processing is asynchronous — the response returns the created creative with `status: processing`; poll `GET /v1/creatives/{id}` with backoff until a terminal status (`ready` or `rejected`). Accepted content types are `vid"
+        },
+        {
+          "info": {
+            "name": "Get a creative",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/creatives/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Creative identifier."
+              },
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "query",
+                "description": "Advertiser that owns the creative. Required; the read is authorized and scoped to this advertiser."
+              }
+            ]
+          },
+          "docs": "Returns a creative from the advertiser's library, including its normalized processing status.\n\n**Notes:** Upload is asynchronous, so a freshly uploaded creative starts as `processing` and is unusable until `status` becomes `ready`; poll this endpoint with backoff until a terminal status (`ready` or `rejected`). The stored `videoUrl` is returned only at the full field scope."
+        },
+        {
+          "info": {
+            "name": "Delete a creative",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.mountain.com/ptv/api/v1/creatives/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Creative identifier."
+              },
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "query",
+                "description": "Advertiser that owns the creative. Required; the delete is authorized and scoped to this advertiser."
+              }
+            ]
+          },
+          "docs": "Deletes a creative from the advertiser's library. This is a soft delete: the creative is archived and no longer appears in library listings, but its stored assets are not immediately purged.\n\n**Notes:** A creative that is still `processing` can be deleted; its analysis result is discarded. Deleting a creative does not affect campaigns it was previously associated with."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

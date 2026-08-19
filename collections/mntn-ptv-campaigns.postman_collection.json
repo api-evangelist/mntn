@@ -1,0 +1,1720 @@
+{
+  "item": [
+    {
+      "id": "df162758-3adf-4d12-aa1c-ec53fcb6271d",
+      "name": "campaigns",
+      "description": {
+        "content": "Campaign list, lookup, and lifecycle.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "74360f8d-b56d-48f3-9269-e80387e0e4e4",
+          "name": "List campaigns",
+          "request": {
+            "name": "List campaigns",
+            "description": {
+              "content": "Returns campaigns the caller is authorized to see, filtered by advertiser, campaign, status, objective, or search text.\n\n**Filters:** `advertiserId`, `campaignId` (repeatable), `objective`, `search`, `status` (repeatable).\n\n**Sorting:** `sortBy` (`name`, `status`, `objective`, `totalBudget`, `monthlyBudget`, `spend`, `startTime`, `endTime`, `createdAt`, `updatedAt`) with `sortOrder` (`asc`/`desc`, default `asc`).\n\n**Notes:** Each campaign carries `creativeIds` for its attached creatives; fetch a single campaign with `expand=creatives` for click URLs and weights.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "campaigns"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<number>",
+                  "description": "1-based page number."
+                },
+                {
+                  "disabled": false,
+                  "key": "perPage",
+                  "value": "<number>",
+                  "description": "Results per page (maximum 100)."
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Repeatable campaign status filter."
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Repeatable campaign status filter."
+                },
+                {
+                  "disabled": false,
+                  "key": "objective",
+                  "value": "<string>",
+                  "description": "Campaign objective filter."
+                },
+                {
+                  "disabled": false,
+                  "key": "sortBy",
+                  "value": "<string>",
+                  "description": "Field to sort by: `name`, `status`, `objective`, `totalBudget`, `monthlyBudget`, `spend`, `startTime`, `endTime`, `createdAt`, `updatedAt`."
+                },
+                {
+                  "disabled": false,
+                  "key": "sortOrder",
+                  "value": "<string>",
+                  "description": "Sort order (default `asc` when `sortBy` is set)."
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "Case-insensitive substring match on campaign name. Numeric values also match campaign ID and advertiser ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "campaignId",
+                  "value": "<string>",
+                  "description": "Repeatable campaign ID filter."
+                },
+                {
+                  "disabled": false,
+                  "key": "campaignId",
+                  "value": "<string>",
+                  "description": "Repeatable campaign ID filter."
+                },
+                {
+                  "disabled": false,
+                  "key": "advertiserId",
+                  "value": "<number>",
+                  "description": "Advertiser ID to retrieve campaigns for."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b8a7e225-48a9-42ee-86a8-3e21a9ef0adc",
+              "name": "Paginated campaign list.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "campaigns"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "objective",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "campaignId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "campaignId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "advertiserId",
+                      "value": "<number>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"501\",\n      \"name\": \"Spring prospecting\",\n      \"status\": \"live\",\n      \"objective\": \"PROSPECTING\",\n      \"totalBudget\": 10000,\n      \"monthlyBudget\": 2500,\n      \"spend\": 1250.5,\n      \"startTime\": \"2026-01-01T00:00:00.000Z\",\n      \"endTime\": \"2026-03-31T23:59:59.000Z\",\n      \"goalType\": \"CPA\",\n      \"goalValue\": 25,\n      \"createdAt\": \"2025-12-01T10:00:00.000Z\",\n      \"updatedAt\": \"2026-01-15T14:30:00.000Z\",\n      \"snapshotUrl\": \"https://c.mountain.com/storage/video/44821/poster/poster.jpg\",\n      \"videoPreview\": {\n        \"name\": \"Spring prospecting creative\",\n        \"videoUrl\": \"https://c.mountain.com/storage/video/44821/video/video.mp4\",\n        \"posterUrl\": \"https://c.mountain.com/storage/video/44821/poster/poster.jpg\"\n      },\n      \"campaignGoal\": \"Traffic & Sales\",\n      \"advertiserId\": 44,\n      \"currentFlightId\": 88001,\n      \"audienceId\": 9001,\n      \"creativeIds\": [\n        44821,\n        44900\n      ]\n    }\n  ],\n  \"pagination\": {\n    \"total\": 42,\n    \"perPage\": 25,\n    \"page\": 1,\n    \"previousPageUrl\": null,\n    \"nextPageUrl\": \"https://api.example.com/api/v1/campaigns?page=2&advertiserId=44\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8a855dfa-c479-4380-bc16-b4679762fb61",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "campaigns"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "objective",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "campaignId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "campaignId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "advertiserId",
+                      "value": "<number>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"status\": \"string\",\n      \"objective\": \"string\",\n      \"totalBudget\": 4580.123366857919,\n      \"monthlyBudget\": 4760.012052137039,\n      \"spend\": 349.2608810249431,\n      \"startTime\": \"string\",\n      \"endTime\": \"string\",\n      \"goalType\": \"string\",\n      \"goalValue\": 4047.758501577506,\n      \"advertiserId\": -6576592052701650,\n      \"audienceId\": 5872727108996823,\n      \"createdAt\": \"string\",\n      \"updatedAt\": \"string\",\n      \"snapshotUrl\": \"string\",\n      \"videoPreview\": {\n        \"name\": \"string\",\n        \"videoUrl\": \"string\",\n        \"posterUrl\": \"string\"\n      },\n      \"campaignGoal\": \"string\",\n      \"currentFlightId\": 1637688903800355,\n      \"audience\": {\n        \"id\": 4574.157817149219,\n        \"name\": \"string\",\n        \"totalUsers\": 2404.433687991018,\n        \"createdAt\": \"string\",\n        \"geoLists\": {\n          \"include\": [\n            87738056581566,\n            7413268916702533\n          ],\n          \"exclude\": [\n            5091886554790568,\n            928912595725254\n          ]\n        },\n        \"geo\": {\n          \"include\": [\n            7460195642525111,\n            538302397879196\n          ],\n          \"exclude\": [\n            5573121043880758,\n            2803556502072677\n          ]\n        },\n        \"updatedTime\": \"string\",\n        \"isTest\": false,\n        \"keywords\": {\n          \"include\": [\n            {\n              \"keyword\": \"string\",\n              \"selected\": false,\n              \"isCustom\": false\n            },\n            {\n              \"keyword\": \"string\",\n              \"selected\": true,\n              \"isCustom\": true\n            }\n          ]\n        },\n        \"geoLocations\": {\n          \"include\": [\n            {\n              \"id\": -8606301729210611,\n              \"name\": \"string\",\n              \"geoType\": {\n                \"id\": 2323112467771811,\n                \"name\": \"string\"\n              }\n            },\n            {\n              \"id\": 7691962437901121,\n              \"name\": \"string\",\n              \"geoType\": {\n                \"id\": -4220904262655622,\n                \"name\": \"string\"\n              }\n            }\n          ],\n          \"exclude\": [\n            {\n              \"id\": -5222921436026978,\n              \"name\": \"string\",\n              \"geoType\": {\n                \"id\": -5853328860495086,\n                \"name\": \"string\"\n              }\n            },\n            {\n              \"id\": 5274816399857885,\n              \"name\": \"string\",\n              \"geoType\": {\n                \"id\": 3174106078233983,\n                \"name\": \"string\"\n              }\n            }\n          ]\n        }\n      },\n      \"currentFlight\": {\n        \"id\": 4626033517599519,\n        \"campaignGroupId\": 518645546810075,\n        \"budget\": 1680.1844851164615,\n        \"startTime\": \"string\",\n        \"endTime\": \"string\",\n        \"status\": \"string\",\n        \"budgetTypeId\": 5370071607684851\n      },\n      \"creativeIds\": [\n        5315006596381457,\n        4878253641471297\n      ],\n      \"creatives\": [\n        {\n          \"id\": 3068404919779675,\n          \"clickUrl\": \"string\",\n          \"weight\": -2527983163796896\n        },\n        {\n          \"id\": -6572163090741986,\n          \"clickUrl\": \"string\",\n          \"weight\": -3794535910093422\n        }\n      ]\n    },\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"status\": \"string\",\n      \"objective\": \"string\",\n      \"totalBudget\": 2684.922731713871,\n      \"monthlyBudget\": 9535.52557759488,\n      \"spend\": 1720.1952874989602,\n      \"startTime\": \"string\",\n      \"endTime\": \"string\",\n      \"goalType\": \"string\",\n      \"goalValue\": 8360.901780679085,\n      \"advertiserId\": 314138410071055,\n      \"audienceId\": -2645021380747136,\n      \"createdAt\": \"string\",\n      \"updatedAt\": \"string\",\n      \"snapshotUrl\": \"string\",\n      \"videoPreview\": {\n        \"name\": \"string\",\n        \"videoUrl\": \"string\",\n        \"posterUrl\": \"string\"\n      },\n      \"campaignGoal\": \"string\",\n      \"currentFlightId\": -3910630413947922,\n      \"audience\": {\n        \"id\": 4535.598393195154,\n        \"name\": \"string\",\n        \"totalUsers\": 7709.623900756226,\n        \"createdAt\": \"string\",\n        \"geoLists\": {\n          \"include\": [\n            4246035199371852,\n            5362206537498001\n          ],\n          \"exclude\": [\n            5865735255381791,\n            312896920401440\n          ]\n        },\n        \"geo\": {\n          \"include\": [\n            3591354334086945,\n            1545465156024915\n          ],\n          \"exclude\": [\n            7841379313174825,\n            6149176980788510\n          ]\n        },\n        \"updatedTime\": \"string\",\n        \"isTest\": true,\n        \"keywords\": {\n          \"include\": [\n            {\n              \"keyword\": \"string\",\n              \"selected\": false,\n              \"isCustom\": false\n            },\n            {\n              \"keyword\": \"string\",\n              \"selected\": true,\n              \"isCustom\": false\n            }\n          ]\n        },\n        \"geoLocations\": {\n          \"include\": [\n            {\n              \"id\": -4307467929298014,\n              \"name\": \"string\",\n              \"geoType\": {\n                \"id\": 4707718517037587,\n                \"name\": \"string\"\n              }\n            },\n            {\n              \"id\": 5724955806739431,\n              \"name\": \"string\",\n              \"geoType\": {\n                \"id\": -5889415049637528,\n                \"name\": \"string\"\n              }\n            }\n          ],\n          \"exclude\": [\n            {\n              \"id\": 6417402988466927,\n              \"name\": \"string\",\n              \"geoType\": {\n                \"id\": 1007132902134631,\n                \"name\": \"string\"\n              }\n            },\n            {\n              \"id\": -4703992960042746,\n              \"name\": \"string\",\n              \"geoType\": {\n                \"id\": 5761259701220103,\n                \"name\": \"string\"\n              }\n            }\n          ]\n        }\n      },\n      \"currentFlight\": {\n        \"id\": -3648389753047296,\n        \"campaignGroupId\": -721821498129350,\n        \"budget\": 609.1124168577367,\n        \"startTime\": \"string\",\n        \"endTime\": \"string\",\n        \"status\": \"string\",\n        \"budgetTypeId\": 3595162296534627\n      },\n      \"creativeIds\": [\n        4487481326428405,\n        3002994958173047\n      ],\n      \"creatives\": [\n        {\n          \"id\": -7824398500624885,\n          \"clickUrl\": \"string\",\n          \"weight\": -6399476888323814\n        },\n        {\n          \"id\": -7378933759981653,\n          \"clickUrl\": \"string\",\n          \"weight\": 6785675496923981\n        }\n      ]\n    }\n  ],\n  \"pagination\": {\n    \"total\": 3540403108978965,\n    \"perPage\": 2029828190659361,\n    \"page\": 1,\n    \"previousPageUrl\": \"string\",\n    \"nextPageUrl\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "27363527-2b80-4c26-b558-6c4c4efc4889",
+          "name": "Create a campaign",
+          "request": {
+            "name": "Create a campaign",
+            "description": {
+              "content": "Creates a campaign for an advertiser with the given objective, optionally linking an existing audience, opening an initial budget, and attaching library creatives in the same call.\n\n**Notes:** Creation is a multi-step operation against the campaign provider and is not idempotent, so a client retry may create a duplicate. `audienceIds` accepts at most one audience; an optional `budget` opens the campaign's first flight.\n\n**Creatives:** `creatives` attaches library creatives after the campaign is created — each entry carries the creative `id`, an optional `clickUrl`, and an optional serving `weight`. Explicit weights are used verbatim and creatives without one split the remaining share of 100 equally, so the attached set always totals 100 (launch-ready). A creative attached without a click-through URL cannot be approved or launched until one is set. Creatives still processing or in review may be attached; they serve once approved. If any creation step fails, the campaign is rolled back and its creatives are released — no partially-created campaign survives.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "campaigns"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"objective\": \"<string>\",\n  \"advertiserId\": \"<number>\",\n  \"name\": \"<string>\",\n  \"audienceIds\": [\n    \"<number>\"\n  ],\n  \"goalType\": \"<string>\",\n  \"goalValue\": \"<number>\",\n  \"budget\": {\n    \"type\": \"<string>\",\n    \"amount\": \"<number>\",\n    \"schedule\": {\n      \"startTime\": \"<string>\",\n      \"endTime\": \"<string>\"\n    }\n  },\n  \"creatives\": [\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "dccb507d-c584-46cd-a52f-b6009bf33d45",
+              "name": "Created campaign.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "campaigns"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"objective\": \"<string>\",\n  \"advertiserId\": \"<number>\",\n  \"name\": \"<string>\",\n  \"audienceIds\": [\n    \"<number>\"\n  ],\n  \"goalType\": \"<string>\",\n  \"goalValue\": \"<number>\",\n  \"budget\": {\n    \"type\": \"<string>\",\n    \"amount\": \"<number>\",\n    \"schedule\": {\n      \"startTime\": \"<string>\",\n      \"endTime\": \"<string>\"\n    }\n  },\n  \"creatives\": [\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"501\",\n    \"name\": \"Spring prospecting\",\n    \"status\": \"live\",\n    \"objective\": \"PROSPECTING\",\n    \"totalBudget\": 10000,\n    \"monthlyBudget\": 2500,\n    \"spend\": 1250.5,\n    \"startTime\": \"2026-01-01T00:00:00.000Z\",\n    \"endTime\": \"2026-03-31T23:59:59.000Z\",\n    \"goalType\": \"CPA\",\n    \"goalValue\": 25,\n    \"createdAt\": \"2025-12-01T10:00:00.000Z\",\n    \"updatedAt\": \"2026-01-15T14:30:00.000Z\",\n    \"snapshotUrl\": \"https://c.mountain.com/storage/video/44821/poster/poster.jpg\",\n    \"videoPreview\": {\n      \"name\": \"Spring prospecting creative\",\n      \"videoUrl\": \"https://c.mountain.com/storage/video/44821/video/video.mp4\",\n      \"posterUrl\": \"https://c.mountain.com/storage/video/44821/poster/poster.jpg\"\n    },\n    \"campaignGoal\": \"Traffic & Sales\",\n    \"advertiserId\": 44,\n    \"currentFlightId\": 88001,\n    \"audienceId\": 9001,\n    \"creativeIds\": [\n      44821,\n      44900\n    ],\n    \"creatives\": [\n      {\n        \"id\": 44821,\n        \"clickUrl\": \"https://example.com/spring\",\n        \"weight\": 60\n      },\n      {\n        \"id\": 44900,\n        \"clickUrl\": \"https://example.com/spring\",\n        \"weight\": 40\n      }\n    ],\n    \"currentFlight\": {\n      \"id\": 88001,\n      \"campaignGroupId\": 501,\n      \"budget\": 10000,\n      \"startTime\": \"2026-01-01T00:00:00.000Z\",\n      \"endTime\": \"2026-03-31T23:59:59.000Z\",\n      \"status\": \"LIVE\",\n      \"budgetTypeId\": 1\n    },\n    \"audience\": {\n      \"id\": 9001,\n      \"name\": \"Holiday shoppers\",\n      \"totalUsers\": 50000,\n      \"createdAt\": \"2025-11-01T12:00:00.000Z\",\n      \"geoLists\": null,\n      \"geo\": null,\n      \"updatedTime\": null,\n      \"isTest\": false\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "30bfff92-9261-4594-8232-e2b0b3c0db9d",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "campaigns"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"objective\": \"<string>\",\n  \"advertiserId\": \"<number>\",\n  \"name\": \"<string>\",\n  \"audienceIds\": [\n    \"<number>\"\n  ],\n  \"goalType\": \"<string>\",\n  \"goalValue\": \"<number>\",\n  \"budget\": {\n    \"type\": \"<string>\",\n    \"amount\": \"<number>\",\n    \"schedule\": {\n      \"startTime\": \"<string>\",\n      \"endTime\": \"<string>\"\n    }\n  },\n  \"creatives\": [\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"string\",\n    \"name\": \"string\",\n    \"status\": \"string\",\n    \"objective\": \"string\",\n    \"totalBudget\": 7940.472697863399,\n    \"monthlyBudget\": 1977.1850890569765,\n    \"spend\": 676.3004252796944,\n    \"startTime\": \"string\",\n    \"endTime\": \"string\",\n    \"goalType\": \"string\",\n    \"goalValue\": 5001.281868471244,\n    \"advertiserId\": -6796641699044165,\n    \"audienceId\": 4209480358372475,\n    \"createdAt\": \"string\",\n    \"updatedAt\": \"string\",\n    \"snapshotUrl\": \"string\",\n    \"videoPreview\": {\n      \"name\": \"string\",\n      \"videoUrl\": \"string\",\n      \"posterUrl\": \"string\"\n    },\n    \"campaignGoal\": \"string\",\n    \"currentFlightId\": 8606208628986217,\n    \"audience\": {\n      \"id\": 2.737381857385035,\n      \"name\": \"string\",\n      \"totalUsers\": 6141.988012023189,\n      \"createdAt\": \"string\",\n      \"geoLists\": {\n        \"include\": [\n          1526074508877192,\n          3660927211086750\n        ],\n        \"exclude\": [\n          5550058348870762,\n          6557587435948041\n        ]\n      },\n      \"geo\": {\n        \"include\": [\n          4351358109265570,\n          8506226164623648\n        ],\n        \"exclude\": [\n          6177907820954828,\n          4457049031831936\n        ]\n      },\n      \"updatedTime\": \"string\",\n      \"isTest\": false,\n      \"keywords\": {\n        \"include\": [\n          {\n            \"keyword\": \"string\",\n            \"selected\": false,\n            \"isCustom\": true\n          },\n          {\n            \"keyword\": \"string\",\n            \"selected\": false,\n            \"isCustom\": false\n          }\n        ]\n      },\n      \"geoLocations\": {\n        \"include\": [\n          {\n            \"id\": -7530053616222677,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": -6026043875618118,\n              \"name\": \"string\"\n            }\n          },\n          {\n            \"id\": -4231953555953878,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": -4707597560574994,\n              \"name\": \"string\"\n            }\n          }\n        ],\n        \"exclude\": [\n          {\n            \"id\": 7086262622774245,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": 2658019942497421,\n              \"name\": \"string\"\n            }\n          },\n          {\n            \"id\": -2959261845298576,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": -773314915588298,\n              \"name\": \"string\"\n            }\n          }\n        ]\n      }\n    },\n    \"currentFlight\": {\n      \"id\": -5594574114163376,\n      \"campaignGroupId\": -2268770936330944,\n      \"budget\": 3111.3206574210326,\n      \"startTime\": \"string\",\n      \"endTime\": \"string\",\n      \"status\": \"string\",\n      \"budgetTypeId\": 6716733253950163\n    },\n    \"creativeIds\": [\n      -7993491213664585,\n      -8537573560389949\n    ],\n    \"creatives\": [\n      {\n        \"id\": -1796904438461236,\n        \"clickUrl\": \"string\",\n        \"weight\": 345266526630653\n      },\n      {\n        \"id\": 4547171393330229,\n        \"clickUrl\": \"string\",\n        \"weight\": 3150769658069495\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a28161f6-ee44-40ee-8d95-b451b16d2d30",
+          "name": "Get a campaign",
+          "request": {
+            "name": "Get a campaign",
+            "description": {
+              "content": "Returns the canonical campaign representation for a given campaign ID, including its primary audience link.\n\n**Notes:** Attached creative ids are always present as `creativeIds`. Pass `expand=currentFlight` for the active flight (Gary), `expand=audience` for the full audience record, and `expand=creatives` for the full attached-creative records (click URL, weight).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "campaigns",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>",
+                  "description": "Expand relations: `currentFlight`, `audience`, `creatives`. Use `expand=value`, repeat, or `expand[]=value`."
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>",
+                  "description": "Expand relations: `currentFlight`, `audience`, `creatives`. Use `expand=value`, repeat, or `expand[]=value`."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Campaign identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7635b892-7219-4915-954c-791039c31e8c",
+              "name": "Single campaign.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "campaigns",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Campaign identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"501\",\n    \"name\": \"Spring prospecting\",\n    \"status\": \"live\",\n    \"objective\": \"PROSPECTING\",\n    \"totalBudget\": 10000,\n    \"monthlyBudget\": 2500,\n    \"spend\": 1250.5,\n    \"startTime\": \"2026-01-01T00:00:00.000Z\",\n    \"endTime\": \"2026-03-31T23:59:59.000Z\",\n    \"goalType\": \"CPA\",\n    \"goalValue\": 25,\n    \"createdAt\": \"2025-12-01T10:00:00.000Z\",\n    \"updatedAt\": \"2026-01-15T14:30:00.000Z\",\n    \"snapshotUrl\": \"https://c.mountain.com/storage/video/44821/poster/poster.jpg\",\n    \"videoPreview\": {\n      \"name\": \"Spring prospecting creative\",\n      \"videoUrl\": \"https://c.mountain.com/storage/video/44821/video/video.mp4\",\n      \"posterUrl\": \"https://c.mountain.com/storage/video/44821/poster/poster.jpg\"\n    },\n    \"campaignGoal\": \"Traffic & Sales\",\n    \"advertiserId\": 44,\n    \"currentFlightId\": 88001,\n    \"audienceId\": 9001,\n    \"creativeIds\": [\n      44821,\n      44900\n    ],\n    \"creatives\": [\n      {\n        \"id\": 44821,\n        \"clickUrl\": \"https://example.com/spring\",\n        \"weight\": 60\n      },\n      {\n        \"id\": 44900,\n        \"clickUrl\": \"https://example.com/spring\",\n        \"weight\": 40\n      }\n    ],\n    \"currentFlight\": {\n      \"id\": 88001,\n      \"campaignGroupId\": 501,\n      \"budget\": 10000,\n      \"startTime\": \"2026-01-01T00:00:00.000Z\",\n      \"endTime\": \"2026-03-31T23:59:59.000Z\",\n      \"status\": \"LIVE\",\n      \"budgetTypeId\": 1\n    },\n    \"audience\": {\n      \"id\": 9001,\n      \"name\": \"Holiday shoppers\",\n      \"totalUsers\": 50000,\n      \"createdAt\": \"2025-11-01T12:00:00.000Z\",\n      \"geoLists\": null,\n      \"geo\": null,\n      \"updatedTime\": null,\n      \"isTest\": false\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b2ef3e5e-b7f4-45f8-b02d-45eb184db194",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "campaigns",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Campaign identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"string\",\n    \"name\": \"string\",\n    \"status\": \"string\",\n    \"objective\": \"string\",\n    \"totalBudget\": 7940.472697863399,\n    \"monthlyBudget\": 1977.1850890569765,\n    \"spend\": 676.3004252796944,\n    \"startTime\": \"string\",\n    \"endTime\": \"string\",\n    \"goalType\": \"string\",\n    \"goalValue\": 5001.281868471244,\n    \"advertiserId\": -6796641699044165,\n    \"audienceId\": 4209480358372475,\n    \"createdAt\": \"string\",\n    \"updatedAt\": \"string\",\n    \"snapshotUrl\": \"string\",\n    \"videoPreview\": {\n      \"name\": \"string\",\n      \"videoUrl\": \"string\",\n      \"posterUrl\": \"string\"\n    },\n    \"campaignGoal\": \"string\",\n    \"currentFlightId\": 8606208628986217,\n    \"audience\": {\n      \"id\": 2.737381857385035,\n      \"name\": \"string\",\n      \"totalUsers\": 6141.988012023189,\n      \"createdAt\": \"string\",\n      \"geoLists\": {\n        \"include\": [\n          1526074508877192,\n          3660927211086750\n        ],\n        \"exclude\": [\n          5550058348870762,\n          6557587435948041\n        ]\n      },\n      \"geo\": {\n        \"include\": [\n          4351358109265570,\n          8506226164623648\n        ],\n        \"exclude\": [\n          6177907820954828,\n          4457049031831936\n        ]\n      },\n      \"updatedTime\": \"string\",\n      \"isTest\": false,\n      \"keywords\": {\n        \"include\": [\n          {\n            \"keyword\": \"string\",\n            \"selected\": false,\n            \"isCustom\": true\n          },\n          {\n            \"keyword\": \"string\",\n            \"selected\": false,\n            \"isCustom\": false\n          }\n        ]\n      },\n      \"geoLocations\": {\n        \"include\": [\n          {\n            \"id\": -7530053616222677,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": -6026043875618118,\n              \"name\": \"string\"\n            }\n          },\n          {\n            \"id\": -4231953555953878,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": -4707597560574994,\n              \"name\": \"string\"\n            }\n          }\n        ],\n        \"exclude\": [\n          {\n            \"id\": 7086262622774245,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": 2658019942497421,\n              \"name\": \"string\"\n            }\n          },\n          {\n            \"id\": -2959261845298576,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": -773314915588298,\n              \"name\": \"string\"\n            }\n          }\n        ]\n      }\n    },\n    \"currentFlight\": {\n      \"id\": -5594574114163376,\n      \"campaignGroupId\": -2268770936330944,\n      \"budget\": 3111.3206574210326,\n      \"startTime\": \"string\",\n      \"endTime\": \"string\",\n      \"status\": \"string\",\n      \"budgetTypeId\": 6716733253950163\n    },\n    \"creativeIds\": [\n      -7993491213664585,\n      -8537573560389949\n    ],\n    \"creatives\": [\n      {\n        \"id\": -1796904438461236,\n        \"clickUrl\": \"string\",\n        \"weight\": 345266526630653\n      },\n      {\n        \"id\": 4547171393330229,\n        \"clickUrl\": \"string\",\n        \"weight\": 3150769658069495\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1fdea7f9-9a5b-4b27-9643-25d6e602a1c3",
+          "name": "Update a campaign",
+          "request": {
+            "name": "Update a campaign",
+            "description": {
+              "content": "Updates an existing campaign's editable fields. Only the fields present in the request body are changed; omitted fields are left untouched.\n\n**Notes:** A campaign's `objective` is immutable and any attempt to change it is rejected. `audienceIds` accepts at most one audience; sending an empty array clears the assigned audience.\n\n**Creatives:** `creatives` is the campaign's desired full creative set — entries not yet attached are attached, attached creatives missing from the array are detached, and weights are applied to the survivors. Explicit weights are used verbatim; entries without one split the remaining share of 100 equally, so the resulting set always totals 100 (a weightless array means an even split, replacing any previous weights). A creative attached without a click-through URL cannot be approved or launched until one is set. Unlike `audienceIds`, an empty array is rejected. The reconcile is not atomic: additions apply one at a time (detachments and weights apply together), so a failure can leave the set partially updated — retrying the same request converges. If creatives are changed concurrently by another client, the request may fail or a concurrently-attached creative may survive; retrying resolves both.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "campaigns",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Campaign (campaign group) ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"audienceIds\": [\n    \"<number>\"\n  ],\n  \"goalType\": \"<string>\",\n  \"goalValue\": \"<number>\",\n  \"objective\": {\n    \"type\": \"<string>\"\n  },\n  \"creatives\": [\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "80242de2-1f42-4aa7-a49c-96ad92915f71",
+              "name": "Updated campaign.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "campaigns",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Campaign (campaign group) ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"audienceIds\": [\n    \"<number>\"\n  ],\n  \"goalType\": \"<string>\",\n  \"goalValue\": \"<number>\",\n  \"objective\": {\n    \"type\": \"<string>\"\n  },\n  \"creatives\": [\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"501\",\n    \"name\": \"Spring prospecting\",\n    \"status\": \"live\",\n    \"objective\": \"PROSPECTING\",\n    \"totalBudget\": 10000,\n    \"monthlyBudget\": 2500,\n    \"spend\": 1250.5,\n    \"startTime\": \"2026-01-01T00:00:00.000Z\",\n    \"endTime\": \"2026-03-31T23:59:59.000Z\",\n    \"goalType\": \"CPA\",\n    \"goalValue\": 25,\n    \"createdAt\": \"2025-12-01T10:00:00.000Z\",\n    \"updatedAt\": \"2026-01-15T14:30:00.000Z\",\n    \"snapshotUrl\": \"https://c.mountain.com/storage/video/44821/poster/poster.jpg\",\n    \"videoPreview\": {\n      \"name\": \"Spring prospecting creative\",\n      \"videoUrl\": \"https://c.mountain.com/storage/video/44821/video/video.mp4\",\n      \"posterUrl\": \"https://c.mountain.com/storage/video/44821/poster/poster.jpg\"\n    },\n    \"campaignGoal\": \"Traffic & Sales\",\n    \"advertiserId\": 44,\n    \"currentFlightId\": 88001,\n    \"audienceId\": 9001,\n    \"creativeIds\": [\n      44821,\n      44900\n    ],\n    \"creatives\": [\n      {\n        \"id\": 44821,\n        \"clickUrl\": \"https://example.com/spring\",\n        \"weight\": 60\n      },\n      {\n        \"id\": 44900,\n        \"clickUrl\": \"https://example.com/spring\",\n        \"weight\": 40\n      }\n    ],\n    \"currentFlight\": {\n      \"id\": 88001,\n      \"campaignGroupId\": 501,\n      \"budget\": 10000,\n      \"startTime\": \"2026-01-01T00:00:00.000Z\",\n      \"endTime\": \"2026-03-31T23:59:59.000Z\",\n      \"status\": \"LIVE\",\n      \"budgetTypeId\": 1\n    },\n    \"audience\": {\n      \"id\": 9001,\n      \"name\": \"Holiday shoppers\",\n      \"totalUsers\": 50000,\n      \"createdAt\": \"2025-11-01T12:00:00.000Z\",\n      \"geoLists\": null,\n      \"geo\": null,\n      \"updatedTime\": null,\n      \"isTest\": false\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "654afcf4-950b-4e7f-8d02-3452675d2409",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "campaigns",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Campaign (campaign group) ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"audienceIds\": [\n    \"<number>\"\n  ],\n  \"goalType\": \"<string>\",\n  \"goalValue\": \"<number>\",\n  \"objective\": {\n    \"type\": \"<string>\"\n  },\n  \"creatives\": [\n    {\n      \"id\": \"<integer>\",\n      \"clickUrl\": \"<uri>\",\n      \"weight\": \"<integer>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"string\",\n    \"name\": \"string\",\n    \"status\": \"string\",\n    \"objective\": \"string\",\n    \"totalBudget\": 7940.472697863399,\n    \"monthlyBudget\": 1977.1850890569765,\n    \"spend\": 676.3004252796944,\n    \"startTime\": \"string\",\n    \"endTime\": \"string\",\n    \"goalType\": \"string\",\n    \"goalValue\": 5001.281868471244,\n    \"advertiserId\": -6796641699044165,\n    \"audienceId\": 4209480358372475,\n    \"createdAt\": \"string\",\n    \"updatedAt\": \"string\",\n    \"snapshotUrl\": \"string\",\n    \"videoPreview\": {\n      \"name\": \"string\",\n      \"videoUrl\": \"string\",\n      \"posterUrl\": \"string\"\n    },\n    \"campaignGoal\": \"string\",\n    \"currentFlightId\": 8606208628986217,\n    \"audience\": {\n      \"id\": 2.737381857385035,\n      \"name\": \"string\",\n      \"totalUsers\": 6141.988012023189,\n      \"createdAt\": \"string\",\n      \"geoLists\": {\n        \"include\": [\n          1526074508877192,\n          3660927211086750\n        ],\n        \"exclude\": [\n          5550058348870762,\n          6557587435948041\n        ]\n      },\n      \"geo\": {\n        \"include\": [\n          4351358109265570,\n          8506226164623648\n        ],\n        \"exclude\": [\n          6177907820954828,\n          4457049031831936\n        ]\n      },\n      \"updatedTime\": \"string\",\n      \"isTest\": false,\n      \"keywords\": {\n        \"include\": [\n          {\n            \"keyword\": \"string\",\n            \"selected\": false,\n            \"isCustom\": true\n          },\n          {\n            \"keyword\": \"string\",\n            \"selected\": false,\n            \"isCustom\": false\n          }\n        ]\n      },\n      \"geoLocations\": {\n        \"include\": [\n          {\n            \"id\": -7530053616222677,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": -6026043875618118,\n              \"name\": \"string\"\n            }\n          },\n          {\n            \"id\": -4231953555953878,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": -4707597560574994,\n              \"name\": \"string\"\n            }\n          }\n        ],\n        \"exclude\": [\n          {\n            \"id\": 7086262622774245,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": 2658019942497421,\n              \"name\": \"string\"\n            }\n          },\n          {\n            \"id\": -2959261845298576,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": -773314915588298,\n              \"name\": \"string\"\n            }\n          }\n        ]\n      }\n    },\n    \"currentFlight\": {\n      \"id\": -5594574114163376,\n      \"campaignGroupId\": -2268770936330944,\n      \"budget\": 3111.3206574210326,\n      \"startTime\": \"string\",\n      \"endTime\": \"string\",\n      \"status\": \"string\",\n      \"budgetTypeId\": 6716733253950163\n    },\n    \"creativeIds\": [\n      -7993491213664585,\n      -8537573560389949\n    ],\n    \"creatives\": [\n      {\n        \"id\": -1796904438461236,\n        \"clickUrl\": \"string\",\n        \"weight\": 345266526630653\n      },\n      {\n        \"id\": 4547171393330229,\n        \"clickUrl\": \"string\",\n        \"weight\": 3150769658069495\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "93da7c47-abcf-4bb1-a5af-221efaa6a165",
+          "name": "Delete a campaign",
+          "request": {
+            "name": "Delete a campaign",
+            "description": {
+              "content": "Archives a campaign so it no longer runs or appears in active listings. This is a soft delete: the campaign moves to the `archived` status rather than being permanently removed.\n\n**Notes:** Archiving a live campaign pauses it first, and the campaign's creatives are disassociated. The archived campaign is returned so the caller can confirm the new status.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "campaigns",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Campaign (campaign group) ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c7e49700-263d-4946-b908-79859a3350d0",
+              "name": "Archived campaign.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "campaigns",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Campaign (campaign group) ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"501\",\n    \"name\": \"Spring prospecting\",\n    \"status\": \"live\",\n    \"objective\": \"PROSPECTING\",\n    \"totalBudget\": 10000,\n    \"monthlyBudget\": 2500,\n    \"spend\": 1250.5,\n    \"startTime\": \"2026-01-01T00:00:00.000Z\",\n    \"endTime\": \"2026-03-31T23:59:59.000Z\",\n    \"goalType\": \"CPA\",\n    \"goalValue\": 25,\n    \"createdAt\": \"2025-12-01T10:00:00.000Z\",\n    \"updatedAt\": \"2026-01-15T14:30:00.000Z\",\n    \"snapshotUrl\": \"https://c.mountain.com/storage/video/44821/poster/poster.jpg\",\n    \"videoPreview\": {\n      \"name\": \"Spring prospecting creative\",\n      \"videoUrl\": \"https://c.mountain.com/storage/video/44821/video/video.mp4\",\n      \"posterUrl\": \"https://c.mountain.com/storage/video/44821/poster/poster.jpg\"\n    },\n    \"campaignGoal\": \"Traffic & Sales\",\n    \"advertiserId\": 44,\n    \"currentFlightId\": 88001,\n    \"audienceId\": 9001,\n    \"creativeIds\": [\n      44821,\n      44900\n    ],\n    \"creatives\": [\n      {\n        \"id\": 44821,\n        \"clickUrl\": \"https://example.com/spring\",\n        \"weight\": 60\n      },\n      {\n        \"id\": 44900,\n        \"clickUrl\": \"https://example.com/spring\",\n        \"weight\": 40\n      }\n    ],\n    \"currentFlight\": {\n      \"id\": 88001,\n      \"campaignGroupId\": 501,\n      \"budget\": 10000,\n      \"startTime\": \"2026-01-01T00:00:00.000Z\",\n      \"endTime\": \"2026-03-31T23:59:59.000Z\",\n      \"status\": \"LIVE\",\n      \"budgetTypeId\": 1\n    },\n    \"audience\": {\n      \"id\": 9001,\n      \"name\": \"Holiday shoppers\",\n      \"totalUsers\": 50000,\n      \"createdAt\": \"2025-11-01T12:00:00.000Z\",\n      \"geoLists\": null,\n      \"geo\": null,\n      \"updatedTime\": null,\n      \"isTest\": false\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4b830d97-39b6-4b26-a0e0-4da4d0452157",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "campaigns",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Campaign (campaign group) ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"string\",\n    \"name\": \"string\",\n    \"status\": \"string\",\n    \"objective\": \"string\",\n    \"totalBudget\": 7940.472697863399,\n    \"monthlyBudget\": 1977.1850890569765,\n    \"spend\": 676.3004252796944,\n    \"startTime\": \"string\",\n    \"endTime\": \"string\",\n    \"goalType\": \"string\",\n    \"goalValue\": 5001.281868471244,\n    \"advertiserId\": -6796641699044165,\n    \"audienceId\": 4209480358372475,\n    \"createdAt\": \"string\",\n    \"updatedAt\": \"string\",\n    \"snapshotUrl\": \"string\",\n    \"videoPreview\": {\n      \"name\": \"string\",\n      \"videoUrl\": \"string\",\n      \"posterUrl\": \"string\"\n    },\n    \"campaignGoal\": \"string\",\n    \"currentFlightId\": 8606208628986217,\n    \"audience\": {\n      \"id\": 2.737381857385035,\n      \"name\": \"string\",\n      \"totalUsers\": 6141.988012023189,\n      \"createdAt\": \"string\",\n      \"geoLists\": {\n        \"include\": [\n          1526074508877192,\n          3660927211086750\n        ],\n        \"exclude\": [\n          5550058348870762,\n          6557587435948041\n        ]\n      },\n      \"geo\": {\n        \"include\": [\n          4351358109265570,\n          8506226164623648\n        ],\n        \"exclude\": [\n          6177907820954828,\n          4457049031831936\n        ]\n      },\n      \"updatedTime\": \"string\",\n      \"isTest\": false,\n      \"keywords\": {\n        \"include\": [\n          {\n            \"keyword\": \"string\",\n            \"selected\": false,\n            \"isCustom\": true\n          },\n          {\n            \"keyword\": \"string\",\n            \"selected\": false,\n            \"isCustom\": false\n          }\n        ]\n      },\n      \"geoLocations\": {\n        \"include\": [\n          {\n            \"id\": -7530053616222677,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": -6026043875618118,\n              \"name\": \"string\"\n            }\n          },\n          {\n            \"id\": -4231953555953878,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": -4707597560574994,\n              \"name\": \"string\"\n            }\n          }\n        ],\n        \"exclude\": [\n          {\n            \"id\": 7086262622774245,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": 2658019942497421,\n              \"name\": \"string\"\n            }\n          },\n          {\n            \"id\": -2959261845298576,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": -773314915588298,\n              \"name\": \"string\"\n            }\n          }\n        ]\n      }\n    },\n    \"currentFlight\": {\n      \"id\": -5594574114163376,\n      \"campaignGroupId\": -2268770936330944,\n      \"budget\": 3111.3206574210326,\n      \"startTime\": \"string\",\n      \"endTime\": \"string\",\n      \"status\": \"string\",\n      \"budgetTypeId\": 6716733253950163\n    },\n    \"creativeIds\": [\n      -7993491213664585,\n      -8537573560389949\n    ],\n    \"creatives\": [\n      {\n        \"id\": -1796904438461236,\n        \"clickUrl\": \"string\",\n        \"weight\": 345266526630653\n      },\n      {\n        \"id\": 4547171393330229,\n        \"clickUrl\": \"string\",\n        \"weight\": 3150769658069495\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0d997950-7d20-41e2-933d-64d269ee139c",
+          "name": "Create and link a recommended audience for a campaign",
+          "request": {
+            "name": "Create and link a recommended audience for a campaign",
+            "description": {
+              "content": "Creates a new audience for the campaign's advertiser whose keywords are derived server-side from the advertiser's AI-recommended keywords, and links it to the campaign. Rejects with 422 if the campaign already has an audience or if the advertiser has no recommendations available. On link failure after a successful audience-create, the error surfaces the underlying cause (e.g. 403 authz, upstream failure) and reports the orphan audience id so it can be reconciled out-of-band.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "campaigns",
+                ":id",
+                "recommended-audience"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Campaign identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"isTest\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7ac33c7e-59ce-4221-aa28-4e1b017a1356",
+              "name": "Created audience in envelope shape `{ data }`.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "campaigns",
+                    ":id",
+                    "recommended-audience"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Campaign identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"isTest\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": 1001,\n    \"name\": \"High-intent shoppers\",\n    \"totalUsers\": 125000,\n    \"createdAt\": \"2025-11-01T09:00:00.000Z\",\n    \"geoLists\": {\n      \"include\": [\n        200\n      ],\n      \"exclude\": []\n    },\n    \"geo\": {\n      \"include\": [\n        237\n      ],\n      \"exclude\": []\n    },\n    \"updatedTime\": \"2025-11-02T12:00:00.000Z\",\n    \"isTest\": false,\n    \"geoLocations\": {\n      \"include\": [\n        {\n          \"id\": 237,\n          \"name\": \"Los Angeles\",\n          \"geoType\": {\n            \"id\": 4,\n            \"name\": \"Media Market\"\n          }\n        }\n      ],\n      \"exclude\": []\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "985fb58f-608c-4cff-b088-887a0f5120eb",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "campaigns",
+                    ":id",
+                    "recommended-audience"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Campaign identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"isTest\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": 5866.784931118393,\n    \"name\": \"string\",\n    \"totalUsers\": 1224.5947066691165,\n    \"createdAt\": \"string\",\n    \"geoLists\": {\n      \"include\": [\n        6494389231213573,\n        6220236663264565\n      ],\n      \"exclude\": [\n        2229362761586061,\n        8277514879030356\n      ]\n    },\n    \"geo\": {\n      \"include\": [\n        7931624331412002,\n        1393671252111987\n      ],\n      \"exclude\": [\n        2200463259678419,\n        5177647024819412\n      ]\n    },\n    \"updatedTime\": \"string\",\n    \"isTest\": false,\n    \"keywords\": {\n      \"include\": [\n        {\n          \"keyword\": \"string\",\n          \"selected\": false,\n          \"isCustom\": false\n        },\n        {\n          \"keyword\": \"string\",\n          \"selected\": false,\n          \"isCustom\": true\n        }\n      ]\n    },\n    \"geoLocations\": {\n      \"include\": [\n        {\n          \"id\": 89601025814077,\n          \"name\": \"string\",\n          \"geoType\": {\n            \"id\": -8482523144529009,\n            \"name\": \"string\"\n          }\n        },\n        {\n          \"id\": 6233223381640731,\n          \"name\": \"string\",\n          \"geoType\": {\n            \"id\": 5246964898014635,\n            \"name\": \"string\"\n          }\n        }\n      ],\n      \"exclude\": [\n        {\n          \"id\": -7723412685777433,\n          \"name\": \"string\",\n          \"geoType\": {\n            \"id\": 4516174927837513,\n            \"name\": \"string\"\n          }\n        },\n        {\n          \"id\": 7893773929324229,\n          \"name\": \"string\",\n          \"geoType\": {\n            \"id\": -1422408268436294,\n            \"name\": \"string\"\n          }\n        }\n      ]\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bdcc5cfe-ff9f-4a17-8291-d65054561da2",
+          "name": "Launch a campaign",
+          "request": {
+            "name": "Launch a campaign",
+            "description": {
+              "content": "Launches a campaign so it begins delivering.\n\n**Notes:** Only a campaign in a launchable state can be launched; an `incomplete` campaign is rejected with `422` before anything is sent upstream (it needs an active budget, a goal, an audience, installed pixels, and approved creatives). The launched campaign is returned so the caller can confirm the new status. If the campaign's budget schedule already started (elapsed or in-flight budget periods will not be recovered), the launch proceeds without additional confirmation — calling this endpoint is the confirmation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "campaigns",
+                ":id",
+                "launch"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Campaign (campaign group) ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b56a39ff-0e41-4bde-8a80-3b1425716481",
+              "name": "Launched campaign.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "campaigns",
+                    ":id",
+                    "launch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Campaign (campaign group) ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"501\",\n    \"name\": \"Spring prospecting\",\n    \"status\": \"live\",\n    \"objective\": \"PROSPECTING\",\n    \"totalBudget\": 10000,\n    \"monthlyBudget\": 2500,\n    \"spend\": 1250.5,\n    \"startTime\": \"2026-01-01T00:00:00.000Z\",\n    \"endTime\": \"2026-03-31T23:59:59.000Z\",\n    \"goalType\": \"CPA\",\n    \"goalValue\": 25,\n    \"createdAt\": \"2025-12-01T10:00:00.000Z\",\n    \"updatedAt\": \"2026-01-15T14:30:00.000Z\",\n    \"snapshotUrl\": \"https://c.mountain.com/storage/video/44821/poster/poster.jpg\",\n    \"videoPreview\": {\n      \"name\": \"Spring prospecting creative\",\n      \"videoUrl\": \"https://c.mountain.com/storage/video/44821/video/video.mp4\",\n      \"posterUrl\": \"https://c.mountain.com/storage/video/44821/poster/poster.jpg\"\n    },\n    \"campaignGoal\": \"Traffic & Sales\",\n    \"advertiserId\": 44,\n    \"currentFlightId\": 88001,\n    \"audienceId\": 9001,\n    \"creativeIds\": [\n      44821,\n      44900\n    ],\n    \"creatives\": [\n      {\n        \"id\": 44821,\n        \"clickUrl\": \"https://example.com/spring\",\n        \"weight\": 60\n      },\n      {\n        \"id\": 44900,\n        \"clickUrl\": \"https://example.com/spring\",\n        \"weight\": 40\n      }\n    ],\n    \"currentFlight\": {\n      \"id\": 88001,\n      \"campaignGroupId\": 501,\n      \"budget\": 10000,\n      \"startTime\": \"2026-01-01T00:00:00.000Z\",\n      \"endTime\": \"2026-03-31T23:59:59.000Z\",\n      \"status\": \"LIVE\",\n      \"budgetTypeId\": 1\n    },\n    \"audience\": {\n      \"id\": 9001,\n      \"name\": \"Holiday shoppers\",\n      \"totalUsers\": 50000,\n      \"createdAt\": \"2025-11-01T12:00:00.000Z\",\n      \"geoLists\": null,\n      \"geo\": null,\n      \"updatedTime\": null,\n      \"isTest\": false\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "86043d94-5d20-4c46-bd4a-fc3196695b21",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "campaigns",
+                    ":id",
+                    "launch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Campaign (campaign group) ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"string\",\n    \"name\": \"string\",\n    \"status\": \"string\",\n    \"objective\": \"string\",\n    \"totalBudget\": 7940.472697863399,\n    \"monthlyBudget\": 1977.1850890569765,\n    \"spend\": 676.3004252796944,\n    \"startTime\": \"string\",\n    \"endTime\": \"string\",\n    \"goalType\": \"string\",\n    \"goalValue\": 5001.281868471244,\n    \"advertiserId\": -6796641699044165,\n    \"audienceId\": 4209480358372475,\n    \"createdAt\": \"string\",\n    \"updatedAt\": \"string\",\n    \"snapshotUrl\": \"string\",\n    \"videoPreview\": {\n      \"name\": \"string\",\n      \"videoUrl\": \"string\",\n      \"posterUrl\": \"string\"\n    },\n    \"campaignGoal\": \"string\",\n    \"currentFlightId\": 8606208628986217,\n    \"audience\": {\n      \"id\": 2.737381857385035,\n      \"name\": \"string\",\n      \"totalUsers\": 6141.988012023189,\n      \"createdAt\": \"string\",\n      \"geoLists\": {\n        \"include\": [\n          1526074508877192,\n          3660927211086750\n        ],\n        \"exclude\": [\n          5550058348870762,\n          6557587435948041\n        ]\n      },\n      \"geo\": {\n        \"include\": [\n          4351358109265570,\n          8506226164623648\n        ],\n        \"exclude\": [\n          6177907820954828,\n          4457049031831936\n        ]\n      },\n      \"updatedTime\": \"string\",\n      \"isTest\": false,\n      \"keywords\": {\n        \"include\": [\n          {\n            \"keyword\": \"string\",\n            \"selected\": false,\n            \"isCustom\": true\n          },\n          {\n            \"keyword\": \"string\",\n            \"selected\": false,\n            \"isCustom\": false\n          }\n        ]\n      },\n      \"geoLocations\": {\n        \"include\": [\n          {\n            \"id\": -7530053616222677,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": -6026043875618118,\n              \"name\": \"string\"\n            }\n          },\n          {\n            \"id\": -4231953555953878,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": -4707597560574994,\n              \"name\": \"string\"\n            }\n          }\n        ],\n        \"exclude\": [\n          {\n            \"id\": 7086262622774245,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": 2658019942497421,\n              \"name\": \"string\"\n            }\n          },\n          {\n            \"id\": -2959261845298576,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": -773314915588298,\n              \"name\": \"string\"\n            }\n          }\n        ]\n      }\n    },\n    \"currentFlight\": {\n      \"id\": -5594574114163376,\n      \"campaignGroupId\": -2268770936330944,\n      \"budget\": 3111.3206574210326,\n      \"startTime\": \"string\",\n      \"endTime\": \"string\",\n      \"status\": \"string\",\n      \"budgetTypeId\": 6716733253950163\n    },\n    \"creativeIds\": [\n      -7993491213664585,\n      -8537573560389949\n    ],\n    \"creatives\": [\n      {\n        \"id\": -1796904438461236,\n        \"clickUrl\": \"string\",\n        \"weight\": 345266526630653\n      },\n      {\n        \"id\": 4547171393330229,\n        \"clickUrl\": \"string\",\n        \"weight\": 3150769658069495\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9ebba149-13c1-4fba-918c-62ce3de19b37",
+          "name": "Pause a campaign",
+          "request": {
+            "name": "Pause a campaign",
+            "description": {
+              "content": "Pauses a live campaign so it stops delivering.\n\n**Notes:** Only a live campaign can be paused. An optional `pause_reason` records why the campaign was paused. The paused campaign is returned so the caller can confirm the new status.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "campaigns",
+                ":id",
+                "pause"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Campaign (campaign group) ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pause_reason\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5c116ade-bff9-422c-a928-2b0a3d2478c5",
+              "name": "Paused campaign.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "campaigns",
+                    ":id",
+                    "pause"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Campaign (campaign group) ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pause_reason\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"501\",\n    \"name\": \"Spring prospecting\",\n    \"status\": \"live\",\n    \"objective\": \"PROSPECTING\",\n    \"totalBudget\": 10000,\n    \"monthlyBudget\": 2500,\n    \"spend\": 1250.5,\n    \"startTime\": \"2026-01-01T00:00:00.000Z\",\n    \"endTime\": \"2026-03-31T23:59:59.000Z\",\n    \"goalType\": \"CPA\",\n    \"goalValue\": 25,\n    \"createdAt\": \"2025-12-01T10:00:00.000Z\",\n    \"updatedAt\": \"2026-01-15T14:30:00.000Z\",\n    \"snapshotUrl\": \"https://c.mountain.com/storage/video/44821/poster/poster.jpg\",\n    \"videoPreview\": {\n      \"name\": \"Spring prospecting creative\",\n      \"videoUrl\": \"https://c.mountain.com/storage/video/44821/video/video.mp4\",\n      \"posterUrl\": \"https://c.mountain.com/storage/video/44821/poster/poster.jpg\"\n    },\n    \"campaignGoal\": \"Traffic & Sales\",\n    \"advertiserId\": 44,\n    \"currentFlightId\": 88001,\n    \"audienceId\": 9001,\n    \"creativeIds\": [\n      44821,\n      44900\n    ],\n    \"creatives\": [\n      {\n        \"id\": 44821,\n        \"clickUrl\": \"https://example.com/spring\",\n        \"weight\": 60\n      },\n      {\n        \"id\": 44900,\n        \"clickUrl\": \"https://example.com/spring\",\n        \"weight\": 40\n      }\n    ],\n    \"currentFlight\": {\n      \"id\": 88001,\n      \"campaignGroupId\": 501,\n      \"budget\": 10000,\n      \"startTime\": \"2026-01-01T00:00:00.000Z\",\n      \"endTime\": \"2026-03-31T23:59:59.000Z\",\n      \"status\": \"LIVE\",\n      \"budgetTypeId\": 1\n    },\n    \"audience\": {\n      \"id\": 9001,\n      \"name\": \"Holiday shoppers\",\n      \"totalUsers\": 50000,\n      \"createdAt\": \"2025-11-01T12:00:00.000Z\",\n      \"geoLists\": null,\n      \"geo\": null,\n      \"updatedTime\": null,\n      \"isTest\": false\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "be5a8b94-aaef-4750-b6b3-bbc401de7219",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "campaigns",
+                    ":id",
+                    "pause"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Campaign (campaign group) ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pause_reason\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"string\",\n    \"name\": \"string\",\n    \"status\": \"string\",\n    \"objective\": \"string\",\n    \"totalBudget\": 7940.472697863399,\n    \"monthlyBudget\": 1977.1850890569765,\n    \"spend\": 676.3004252796944,\n    \"startTime\": \"string\",\n    \"endTime\": \"string\",\n    \"goalType\": \"string\",\n    \"goalValue\": 5001.281868471244,\n    \"advertiserId\": -6796641699044165,\n    \"audienceId\": 4209480358372475,\n    \"createdAt\": \"string\",\n    \"updatedAt\": \"string\",\n    \"snapshotUrl\": \"string\",\n    \"videoPreview\": {\n      \"name\": \"string\",\n      \"videoUrl\": \"string\",\n      \"posterUrl\": \"string\"\n    },\n    \"campaignGoal\": \"string\",\n    \"currentFlightId\": 8606208628986217,\n    \"audience\": {\n      \"id\": 2.737381857385035,\n      \"name\": \"string\",\n      \"totalUsers\": 6141.988012023189,\n      \"createdAt\": \"string\",\n      \"geoLists\": {\n        \"include\": [\n          1526074508877192,\n          3660927211086750\n        ],\n        \"exclude\": [\n          5550058348870762,\n          6557587435948041\n        ]\n      },\n      \"geo\": {\n        \"include\": [\n          4351358109265570,\n          8506226164623648\n        ],\n        \"exclude\": [\n          6177907820954828,\n          4457049031831936\n        ]\n      },\n      \"updatedTime\": \"string\",\n      \"isTest\": false,\n      \"keywords\": {\n        \"include\": [\n          {\n            \"keyword\": \"string\",\n            \"selected\": false,\n            \"isCustom\": true\n          },\n          {\n            \"keyword\": \"string\",\n            \"selected\": false,\n            \"isCustom\": false\n          }\n        ]\n      },\n      \"geoLocations\": {\n        \"include\": [\n          {\n            \"id\": -7530053616222677,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": -6026043875618118,\n              \"name\": \"string\"\n            }\n          },\n          {\n            \"id\": -4231953555953878,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": -4707597560574994,\n              \"name\": \"string\"\n            }\n          }\n        ],\n        \"exclude\": [\n          {\n            \"id\": 7086262622774245,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": 2658019942497421,\n              \"name\": \"string\"\n            }\n          },\n          {\n            \"id\": -2959261845298576,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": -773314915588298,\n              \"name\": \"string\"\n            }\n          }\n        ]\n      }\n    },\n    \"currentFlight\": {\n      \"id\": -5594574114163376,\n      \"campaignGroupId\": -2268770936330944,\n      \"budget\": 3111.3206574210326,\n      \"startTime\": \"string\",\n      \"endTime\": \"string\",\n      \"status\": \"string\",\n      \"budgetTypeId\": 6716733253950163\n    },\n    \"creativeIds\": [\n      -7993491213664585,\n      -8537573560389949\n    ],\n    \"creatives\": [\n      {\n        \"id\": -1796904438461236,\n        \"clickUrl\": \"string\",\n        \"weight\": 345266526630653\n      },\n      {\n        \"id\": 4547171393330229,\n        \"clickUrl\": \"string\",\n        \"weight\": 3150769658069495\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f0ced90e-361e-4e4f-9bb2-80f1dca18cb6",
+          "name": "List campaigns linked to an audience",
+          "request": {
+            "name": "List campaigns linked to an audience",
+            "description": {
+              "content": "Returns campaigns attached to the given audience. Same response shape as GET /campaigns.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "audiences",
+                ":id",
+                "campaigns"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<number>",
+                  "description": "1-based page number."
+                },
+                {
+                  "disabled": false,
+                  "key": "perPage",
+                  "value": "<number>",
+                  "description": "Results per page (maximum 100)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<number>",
+                  "key": "id",
+                  "description": "(Required) Audience identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d187f322-786d-43c8-87a5-1a876c610054",
+              "name": "Paginated campaign list.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "audiences",
+                    ":id",
+                    "campaigns"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "<number>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "id",
+                      "description": "(Required) Audience identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"501\",\n      \"name\": \"Spring prospecting\",\n      \"status\": \"live\",\n      \"objective\": \"PROSPECTING\",\n      \"totalBudget\": 10000,\n      \"monthlyBudget\": 2500,\n      \"spend\": 1250.5,\n      \"startTime\": \"2026-01-01T00:00:00.000Z\",\n      \"endTime\": \"2026-03-31T23:59:59.000Z\",\n      \"goalType\": \"CPA\",\n      \"goalValue\": 25,\n      \"createdAt\": \"2025-12-01T10:00:00.000Z\",\n      \"updatedAt\": \"2026-01-15T14:30:00.000Z\",\n      \"snapshotUrl\": \"https://c.mountain.com/storage/video/44821/poster/poster.jpg\",\n      \"videoPreview\": {\n        \"name\": \"Spring prospecting creative\",\n        \"videoUrl\": \"https://c.mountain.com/storage/video/44821/video/video.mp4\",\n        \"posterUrl\": \"https://c.mountain.com/storage/video/44821/poster/poster.jpg\"\n      },\n      \"campaignGoal\": \"Traffic & Sales\",\n      \"advertiserId\": 44,\n      \"currentFlightId\": 88001,\n      \"audienceId\": 9001,\n      \"creativeIds\": [\n        44821,\n        44900\n      ]\n    }\n  ],\n  \"pagination\": {\n    \"total\": 42,\n    \"perPage\": 25,\n    \"page\": 1,\n    \"previousPageUrl\": null,\n    \"nextPageUrl\": \"https://api.example.com/api/v1/campaigns?page=2&advertiserId=44\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d11fdeaf-a7b1-4d03-b7e3-9fd82df97069",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "audiences",
+                    ":id",
+                    "campaigns"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "<number>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "id",
+                      "description": "(Required) Audience identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"status\": \"string\",\n      \"objective\": \"string\",\n      \"totalBudget\": 4580.123366857919,\n      \"monthlyBudget\": 4760.012052137039,\n      \"spend\": 349.2608810249431,\n      \"startTime\": \"string\",\n      \"endTime\": \"string\",\n      \"goalType\": \"string\",\n      \"goalValue\": 4047.758501577506,\n      \"advertiserId\": -6576592052701650,\n      \"audienceId\": 5872727108996823,\n      \"createdAt\": \"string\",\n      \"updatedAt\": \"string\",\n      \"snapshotUrl\": \"string\",\n      \"videoPreview\": {\n        \"name\": \"string\",\n        \"videoUrl\": \"string\",\n        \"posterUrl\": \"string\"\n      },\n      \"campaignGoal\": \"string\",\n      \"currentFlightId\": 1637688903800355,\n      \"audience\": {\n        \"id\": 4574.157817149219,\n        \"name\": \"string\",\n        \"totalUsers\": 2404.433687991018,\n        \"createdAt\": \"string\",\n        \"geoLists\": {\n          \"include\": [\n            87738056581566,\n            7413268916702533\n          ],\n          \"exclude\": [\n            5091886554790568,\n            928912595725254\n          ]\n        },\n        \"geo\": {\n          \"include\": [\n            7460195642525111,\n            538302397879196\n          ],\n          \"exclude\": [\n            5573121043880758,\n            2803556502072677\n          ]\n        },\n        \"updatedTime\": \"string\",\n        \"isTest\": false,\n        \"keywords\": {\n          \"include\": [\n            {\n              \"keyword\": \"string\",\n              \"selected\": false,\n              \"isCustom\": false\n            },\n            {\n              \"keyword\": \"string\",\n              \"selected\": true,\n              \"isCustom\": true\n            }\n          ]\n        },\n        \"geoLocations\": {\n          \"include\": [\n            {\n              \"id\": -8606301729210611,\n              \"name\": \"string\",\n              \"geoType\": {\n                \"id\": 2323112467771811,\n                \"name\": \"string\"\n              }\n            },\n            {\n              \"id\": 7691962437901121,\n              \"name\": \"string\",\n              \"geoType\": {\n                \"id\": -4220904262655622,\n                \"name\": \"string\"\n              }\n            }\n          ],\n          \"exclude\": [\n            {\n              \"id\": -5222921436026978,\n              \"name\": \"string\",\n              \"geoType\": {\n                \"id\": -5853328860495086,\n                \"name\": \"string\"\n              }\n            },\n            {\n              \"id\": 5274816399857885,\n              \"name\": \"string\",\n              \"geoType\": {\n                \"id\": 3174106078233983,\n                \"name\": \"string\"\n              }\n            }\n          ]\n        }\n      },\n      \"currentFlight\": {\n        \"id\": 4626033517599519,\n        \"campaignGroupId\": 518645546810075,\n        \"budget\": 1680.1844851164615,\n        \"startTime\": \"string\",\n        \"endTime\": \"string\",\n        \"status\": \"string\",\n        \"budgetTypeId\": 5370071607684851\n      },\n      \"creativeIds\": [\n        5315006596381457,\n        4878253641471297\n      ],\n      \"creatives\": [\n        {\n          \"id\": 3068404919779675,\n          \"clickUrl\": \"string\",\n          \"weight\": -2527983163796896\n        },\n        {\n          \"id\": -6572163090741986,\n          \"clickUrl\": \"string\",\n          \"weight\": -3794535910093422\n        }\n      ]\n    },\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"status\": \"string\",\n      \"objective\": \"string\",\n      \"totalBudget\": 2684.922731713871,\n      \"monthlyBudget\": 9535.52557759488,\n      \"spend\": 1720.1952874989602,\n      \"startTime\": \"string\",\n      \"endTime\": \"string\",\n      \"goalType\": \"string\",\n      \"goalValue\": 8360.901780679085,\n      \"advertiserId\": 314138410071055,\n      \"audienceId\": -2645021380747136,\n      \"createdAt\": \"string\",\n      \"updatedAt\": \"string\",\n      \"snapshotUrl\": \"string\",\n      \"videoPreview\": {\n        \"name\": \"string\",\n        \"videoUrl\": \"string\",\n        \"posterUrl\": \"string\"\n      },\n      \"campaignGoal\": \"string\",\n      \"currentFlightId\": -3910630413947922,\n      \"audience\": {\n        \"id\": 4535.598393195154,\n        \"name\": \"string\",\n        \"totalUsers\": 7709.623900756226,\n        \"createdAt\": \"string\",\n        \"geoLists\": {\n          \"include\": [\n            4246035199371852,\n            5362206537498001\n          ],\n          \"exclude\": [\n            5865735255381791,\n            312896920401440\n          ]\n        },\n        \"geo\": {\n          \"include\": [\n            3591354334086945,\n            1545465156024915\n          ],\n          \"exclude\": [\n            7841379313174825,\n            6149176980788510\n          ]\n        },\n        \"updatedTime\": \"string\",\n        \"isTest\": true,\n        \"keywords\": {\n          \"include\": [\n            {\n              \"keyword\": \"string\",\n              \"selected\": false,\n              \"isCustom\": false\n            },\n            {\n              \"keyword\": \"string\",\n              \"selected\": true,\n              \"isCustom\": false\n            }\n          ]\n        },\n        \"geoLocations\": {\n          \"include\": [\n            {\n              \"id\": -4307467929298014,\n              \"name\": \"string\",\n              \"geoType\": {\n                \"id\": 4707718517037587,\n                \"name\": \"string\"\n              }\n            },\n            {\n              \"id\": 5724955806739431,\n              \"name\": \"string\",\n              \"geoType\": {\n                \"id\": -5889415049637528,\n                \"name\": \"string\"\n              }\n            }\n          ],\n          \"exclude\": [\n            {\n              \"id\": 6417402988466927,\n              \"name\": \"string\",\n              \"geoType\": {\n                \"id\": 1007132902134631,\n                \"name\": \"string\"\n              }\n            },\n            {\n              \"id\": -4703992960042746,\n              \"name\": \"string\",\n              \"geoType\": {\n                \"id\": 5761259701220103,\n                \"name\": \"string\"\n              }\n            }\n          ]\n        }\n      },\n      \"currentFlight\": {\n        \"id\": -3648389753047296,\n        \"campaignGroupId\": -721821498129350,\n        \"budget\": 609.1124168577367,\n        \"startTime\": \"string\",\n        \"endTime\": \"string\",\n        \"status\": \"string\",\n        \"budgetTypeId\": 3595162296534627\n      },\n      \"creativeIds\": [\n        4487481326428405,\n        3002994958173047\n      ],\n      \"creatives\": [\n        {\n          \"id\": -7824398500624885,\n          \"clickUrl\": \"string\",\n          \"weight\": -6399476888323814\n        },\n        {\n          \"id\": -7378933759981653,\n          \"clickUrl\": \"string\",\n          \"weight\": 6785675496923981\n        }\n      ]\n    }\n  ],\n  \"pagination\": {\n    \"total\": 3540403108978965,\n    \"perPage\": 2029828190659361,\n    \"page\": 1,\n    \"previousPageUrl\": \"string\",\n    \"nextPageUrl\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.mountain.com/ptv",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "af522169-3393-44e9-bf63-c00ad92ed70e",
+    "name": "PTV API - campaigns",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "PTV API authoritative source of truth for PTV data.\n\nContact Support:\n Name: MNTN Platform\n Email: support@mountain.com",
+      "type": "text/plain"
+    }
+  }
+}

@@ -5,60 +5,154 @@ source: openapi/_original/mntn-ptv-openapi.json
 published_server:
   exists: false
   probes:
-  - {url: 'https://api.mountain.com/mcp', status: 401, note: 'the gateway 401s on every path; not evidence of an MCP server'}
-  - {url: 'https://api.mountain.com/ptv/mcp', status: 401}
-  - {url: 'https://api.mountain.com/api/v1/mcp', status: 401}
-  - {url: 'https://api.mountain.com/.well-known/mcp', status: 401}
-  - {method: POST, url: 'https://api.mountain.com/mcp', body: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}', status: 401, response: '{"error":"Authentication required"}'}
-  - {url: 'https://mountain.com/llms.txt', status: 200, note: 'Yoast marketing sitemap; names no MCP server'}
-  searched: 'help center, mountain.com integrations page, MCP registries'
-  note: >-
-    MNTN publishes no MCP server. The 401s above are the istio-envoy gateway's blanket
-    "Authentication required" response, which it returns for every unmatched path, so they are
-    recorded as misses rather than as a gated server. No type: MCPServer pointer is wired in apis.yml
-    -- that check asserts the provider operates a server, and MNTN does not.
+  - url: https://api.mountain.com/mcp
+    status: 401
+    note: the gateway 401s on every path; not evidence of an MCP server
+  - url: https://api.mountain.com/ptv/mcp
+    status: 401
+  - url: https://api.mountain.com/api/v1/mcp
+    status: 401
+  - url: https://api.mountain.com/.well-known/mcp
+    status: 401
+  - method: POST
+    url: https://api.mountain.com/mcp
+    body: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+    status: 401
+    response: '{"error":"Authentication required"}'
+  - url: https://mountain.com/llms.txt
+    status: 200
+    note: Yoast marketing sitemap; names no MCP server
+  searched: help center, mountain.com integrations page, MCP registries
+  note: 'MNTN publishes no MCP server. The 401s above are the istio-envoy gateway''s blanket "Authentication
+    required" response, which it returns for every unmatched path, so they are recorded as misses rather
+    than as a gated server. No type: MCPServer pointer is wired in apis.yml -- that check asserts the
+    provider operates a server, and MNTN does not.'
 candidate_server:
-  note: >-
-    The tool set below is DERIVED from the published Performance TV OpenAPI as a design proposal for
-    what an MNTN MCP server would expose. These tools do not exist. Each row names the backing
-    operationId, so every tool's real inputSchema is already published in openapi/ and could be
-    generated mechanically.
+  note: The tool set below is DERIVED from the published Performance TV OpenAPI as a design proposal for
+    what an MNTN MCP server would expose. These tools do not exist. Each row names the backing operationId,
+    so every tool's real inputSchema is already published in openapi/ and could be generated mechanically.
   transport: http
-  auth: 'X-API-Key header or bearer JWT, per authentication/mntn-authentication.yml'
+  auth: X-API-Key header or bearer JWT, per authentication/mntn-authentication.yml
   tool_count: 20
   tools:
-  - {name: list_advertisers, category: accounts, rest: [advertisers.list], read_only: true}
-  - {name: get_advertiser, category: accounts, rest: [advertisers.get], read_only: true}
-  - {name: list_campaigns, category: campaigns, rest: [campaigns.list], read_only: true}
-  - {name: get_campaign, category: campaigns, rest: [campaigns.get], read_only: true}
-  - {name: create_campaign, category: campaigns, rest: [campaigns.create], read_only: false, consequence: spends-budget}
-  - {name: update_campaign, category: campaigns, rest: [campaigns.update], read_only: false}
-  - {name: launch_campaign, category: campaigns, rest: [campaigns.launch], read_only: false, consequence: spends-budget}
-  - {name: pause_campaign, category: campaigns, rest: [campaigns.pause], read_only: false}
-  - {name: archive_campaign, category: campaigns, rest: [campaigns.archive], read_only: false, consequence: destructive}
-  - {name: get_flight, category: campaigns, rest: [flights.get], read_only: true}
-  - {name: update_flight, category: campaigns, rest: [flights.patch], read_only: false}
-  - {name: list_creatives, category: creatives, rest: [creatives.list], read_only: true}
-  - {name: list_audiences, category: audiences, rest: [audiences.list], read_only: true}
-  - {name: search_audience_keywords, category: audiences, rest: [AudiencesController_searchKeywords_v1], read_only: true}
-  - {name: recommend_audience, category: audiences, rest: [CampaignsController_createRecommendedAudience_v1], read_only: false}
-  - {name: get_attribution_windows, category: attribution, rest: [attribution.windows.get], read_only: true}
-  - {name: get_sales_cycle, category: attribution, rest: [attribution.salesCycle.get], read_only: true}
-  - {name: get_pixel_health, category: pixel, rest: [pixel.getHealthOverview], read_only: true}
-  - {name: run_report, category: reporting, rest: [reporting.runCustom], read_only: true}
-  - {name: submit_batch_export, category: reporting, rest: [reporting.submitExport, submitExport], read_only: false}
-  reference_tools_note: >-
-    The six reference endpoints (budget types and goals, campaign objectives and statuses, geo types,
-    audience segment types) are better exposed as MCP resources than tools -- they are static
+  - name: list_advertisers
+    category: accounts
+    rest:
+    - advertisers.list
+    read_only: true
+  - name: get_advertiser
+    category: accounts
+    rest:
+    - advertisers.get
+    read_only: true
+  - name: list_campaigns
+    category: campaigns
+    rest:
+    - campaigns.list
+    read_only: true
+  - name: get_campaign
+    category: campaigns
+    rest:
+    - campaigns.get
+    read_only: true
+  - name: create_campaign
+    category: campaigns
+    rest:
+    - campaigns.create
+    read_only: false
+    consequence: spends-budget
+  - name: update_campaign
+    category: campaigns
+    rest:
+    - campaigns.update
+    read_only: false
+  - name: launch_campaign
+    category: campaigns
+    rest:
+    - campaigns.launch
+    read_only: false
+    consequence: spends-budget
+  - name: pause_campaign
+    category: campaigns
+    rest:
+    - campaigns.pause
+    read_only: false
+  - name: archive_campaign
+    category: campaigns
+    rest:
+    - campaigns.archive
+    read_only: false
+    consequence: destructive
+  - name: get_flight
+    category: campaigns
+    rest:
+    - flights.get
+    read_only: true
+  - name: update_flight
+    category: campaigns
+    rest:
+    - flights.patch
+    read_only: false
+  - name: list_creatives
+    category: creatives
+    rest:
+    - creatives.list
+    read_only: true
+  - name: list_audiences
+    category: audiences
+    rest:
+    - audiences.list
+    read_only: true
+  - name: search_audience_keywords
+    category: audiences
+    rest:
+    - AudiencesController_searchKeywords_v1
+    read_only: true
+  - name: recommend_audience
+    category: audiences
+    rest:
+    - CampaignsController_createRecommendedAudience_v1
+    read_only: false
+  - name: get_attribution_windows
+    category: attribution
+    rest:
+    - attribution.windows.get
+    read_only: true
+  - name: get_sales_cycle
+    category: attribution
+    rest:
+    - attribution.salesCycle.get
+    read_only: true
+  - name: get_pixel_health
+    category: pixel
+    rest:
+    - pixel.getHealthOverview
+    read_only: true
+  - name: run_report
+    category: reporting
+    rest:
+    - reporting.runCustom
+    read_only: true
+  - name: submit_batch_export
+    category: reporting
+    rest:
+    - reporting.submitExport
+    - submitExport
+    read_only: false
+  reference_tools_note: The six reference endpoints (budget types and goals, campaign objectives and statuses,
+    geo types, audience segment types) are better exposed as MCP resources than tools -- they are static
     controlled vocabularies an agent should read once per session.
-  agent_safety_note: >-
-    Nine of the twenty candidate tools mutate state and three of them move money (create_campaign,
-    launch_campaign, and the budget fields on update_campaign). None of the backing operations
-    supports an idempotency key, so a retried tool call can double-launch. Any real MNTN MCP server
-    would need to add idempotency before exposing the write path to an agent.
+  agent_safety_note: Nine of the twenty candidate tools mutate state and three of them move money (create_campaign,
+    launch_campaign, and the budget fields on update_campaign). None of the backing operations supports
+    an idempotency key, so a retried tool call can double-launch. Any real MNTN MCP server would need
+    to add idempotency before exposing the write path to an agent.
 crosswalk:
   emitted: false
-  reason: >-
-    mcp/<slug>-tool-crosswalk.yml is emitted only when the provider ships an MCP server or a GraphQL
-    endpoint alongside the OpenAPI. MNTN ships neither, so there is nothing to bind the OpenAPI
-    operations to -- a crosswalk here would be a crosswalk against tools we invented.
+  reason: mcp/<slug>-tool-crosswalk.yml is emitted only when the provider ships an MCP server or a GraphQL
+    endpoint alongside the OpenAPI. MNTN ships neither, so there is nothing to bind the OpenAPI operations
+    to -- a crosswalk here would be a crosswalk against tools we invented.
+deployment:
+  mode: none
+  verified: derived
+  checked: '2026-08-12'
+  source: catalog MCP census

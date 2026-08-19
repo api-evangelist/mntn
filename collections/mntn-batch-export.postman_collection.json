@@ -1,0 +1,2211 @@
+{
+  "item": [
+    {
+      "id": "4784f883-c8d7-4003-a6c7-a93a29800e79",
+      "name": "Batch",
+      "description": {
+        "content": "Async CSV exports under **`/batch`…** (submit, poll status, signed download URLs)",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "85d8130b-206d-4116-aa8d-d9f5d4c30e4c",
+          "name": "List export jobs",
+          "request": {
+            "name": "List export jobs",
+            "description": {
+              "content": "Returns a page of batch jobs for the authenticated advertiser. Optional `status` filters to comma-separated values: QUEUED, PROCESSING, SUCCEEDED, FAILED.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "batch"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Comma-separated status filter (QUEUED, PROCESSING, SUCCEEDED, FAILED)"
+                },
+                {
+                  "disabled": false,
+                  "key": "key",
+                  "value": "<string>",
+                  "description": "(Required) API key"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "20",
+                  "description": "Page size"
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "0",
+                  "description": "Page offset"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b50f084d-d923-4eee-8b36-f1891c91e6f6",
+              "name": "Paged list of exports",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"batches\": [\n    {\n      \"batchId\": 676,\n      \"status\": \"string\",\n      \"submittedAt\": \"string\",\n      \"reportName\": \"string\",\n      \"requestParams\": \"string\",\n      \"startedAt\": \"string\",\n      \"completedAt\": \"string\",\n      \"downloadUrl\": \"string\",\n      \"downloadExpiresAt\": \"string\",\n      \"error\": {\n        \"code\": \"string\",\n        \"message\": \"string\",\n        \"retryable\": true\n      }\n    },\n    {\n      \"batchId\": 1868,\n      \"status\": \"string\",\n      \"submittedAt\": \"string\",\n      \"reportName\": \"string\",\n      \"requestParams\": \"string\",\n      \"startedAt\": \"string\",\n      \"completedAt\": \"string\",\n      \"downloadUrl\": \"string\",\n      \"downloadExpiresAt\": \"string\",\n      \"error\": {\n        \"code\": \"string\",\n        \"message\": \"string\",\n        \"retryable\": true\n      }\n    }\n  ],\n  \"total\": 3393,\n  \"limit\": 4699,\n  \"offset\": 7365\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e66b6b75-46c2-416c-aa31-397c495dd415",
+              "name": "Invalid query parameters (for example malformed `status`)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f57ea76d-bf2c-4139-842f-745d6ec0f5eb",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2cb78824-0f44-43e4-83cf-0224d2e575cd",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e5306638-b13c-4436-9116-e6e879e4d92c",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "57dfae34-fa85-4fb1-a3b2-6e7f48fac0b5",
+              "name": "Payload Too Large — the query exceeds server memory limits. Use the asynchronous /batch endpoint for large requests.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "89a23b78-c1d5-47e5-bf3c-cce03770fe96",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "47315144-094b-484e-9c44-b836899dc179",
+              "name": "Gateway Timeout — the query exceeded the synchronous request time limit.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Gateway Timeout",
+              "code": 504,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1b9c7b9f-64ba-4e82-80b6-08e734ede509",
+          "name": "Submit an async export job",
+          "request": {
+            "name": "Submit an async export job",
+            "description": {
+              "content": "Queues a CSV export for the authenticated advertiser. Returns **202 Accepted** with a `batchId` and initial status; poll `GET /batch/{batchId}` until `SUCCEEDED`, then use the signed `downloadUrl`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "batch"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"begin\": \"<string>\",\n  \"data\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"key\": \"<string>\",\n  \"end\": \"<string>\",\n  \"format\": \"csv\",\n  \"fullname\": false,\n  \"includetoday\": false,\n  \"limit\": \"<integer>\",\n  \"offset\": 0,\n  \"sort\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"sum\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"reportName\": \"<string>\",\n  \"filter\": {\n    \"key_0\": 9539.262567947586,\n    \"key_1\": false,\n    \"key_2\": 2122,\n    \"key_3\": 9160\n  },\n  \"allownull\": \"<boolean>\",\n  \"formatdata\": \"<boolean>\",\n  \"nodatatiercheck\": \"<string>\",\n  \"period\": \"<string>\",\n  \"dataColumns\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "501de879-8507-43c6-89a3-f43b13d57d04",
+              "name": "Job accepted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"begin\": \"<string>\",\n  \"data\": [\n    {\n      \"type\": \"<string>\",\n      \"alias\": \"<string>\",\n      \"friendly\": \"<string>\",\n      \"name\": \"<string>\",\n      \"filter\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"nullReplacement\": \"<object>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"alias\": \"<string>\",\n      \"friendly\": \"<string>\",\n      \"name\": \"<string>\",\n      \"filter\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"nullReplacement\": \"<object>\"\n    }\n  ],\n  \"key\": \"<string>\",\n  \"end\": \"<string>\",\n  \"format\": \"csv\",\n  \"fullname\": false,\n  \"includetoday\": false,\n  \"limit\": \"<integer>\",\n  \"offset\": 0,\n  \"sort\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"sum\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"reportName\": \"<string>\",\n  \"filter\": {\n    \"key_0\": false,\n    \"key_1\": \"string\",\n    \"key_2\": 9043\n  },\n  \"allownull\": \"<boolean>\",\n  \"formatdata\": \"<boolean>\",\n  \"nodatatiercheck\": \"<string>\",\n  \"period\": \"<string>\",\n  \"dataColumns\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"batchId\": 2632,\n  \"status\": \"string\",\n  \"submittedAt\": \"string\",\n  \"reportName\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "667ad4fe-1d8a-4fd8-88fd-56490be324d7",
+              "name": "Validation or invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"begin\": \"<string>\",\n  \"data\": [\n    {\n      \"type\": \"<string>\",\n      \"alias\": \"<string>\",\n      \"friendly\": \"<string>\",\n      \"name\": \"<string>\",\n      \"filter\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"nullReplacement\": \"<object>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"alias\": \"<string>\",\n      \"friendly\": \"<string>\",\n      \"name\": \"<string>\",\n      \"filter\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"nullReplacement\": \"<object>\"\n    }\n  ],\n  \"key\": \"<string>\",\n  \"end\": \"<string>\",\n  \"format\": \"csv\",\n  \"fullname\": false,\n  \"includetoday\": false,\n  \"limit\": \"<integer>\",\n  \"offset\": 0,\n  \"sort\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"sum\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"reportName\": \"<string>\",\n  \"filter\": {\n    \"key_0\": false,\n    \"key_1\": \"string\",\n    \"key_2\": 9043\n  },\n  \"allownull\": \"<boolean>\",\n  \"formatdata\": \"<boolean>\",\n  \"nodatatiercheck\": \"<string>\",\n  \"period\": \"<string>\",\n  \"dataColumns\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "836cf583-0ded-4639-a8a4-fc9c04008698",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"begin\": \"<string>\",\n  \"data\": [\n    {\n      \"type\": \"<string>\",\n      \"alias\": \"<string>\",\n      \"friendly\": \"<string>\",\n      \"name\": \"<string>\",\n      \"filter\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"nullReplacement\": \"<object>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"alias\": \"<string>\",\n      \"friendly\": \"<string>\",\n      \"name\": \"<string>\",\n      \"filter\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"nullReplacement\": \"<object>\"\n    }\n  ],\n  \"key\": \"<string>\",\n  \"end\": \"<string>\",\n  \"format\": \"csv\",\n  \"fullname\": false,\n  \"includetoday\": false,\n  \"limit\": \"<integer>\",\n  \"offset\": 0,\n  \"sort\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"sum\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"reportName\": \"<string>\",\n  \"filter\": {\n    \"key_0\": false,\n    \"key_1\": \"string\",\n    \"key_2\": 9043\n  },\n  \"allownull\": \"<boolean>\",\n  \"formatdata\": \"<boolean>\",\n  \"nodatatiercheck\": \"<string>\",\n  \"period\": \"<string>\",\n  \"dataColumns\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "32ea8e43-5214-4fe7-8418-51c82b6b0c49",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"begin\": \"<string>\",\n  \"data\": [\n    {\n      \"type\": \"<string>\",\n      \"alias\": \"<string>\",\n      \"friendly\": \"<string>\",\n      \"name\": \"<string>\",\n      \"filter\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"nullReplacement\": \"<object>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"alias\": \"<string>\",\n      \"friendly\": \"<string>\",\n      \"name\": \"<string>\",\n      \"filter\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"nullReplacement\": \"<object>\"\n    }\n  ],\n  \"key\": \"<string>\",\n  \"end\": \"<string>\",\n  \"format\": \"csv\",\n  \"fullname\": false,\n  \"includetoday\": false,\n  \"limit\": \"<integer>\",\n  \"offset\": 0,\n  \"sort\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"sum\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"reportName\": \"<string>\",\n  \"filter\": {\n    \"key_0\": false,\n    \"key_1\": \"string\",\n    \"key_2\": 9043\n  },\n  \"allownull\": \"<boolean>\",\n  \"formatdata\": \"<boolean>\",\n  \"nodatatiercheck\": \"<string>\",\n  \"period\": \"<string>\",\n  \"dataColumns\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "23acc521-4579-45cb-9fce-9772622031f0",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"begin\": \"<string>\",\n  \"data\": [\n    {\n      \"type\": \"<string>\",\n      \"alias\": \"<string>\",\n      \"friendly\": \"<string>\",\n      \"name\": \"<string>\",\n      \"filter\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"nullReplacement\": \"<object>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"alias\": \"<string>\",\n      \"friendly\": \"<string>\",\n      \"name\": \"<string>\",\n      \"filter\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"nullReplacement\": \"<object>\"\n    }\n  ],\n  \"key\": \"<string>\",\n  \"end\": \"<string>\",\n  \"format\": \"csv\",\n  \"fullname\": false,\n  \"includetoday\": false,\n  \"limit\": \"<integer>\",\n  \"offset\": 0,\n  \"sort\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"sum\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"reportName\": \"<string>\",\n  \"filter\": {\n    \"key_0\": false,\n    \"key_1\": \"string\",\n    \"key_2\": 9043\n  },\n  \"allownull\": \"<boolean>\",\n  \"formatdata\": \"<boolean>\",\n  \"nodatatiercheck\": \"<string>\",\n  \"period\": \"<string>\",\n  \"dataColumns\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "83633577-4ec2-4cf3-b3c3-1234b0ef271a",
+              "name": "Payload Too Large — the query exceeds server memory limits. Use the asynchronous /batch endpoint for large requests.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"begin\": \"<string>\",\n  \"data\": [\n    {\n      \"type\": \"<string>\",\n      \"alias\": \"<string>\",\n      \"friendly\": \"<string>\",\n      \"name\": \"<string>\",\n      \"filter\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"nullReplacement\": \"<object>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"alias\": \"<string>\",\n      \"friendly\": \"<string>\",\n      \"name\": \"<string>\",\n      \"filter\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"nullReplacement\": \"<object>\"\n    }\n  ],\n  \"key\": \"<string>\",\n  \"end\": \"<string>\",\n  \"format\": \"csv\",\n  \"fullname\": false,\n  \"includetoday\": false,\n  \"limit\": \"<integer>\",\n  \"offset\": 0,\n  \"sort\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"sum\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"reportName\": \"<string>\",\n  \"filter\": {\n    \"key_0\": false,\n    \"key_1\": \"string\",\n    \"key_2\": 9043\n  },\n  \"allownull\": \"<boolean>\",\n  \"formatdata\": \"<boolean>\",\n  \"nodatatiercheck\": \"<string>\",\n  \"period\": \"<string>\",\n  \"dataColumns\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dc956f5a-6da0-4f0d-85d7-e8a68cac71f1",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"begin\": \"<string>\",\n  \"data\": [\n    {\n      \"type\": \"<string>\",\n      \"alias\": \"<string>\",\n      \"friendly\": \"<string>\",\n      \"name\": \"<string>\",\n      \"filter\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"nullReplacement\": \"<object>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"alias\": \"<string>\",\n      \"friendly\": \"<string>\",\n      \"name\": \"<string>\",\n      \"filter\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"nullReplacement\": \"<object>\"\n    }\n  ],\n  \"key\": \"<string>\",\n  \"end\": \"<string>\",\n  \"format\": \"csv\",\n  \"fullname\": false,\n  \"includetoday\": false,\n  \"limit\": \"<integer>\",\n  \"offset\": 0,\n  \"sort\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"sum\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"reportName\": \"<string>\",\n  \"filter\": {\n    \"key_0\": false,\n    \"key_1\": \"string\",\n    \"key_2\": 9043\n  },\n  \"allownull\": \"<boolean>\",\n  \"formatdata\": \"<boolean>\",\n  \"nodatatiercheck\": \"<string>\",\n  \"period\": \"<string>\",\n  \"dataColumns\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"batchId\": 2632,\n  \"status\": \"string\",\n  \"submittedAt\": \"string\",\n  \"reportName\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9248382a-13c6-4368-8122-1d7c06a44537",
+              "name": "Unexpected error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"begin\": \"<string>\",\n  \"data\": [\n    {\n      \"type\": \"<string>\",\n      \"alias\": \"<string>\",\n      \"friendly\": \"<string>\",\n      \"name\": \"<string>\",\n      \"filter\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"nullReplacement\": \"<object>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"alias\": \"<string>\",\n      \"friendly\": \"<string>\",\n      \"name\": \"<string>\",\n      \"filter\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"nullReplacement\": \"<object>\"\n    }\n  ],\n  \"key\": \"<string>\",\n  \"end\": \"<string>\",\n  \"format\": \"csv\",\n  \"fullname\": false,\n  \"includetoday\": false,\n  \"limit\": \"<integer>\",\n  \"offset\": 0,\n  \"sort\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"sum\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"reportName\": \"<string>\",\n  \"filter\": {\n    \"key_0\": false,\n    \"key_1\": \"string\",\n    \"key_2\": 9043\n  },\n  \"allownull\": \"<boolean>\",\n  \"formatdata\": \"<boolean>\",\n  \"nodatatiercheck\": \"<string>\",\n  \"period\": \"<string>\",\n  \"dataColumns\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5c315751-1aa0-4736-948a-cb91813c427d",
+              "name": "Gateway Timeout — the query exceeded the synchronous request time limit.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"begin\": \"<string>\",\n  \"data\": [\n    {\n      \"type\": \"<string>\",\n      \"alias\": \"<string>\",\n      \"friendly\": \"<string>\",\n      \"name\": \"<string>\",\n      \"filter\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"nullReplacement\": \"<object>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"alias\": \"<string>\",\n      \"friendly\": \"<string>\",\n      \"name\": \"<string>\",\n      \"filter\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"nullReplacement\": \"<object>\"\n    }\n  ],\n  \"key\": \"<string>\",\n  \"end\": \"<string>\",\n  \"format\": \"csv\",\n  \"fullname\": false,\n  \"includetoday\": false,\n  \"limit\": \"<integer>\",\n  \"offset\": 0,\n  \"sort\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"sum\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"reportName\": \"<string>\",\n  \"filter\": {\n    \"key_0\": false,\n    \"key_1\": \"string\",\n    \"key_2\": 9043\n  },\n  \"allownull\": \"<boolean>\",\n  \"formatdata\": \"<boolean>\",\n  \"nodatatiercheck\": \"<string>\",\n  \"period\": \"<string>\",\n  \"dataColumns\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Gateway Timeout",
+              "code": 504,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d13829a4-73c9-44bd-ba22-7ed4215ce1d6",
+          "name": "Issue a freshly-signed download URL for a SUCCEEDED batch",
+          "request": {
+            "name": "Issue a freshly-signed download URL for a SUCCEEDED batch",
+            "description": {
+              "content": "Returns a new signed URL for the result file without re-executing the query. Effect is equivalent to re-calling GET /batch/{batchId}, but the response carries only the URL fields — no other batch metadata.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "batch",
+                ":batchId",
+                "regenerate-url"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "key",
+                  "value": "<string>",
+                  "description": "(Required) Advertiser API key."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "batchId",
+                  "description": "(Required) Batch job identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "61cf1388-f3db-462d-bbc4-0655f921924e",
+              "name": "Fresh signed URL issued",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    ":batchId",
+                    "regenerate-url"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "batchId",
+                      "description": "(Required) Batch job identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"downloadUrl\": \"string\",\n  \"downloadExpiresAt\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4598cafc-5293-4e8d-812b-80b87539a062",
+              "name": "Batch is queued or processing",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    ":batchId",
+                    "regenerate-url"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "batchId",
+                      "description": "(Required) Batch job identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bfd8764b-4a56-4467-876f-72d4279a13ae",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    ":batchId",
+                    "regenerate-url"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "batchId",
+                      "description": "(Required) Batch job identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cac5cba8-bf0f-4079-96fb-4b3c726c4d42",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    ":batchId",
+                    "regenerate-url"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "batchId",
+                      "description": "(Required) Batch job identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b4e8af60-7d21-4dcb-9531-4dc4bc46fae9",
+              "name": "Batch not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    ":batchId",
+                    "regenerate-url"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "batchId",
+                      "description": "(Required) Batch job identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b48024f4-bd83-42da-8857-664baa050c0f",
+              "name": "Batch is in a terminal non-downloadable state",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    ":batchId",
+                    "regenerate-url"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "batchId",
+                      "description": "(Required) Batch job identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"downloadUrl\": \"string\",\n  \"downloadExpiresAt\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bc21428d-bb6b-43a4-b99c-1b84d1a097dd",
+              "name": "Result is permanently unavailable",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    ":batchId",
+                    "regenerate-url"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "batchId",
+                      "description": "(Required) Batch job identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Gone",
+              "code": 410,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"downloadUrl\": \"string\",\n  \"downloadExpiresAt\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e683a6ad-bf47-4f45-9b9e-b929e27d5115",
+              "name": "Payload Too Large — the query exceeds server memory limits. Use the asynchronous /batch endpoint for large requests.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    ":batchId",
+                    "regenerate-url"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "batchId",
+                      "description": "(Required) Batch job identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ca19cf68-17ad-4261-8c15-bc6e14c99fd1",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    ":batchId",
+                    "regenerate-url"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "batchId",
+                      "description": "(Required) Batch job identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2f44c971-4bd9-4467-adc0-762f0f491c25",
+              "name": "Signing subsystem temporarily unavailable",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    ":batchId",
+                    "regenerate-url"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "batchId",
+                      "description": "(Required) Batch job identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"downloadUrl\": \"string\",\n  \"downloadExpiresAt\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ecb55eca-355a-46d4-b44b-eb3d56a52742",
+              "name": "Gateway Timeout — the query exceeded the synchronous request time limit.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    ":batchId",
+                    "regenerate-url"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "batchId",
+                      "description": "(Required) Batch job identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Gateway Timeout",
+              "code": 504,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4780bef0-7260-4b08-a26d-9a37a6f98dcb",
+          "name": "Get batch status (includes signed download URL when eligible)",
+          "request": {
+            "name": "Get batch status (includes signed download URL when eligible)",
+            "description": {
+              "content": "Returns the batch status. When the batch is SUCCEEDED and within retention, a freshly-signed download URL is included in the response. The URL is generated on every call — clients should not treat it as stable.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "batch",
+                ":batchId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "key",
+                  "value": "<string>",
+                  "description": "(Required) Advertiser API key (same as **GET /batch** list)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "batchId",
+                  "description": "(Required) Batch job identifier returned from **POST /batch**."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7a2bb03c-0e81-4aa8-89ff-9bec6db31781",
+              "name": "Batch status",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    ":batchId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "batchId",
+                      "description": "(Required) Batch job identifier returned from **POST /batch**."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"batchId\": 6141,\n  \"status\": \"string\",\n  \"submittedAt\": \"string\",\n  \"reportName\": \"string\",\n  \"requestParams\": \"string\",\n  \"startedAt\": \"string\",\n  \"completedAt\": \"string\",\n  \"downloadUrl\": \"string\",\n  \"downloadExpiresAt\": \"string\",\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"retryable\": false\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7f9a5b0b-e222-4d6d-82ae-603a21543546",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    ":batchId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "batchId",
+                      "description": "(Required) Batch job identifier returned from **POST /batch**."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5f9e81e2-e288-43ef-a776-80fe2e39992f",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    ":batchId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "batchId",
+                      "description": "(Required) Batch job identifier returned from **POST /batch**."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6539c5de-e8dd-474f-865c-56007f9885fc",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    ":batchId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "batchId",
+                      "description": "(Required) Batch job identifier returned from **POST /batch**."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0926637f-733b-4959-90cd-a5d3d6c99702",
+              "name": "Batch not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    ":batchId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "batchId",
+                      "description": "(Required) Batch job identifier returned from **POST /batch**."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4de8f636-2de8-48ae-a0a8-1543f00d293a",
+              "name": "Payload Too Large — the query exceeds server memory limits. Use the asynchronous /batch endpoint for large requests.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    ":batchId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "batchId",
+                      "description": "(Required) Batch job identifier returned from **POST /batch**."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9f2407fe-ae0a-4cab-ba1c-f720df9c6ea9",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    ":batchId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "batchId",
+                      "description": "(Required) Batch job identifier returned from **POST /batch**."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2d8b26f9-aa2b-4ed9-ac0b-0179718da5db",
+              "name": "Signing subsystem temporarily unavailable",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    ":batchId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "batchId",
+                      "description": "(Required) Batch job identifier returned from **POST /batch**."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"batchId\": 6141,\n  \"status\": \"string\",\n  \"submittedAt\": \"string\",\n  \"reportName\": \"string\",\n  \"requestParams\": \"string\",\n  \"startedAt\": \"string\",\n  \"completedAt\": \"string\",\n  \"downloadUrl\": \"string\",\n  \"downloadExpiresAt\": \"string\",\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"retryable\": false\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "655c737c-411f-4f88-becd-6a15734ce4bb",
+              "name": "Gateway Timeout — the query exceeded the synchronous request time limit.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    ":batchId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "batchId",
+                      "description": "(Required) Batch job identifier returned from **POST /batch**."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Gateway Timeout",
+              "code": 504,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api3.mountain.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "query"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "bd7bf410-a197-43f5-9ae1-b6aa031e530b",
+    "name": "MNTN Async Batch Export API - Batch",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "## Overview\n\nSubmit long-running **CSV** exports of reporting queries, poll **status**, then download results via\n**time-limited signed URLs**. Endpoints are under **`/batch`…** (requires `r2ds.exports.enabled`).\n\n## Lifecycle\n\n1. **`POST /batch`** — enqueue a job; response includes `batchId` and initial status (**202 Accepted**).\n2. **`GET /batch/{batchId}`** — status; when `SUCCEEDED`, a fresh **download URL** may be included.\n3. **`POST /batch/{batchId}/regenerate-url`** — issue a new signed URL without re-running the query.\n4. **`GET /batch`** — list recent jobs (optional `status`, `limit`, `offset` query params).\n",
+      "type": "text/plain"
+    }
+  }
+}

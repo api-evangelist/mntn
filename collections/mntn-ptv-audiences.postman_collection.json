@@ -1,0 +1,2290 @@
+{
+  "item": [
+    {
+      "id": "448e3078-07e7-411b-9ee3-f78e5739e951",
+      "name": "audiences",
+      "description": {
+        "content": "Audience and geo-list management.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "2a62f9af-df59-406c-86aa-6419f7fd64a9",
+          "name": "List audiences",
+          "request": {
+            "name": "List audiences",
+            "description": {
+              "content": "Returns audiences for an advertiser.\n\n**Filters:** `advertiserId`, `search`, `segmentTypes` (repeatable).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "audiences"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "advertiserId",
+                  "value": "<number>",
+                  "description": "(Required) Advertiser identifier whose audiences will be listed."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<number>",
+                  "description": "1-based page number."
+                },
+                {
+                  "disabled": false,
+                  "key": "perPage",
+                  "value": "<number>",
+                  "description": "Results per page (maximum 100)."
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "Case-insensitive substring match on audience name."
+                },
+                {
+                  "disabled": false,
+                  "key": "segmentTypes",
+                  "value": "<string>",
+                  "description": "Repeatable audience type filter."
+                },
+                {
+                  "disabled": false,
+                  "key": "segmentTypes",
+                  "value": "<string>",
+                  "description": "Repeatable audience type filter."
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>",
+                  "description": "Optional fields to expand. Repeatable: `?expand=keywords` or `?expand[]=geoLocations`. `keywords` includes keyword state; `geoLocations` resolves the audience's `geo` location IDs into full `{ id, name, geoType }` objects under a `geoLocations` field."
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>",
+                  "description": "Optional fields to expand. Repeatable: `?expand=keywords` or `?expand[]=geoLocations`. `keywords` includes keyword state; `geoLocations` resolves the audience's `geo` location IDs into full `{ id, name, geoType }` objects under a `geoLocations` field."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "75adb981-d14f-4cb1-a3b5-404449b90b18",
+              "name": "Paginated audience list.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "audiences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "advertiserId",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "segmentTypes",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "segmentTypes",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 1001,\n      \"name\": \"High-intent shoppers\",\n      \"totalUsers\": 125000,\n      \"createdAt\": \"2025-11-01T09:00:00.000Z\",\n      \"geoLists\": {\n        \"include\": [\n          200\n        ],\n        \"exclude\": []\n      },\n      \"geo\": {\n        \"include\": [\n          237\n        ],\n        \"exclude\": []\n      },\n      \"updatedTime\": \"2025-11-02T12:00:00.000Z\",\n      \"isTest\": false,\n      \"geoLocations\": {\n        \"include\": [\n          {\n            \"id\": 237,\n            \"name\": \"Los Angeles\",\n            \"geoType\": {\n              \"id\": 4,\n              \"name\": \"Media Market\"\n            }\n          }\n        ],\n        \"exclude\": []\n      }\n    }\n  ],\n  \"pagination\": {\n    \"total\": 8,\n    \"perPage\": 25,\n    \"page\": 1,\n    \"previousPageUrl\": null,\n    \"nextPageUrl\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bb33c116-263a-46b2-83b6-60be5c73627c",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "audiences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "advertiserId",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "segmentTypes",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "segmentTypes",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 7018.177581806465,\n      \"name\": \"string\",\n      \"totalUsers\": 2472.1065202189584,\n      \"createdAt\": \"string\",\n      \"geoLists\": {\n        \"include\": [\n          703212722562261,\n          1817221664491079\n        ],\n        \"exclude\": [\n          6255666850228811,\n          4805256954987567\n        ]\n      },\n      \"geo\": {\n        \"include\": [\n          510827164094242,\n          6192283914412176\n        ],\n        \"exclude\": [\n          8161530270205170,\n          563253455887841\n        ]\n      },\n      \"updatedTime\": \"string\",\n      \"isTest\": false,\n      \"keywords\": {\n        \"include\": [\n          {\n            \"keyword\": \"string\",\n            \"selected\": false,\n            \"isCustom\": false\n          },\n          {\n            \"keyword\": \"string\",\n            \"selected\": true,\n            \"isCustom\": true\n          }\n        ]\n      },\n      \"geoLocations\": {\n        \"include\": [\n          {\n            \"id\": -2239038367216326,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": -5206667301442872,\n              \"name\": \"string\"\n            }\n          },\n          {\n            \"id\": -6681599070386190,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": -2175241700250146,\n              \"name\": \"string\"\n            }\n          }\n        ],\n        \"exclude\": [\n          {\n            \"id\": -6269610840282270,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": -5938548337891272,\n              \"name\": \"string\"\n            }\n          },\n          {\n            \"id\": 2716802376540535,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": -6529555234958434,\n              \"name\": \"string\"\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"id\": 1638.330608938585,\n      \"name\": \"string\",\n      \"totalUsers\": 5037.381139894136,\n      \"createdAt\": \"string\",\n      \"geoLists\": {\n        \"include\": [\n          6827369811425328,\n          7389204308987171\n        ],\n        \"exclude\": [\n          1196953595171874,\n          443054158252846\n        ]\n      },\n      \"geo\": {\n        \"include\": [\n          1700815808526166,\n          1217350669118140\n        ],\n        \"exclude\": [\n          1377501800400518,\n          757129294428963\n        ]\n      },\n      \"updatedTime\": \"string\",\n      \"isTest\": false,\n      \"keywords\": {\n        \"include\": [\n          {\n            \"keyword\": \"string\",\n            \"selected\": true,\n            \"isCustom\": true\n          },\n          {\n            \"keyword\": \"string\",\n            \"selected\": true,\n            \"isCustom\": true\n          }\n        ]\n      },\n      \"geoLocations\": {\n        \"include\": [\n          {\n            \"id\": 6376483109882439,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": -7988115087390343,\n              \"name\": \"string\"\n            }\n          },\n          {\n            \"id\": 5706379809116371,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": -2153411823172026,\n              \"name\": \"string\"\n            }\n          }\n        ],\n        \"exclude\": [\n          {\n            \"id\": 3904085171967917,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": 3361405630121829,\n              \"name\": \"string\"\n            }\n          },\n          {\n            \"id\": -3808741421040608,\n            \"name\": \"string\",\n            \"geoType\": {\n              \"id\": -187158072970166,\n              \"name\": \"string\"\n            }\n          }\n        ]\n      }\n    }\n  ],\n  \"pagination\": {\n    \"total\": 2918406606444035,\n    \"perPage\": 4350997956805983,\n    \"page\": 1,\n    \"previousPageUrl\": \"string\",\n    \"nextPageUrl\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e25adff9-9dd1-4a98-97b7-80cdc961a5d2",
+          "name": "Create an audience",
+          "request": {
+            "name": "Create an audience",
+            "description": {
+              "content": "Creates a new audience for the advertiser. Keywords are resolved into an expression server-side; geo lists are attached as include/exclude associations after the audience is created.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "audiences"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"advertiserId\": \"<number>\",\n  \"name\": \"<string>\",\n  \"keywords\": {\n    \"include\": [\n      {\n        \"keyword\": \"<string>\",\n        \"selected\": \"<boolean>\",\n        \"isCustom\": false\n      },\n      {\n        \"keyword\": \"<string>\",\n        \"selected\": \"<boolean>\",\n        \"isCustom\": false\n      }\n    ]\n  },\n  \"geoLists\": {\n    \"include\": [\n      \"<number>\",\n      \"<number>\"\n    ],\n    \"exclude\": [\n      \"<number>\",\n      \"<number>\"\n    ]\n  },\n  \"isTest\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "600432a3-6ee5-414b-ad35-ff75b15a66de",
+              "name": "Created audience in envelope shape `{ data }`.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "audiences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"advertiserId\": \"<number>\",\n  \"name\": \"<string>\",\n  \"keywords\": {\n    \"include\": [\n      {\n        \"keyword\": \"<string>\",\n        \"selected\": \"<boolean>\",\n        \"isCustom\": false\n      },\n      {\n        \"keyword\": \"<string>\",\n        \"selected\": \"<boolean>\",\n        \"isCustom\": false\n      }\n    ]\n  },\n  \"geoLists\": {\n    \"include\": [\n      \"<number>\",\n      \"<number>\"\n    ],\n    \"exclude\": [\n      \"<number>\",\n      \"<number>\"\n    ]\n  },\n  \"isTest\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": 1001,\n    \"name\": \"High-intent shoppers\",\n    \"totalUsers\": 125000,\n    \"createdAt\": \"2025-11-01T09:00:00.000Z\",\n    \"geoLists\": {\n      \"include\": [\n        200\n      ],\n      \"exclude\": []\n    },\n    \"geo\": {\n      \"include\": [\n        237\n      ],\n      \"exclude\": []\n    },\n    \"updatedTime\": \"2025-11-02T12:00:00.000Z\",\n    \"isTest\": false,\n    \"geoLocations\": {\n      \"include\": [\n        {\n          \"id\": 237,\n          \"name\": \"Los Angeles\",\n          \"geoType\": {\n            \"id\": 4,\n            \"name\": \"Media Market\"\n          }\n        }\n      ],\n      \"exclude\": []\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7bbb0f6d-1c78-4075-8bb3-dd6aad1b5186",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "audiences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"advertiserId\": \"<number>\",\n  \"name\": \"<string>\",\n  \"keywords\": {\n    \"include\": [\n      {\n        \"keyword\": \"<string>\",\n        \"selected\": \"<boolean>\",\n        \"isCustom\": false\n      },\n      {\n        \"keyword\": \"<string>\",\n        \"selected\": \"<boolean>\",\n        \"isCustom\": false\n      }\n    ]\n  },\n  \"geoLists\": {\n    \"include\": [\n      \"<number>\",\n      \"<number>\"\n    ],\n    \"exclude\": [\n      \"<number>\",\n      \"<number>\"\n    ]\n  },\n  \"isTest\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": 2549.887254439405,\n    \"name\": \"string\",\n    \"totalUsers\": 3847.2874197266183,\n    \"createdAt\": \"string\",\n    \"geoLists\": {\n      \"include\": [\n        1646105582892562,\n        3654804698443386\n      ],\n      \"exclude\": [\n        7375959850692764,\n        6592952006107640\n      ]\n    },\n    \"geo\": {\n      \"include\": [\n        1847228393990508,\n        8265570044861819\n      ],\n      \"exclude\": [\n        3538376200845683,\n        6592695434143805\n      ]\n    },\n    \"updatedTime\": \"string\",\n    \"isTest\": true,\n    \"keywords\": {\n      \"include\": [\n        {\n          \"keyword\": \"string\",\n          \"selected\": false,\n          \"isCustom\": true\n        },\n        {\n          \"keyword\": \"string\",\n          \"selected\": true,\n          \"isCustom\": true\n        }\n      ]\n    },\n    \"geoLocations\": {\n      \"include\": [\n        {\n          \"id\": -8238326402825887,\n          \"name\": \"string\",\n          \"geoType\": {\n            \"id\": -4573493204380864,\n            \"name\": \"string\"\n          }\n        },\n        {\n          \"id\": 924740188970203,\n          \"name\": \"string\",\n          \"geoType\": {\n            \"id\": -4711757827718472,\n            \"name\": \"string\"\n          }\n        }\n      ],\n      \"exclude\": [\n        {\n          \"id\": 3950633899445177,\n          \"name\": \"string\",\n          \"geoType\": {\n            \"id\": 4040788356146447,\n            \"name\": \"string\"\n          }\n        },\n        {\n          \"id\": 8306332815590481,\n          \"name\": \"string\",\n          \"geoType\": {\n            \"id\": -5138086647313374,\n            \"name\": \"string\"\n          }\n        }\n      ]\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d0fb84c3-af40-4d83-8197-42a66cfc2209",
+          "name": "Get audience by campaign",
+          "request": {
+            "name": "Get audience by campaign",
+            "description": {
+              "content": "Returns the audience linked to the given campaign ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "audiences",
+                "campaign",
+                ":campaignId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<number>",
+                  "description": "1-based page number."
+                },
+                {
+                  "disabled": false,
+                  "key": "perPage",
+                  "value": "<number>",
+                  "description": "Results per page (maximum 100)."
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "Case-insensitive substring match on audience name."
+                },
+                {
+                  "disabled": false,
+                  "key": "segmentTypes",
+                  "value": "<string>",
+                  "description": "Repeatable audience type filter."
+                },
+                {
+                  "disabled": false,
+                  "key": "segmentTypes",
+                  "value": "<string>",
+                  "description": "Repeatable audience type filter."
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>",
+                  "description": "Optional fields to expand. Repeatable: `?expand=keywords` or `?expand[]=geoLocations`. `keywords` includes keyword state; `geoLocations` resolves the audience's `geo` location IDs into full `{ id, name, geoType }` objects under a `geoLocations` field."
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>",
+                  "description": "Optional fields to expand. Repeatable: `?expand=keywords` or `?expand[]=geoLocations`. `keywords` includes keyword state; `geoLocations` resolves the audience's `geo` location IDs into full `{ id, name, geoType }` objects under a `geoLocations` field."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<number>",
+                  "key": "campaignId",
+                  "description": "(Required) Campaign identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b7d9ad70-391e-489d-a620-92f655138e65",
+              "name": "Single audience.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "audiences",
+                    "campaign",
+                    ":campaignId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "segmentTypes",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "segmentTypes",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "campaignId",
+                      "description": "(Required) Campaign identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": 1001,\n    \"name\": \"High-intent shoppers\",\n    \"totalUsers\": 125000,\n    \"createdAt\": \"2025-11-01T09:00:00.000Z\",\n    \"geoLists\": {\n      \"include\": [\n        200\n      ],\n      \"exclude\": []\n    },\n    \"geo\": {\n      \"include\": [\n        237\n      ],\n      \"exclude\": []\n    },\n    \"updatedTime\": \"2025-11-02T12:00:00.000Z\",\n    \"isTest\": false,\n    \"geoLocations\": {\n      \"include\": [\n        {\n          \"id\": 237,\n          \"name\": \"Los Angeles\",\n          \"geoType\": {\n            \"id\": 4,\n            \"name\": \"Media Market\"\n          }\n        }\n      ],\n      \"exclude\": []\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f72bc125-e934-477c-ae5c-314e16fc2427",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "audiences",
+                    "campaign",
+                    ":campaignId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "segmentTypes",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "segmentTypes",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "campaignId",
+                      "description": "(Required) Campaign identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": 2549.887254439405,\n    \"name\": \"string\",\n    \"totalUsers\": 3847.2874197266183,\n    \"createdAt\": \"string\",\n    \"geoLists\": {\n      \"include\": [\n        1646105582892562,\n        3654804698443386\n      ],\n      \"exclude\": [\n        7375959850692764,\n        6592952006107640\n      ]\n    },\n    \"geo\": {\n      \"include\": [\n        1847228393990508,\n        8265570044861819\n      ],\n      \"exclude\": [\n        3538376200845683,\n        6592695434143805\n      ]\n    },\n    \"updatedTime\": \"string\",\n    \"isTest\": true,\n    \"keywords\": {\n      \"include\": [\n        {\n          \"keyword\": \"string\",\n          \"selected\": false,\n          \"isCustom\": true\n        },\n        {\n          \"keyword\": \"string\",\n          \"selected\": true,\n          \"isCustom\": true\n        }\n      ]\n    },\n    \"geoLocations\": {\n      \"include\": [\n        {\n          \"id\": -8238326402825887,\n          \"name\": \"string\",\n          \"geoType\": {\n            \"id\": -4573493204380864,\n            \"name\": \"string\"\n          }\n        },\n        {\n          \"id\": 924740188970203,\n          \"name\": \"string\",\n          \"geoType\": {\n            \"id\": -4711757827718472,\n            \"name\": \"string\"\n          }\n        }\n      ],\n      \"exclude\": [\n        {\n          \"id\": 3950633899445177,\n          \"name\": \"string\",\n          \"geoType\": {\n            \"id\": 4040788356146447,\n            \"name\": \"string\"\n          }\n        },\n        {\n          \"id\": 8306332815590481,\n          \"name\": \"string\",\n          \"geoType\": {\n            \"id\": -5138086647313374,\n            \"name\": \"string\"\n          }\n        }\n      ]\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f59e69cd-03f7-420c-a172-f52b51f7ff05",
+          "name": "Search keywords",
+          "request": {
+            "name": "Search keywords",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "audiences",
+                "keywords"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "advertiserId",
+                  "value": "<integer>",
+                  "description": "(Required) Advertiser ID"
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "(Required) Comma-separated search terms"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b2f9468b-77bd-43a4-b628-d245133dd416",
+              "name": "Keyword search results in envelope shape `{ data }`.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "audiences",
+                    "keywords"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "advertiserId",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"keyword\": \"Electric Vehicles\",\n      \"description\": \"People interested in EVs\",\n      \"size\": 950000\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1c480c00-2063-4993-b570-2baf6a416dbd",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "audiences",
+                    "keywords"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "advertiserId",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"keyword\": \"string\",\n      \"description\": \"string\",\n      \"size\": 6086325523976413\n    },\n    {\n      \"keyword\": \"string\",\n      \"description\": \"string\",\n      \"size\": 2668905008628463\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "34e058ab-cca6-4711-85cf-3928fa5b5d24",
+          "name": "List/Search Geo Locations",
+          "request": {
+            "name": "List/Search Geo Locations",
+            "description": {
+              "content": "Returns geo locations from the US geo catalog.\n\n**Filters:** `search`, and **either** `geoTypeId` **or** `geoTypeName` (mutually exclusive). When neither geo-type filter is supplied. Results are restricted to the United States.\n\nPass `?expand[]=geoType` (or `?expand=geoType`) to additionally include each item's structured `geoType: { id, name }` reference.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "audiences",
+                "locations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<number>",
+                  "description": "1-based page number."
+                },
+                {
+                  "disabled": false,
+                  "key": "perPage",
+                  "value": "250",
+                  "description": "Results per page (maximum 500). Defaults to 250 — wider than the global default to support picker/autocomplete UIs."
+                },
+                {
+                  "disabled": false,
+                  "key": "geoTypeId",
+                  "value": "<integer>",
+                  "description": "Filter by location type ID. Mutually exclusive with `geoTypeName`."
+                },
+                {
+                  "disabled": false,
+                  "key": "geoTypeName",
+                  "value": "<string>",
+                  "description": "Filter by location type name (case-insensitive exact match). Mutually exclusive with `geoTypeId`. Defaults to `Media Market` when neither is supplied."
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "Case-insensitive substring match across the location `name`, `location`, `sub_location1`, and `sub_location2`. When provided, results are ranked by best-column match position."
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>",
+                  "description": "Optional fields to expand. Repeatable: `?expand=geoType` or `?expand[]=geoType`. When present each item includes its structured `geoType` reference."
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>",
+                  "description": "Optional fields to expand. Repeatable: `?expand=geoType` or `?expand[]=geoType`. When present each item includes its structured `geoType` reference."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "46ef2466-1fd6-458c-96de-f1cc7a51d11a",
+              "name": "Paginated geo location results.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "audiences",
+                    "locations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "250"
+                    },
+                    {
+                      "key": "geoTypeId",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "geoTypeName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 2347563,\n      \"name\": \"California\",\n      \"location\": \"California\",\n      \"isoCode\": \"CA\"\n    },\n    {\n      \"id\": 200001,\n      \"name\": \"Los Angeles\",\n      \"location\": \"Los Angeles, CA\",\n      \"isoCode\": null,\n      \"geoType\": {\n        \"id\": 6,\n        \"name\": \"City\"\n      }\n    }\n  ],\n  \"pagination\": {\n    \"total\": 8,\n    \"perPage\": 25,\n    \"page\": 1,\n    \"previousPageUrl\": null,\n    \"nextPageUrl\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4fbdf169-553a-47e1-a057-e199cb1ce929",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "audiences",
+                    "locations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "250"
+                    },
+                    {
+                      "key": "geoTypeId",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "geoTypeName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 3893625952421443,\n      \"name\": \"string\",\n      \"location\": \"string\",\n      \"isoCode\": \"string\",\n      \"geoType\": {\n        \"id\": 1107211541569129,\n        \"name\": \"string\"\n      }\n    },\n    {\n      \"id\": -5371949226969910,\n      \"name\": \"string\",\n      \"location\": \"string\",\n      \"isoCode\": \"string\",\n      \"geoType\": {\n        \"id\": 4433948995308653,\n        \"name\": \"string\"\n      }\n    }\n  ],\n  \"pagination\": {\n    \"total\": 707209451966800,\n    \"perPage\": 3005838113079525,\n    \"page\": 1,\n    \"previousPageUrl\": \"string\",\n    \"nextPageUrl\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1113683c-b598-48e4-b24e-7dbf091baa13",
+          "name": "Get an audience",
+          "request": {
+            "name": "Get an audience",
+            "description": {
+              "content": "Returns a single audience by ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "audiences",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>",
+                  "description": "Optional fields to expand. Repeatable: `?expand=keywords` or `?expand[]=geoLocations`. `keywords` includes keyword state; `geoLocations` resolves the audience's `geo` location IDs into full `{ id, name, geoType }` objects under a `geoLocations` field."
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>",
+                  "description": "Optional fields to expand. Repeatable: `?expand=keywords` or `?expand[]=geoLocations`. `keywords` includes keyword state; `geoLocations` resolves the audience's `geo` location IDs into full `{ id, name, geoType }` objects under a `geoLocations` field."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<number>",
+                  "key": "id",
+                  "description": "(Required) Audience identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "68c94751-821b-4c72-94dd-aa6cea1edc1f",
+              "name": "Single audience.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "audiences",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "id",
+                      "description": "(Required) Audience identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": 1001,\n    \"name\": \"High-intent shoppers\",\n    \"totalUsers\": 125000,\n    \"createdAt\": \"2025-11-01T09:00:00.000Z\",\n    \"geoLists\": {\n      \"include\": [\n        200\n      ],\n      \"exclude\": []\n    },\n    \"geo\": {\n      \"include\": [\n        237\n      ],\n      \"exclude\": []\n    },\n    \"updatedTime\": \"2025-11-02T12:00:00.000Z\",\n    \"isTest\": false,\n    \"geoLocations\": {\n      \"include\": [\n        {\n          \"id\": 237,\n          \"name\": \"Los Angeles\",\n          \"geoType\": {\n            \"id\": 4,\n            \"name\": \"Media Market\"\n          }\n        }\n      ],\n      \"exclude\": []\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "45ca9631-c8ae-452f-97ca-529332e3b0fd",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "audiences",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "id",
+                      "description": "(Required) Audience identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": 2549.887254439405,\n    \"name\": \"string\",\n    \"totalUsers\": 3847.2874197266183,\n    \"createdAt\": \"string\",\n    \"geoLists\": {\n      \"include\": [\n        1646105582892562,\n        3654804698443386\n      ],\n      \"exclude\": [\n        7375959850692764,\n        6592952006107640\n      ]\n    },\n    \"geo\": {\n      \"include\": [\n        1847228393990508,\n        8265570044861819\n      ],\n      \"exclude\": [\n        3538376200845683,\n        6592695434143805\n      ]\n    },\n    \"updatedTime\": \"string\",\n    \"isTest\": true,\n    \"keywords\": {\n      \"include\": [\n        {\n          \"keyword\": \"string\",\n          \"selected\": false,\n          \"isCustom\": true\n        },\n        {\n          \"keyword\": \"string\",\n          \"selected\": true,\n          \"isCustom\": true\n        }\n      ]\n    },\n    \"geoLocations\": {\n      \"include\": [\n        {\n          \"id\": -8238326402825887,\n          \"name\": \"string\",\n          \"geoType\": {\n            \"id\": -4573493204380864,\n            \"name\": \"string\"\n          }\n        },\n        {\n          \"id\": 924740188970203,\n          \"name\": \"string\",\n          \"geoType\": {\n            \"id\": -4711757827718472,\n            \"name\": \"string\"\n          }\n        }\n      ],\n      \"exclude\": [\n        {\n          \"id\": 3950633899445177,\n          \"name\": \"string\",\n          \"geoType\": {\n            \"id\": 4040788356146447,\n            \"name\": \"string\"\n          }\n        },\n        {\n          \"id\": 8306332815590481,\n          \"name\": \"string\",\n          \"geoType\": {\n            \"id\": -5138086647313374,\n            \"name\": \"string\"\n          }\n        }\n      ]\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "89068746-b921-476d-b5b9-187f0e2dc8dd",
+          "name": "Patch an audience",
+          "request": {
+            "name": "Patch an audience",
+            "description": {
+              "content": "Updates parts of an audience and returns the refreshed audience.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "audiences",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<number>",
+                  "key": "id",
+                  "description": "(Required) Audience identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"geoLists\": {\n    \"include\": [\n      \"<number>\",\n      \"<number>\"\n    ],\n    \"exclude\": [\n      \"<number>\",\n      \"<number>\"\n    ]\n  },\n  \"keywords\": {\n    \"include\": [\n      {\n        \"keyword\": \"<string>\",\n        \"selected\": \"<boolean>\",\n        \"isCustom\": false\n      },\n      {\n        \"keyword\": \"<string>\",\n        \"selected\": \"<boolean>\",\n        \"isCustom\": false\n      }\n    ]\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d1363b36-97e4-4ada-9e80-9aeaac0b94b6",
+              "name": "Updated audience.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "audiences",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "id",
+                      "description": "(Required) Audience identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"geoLists\": {\n    \"include\": [\n      \"<number>\",\n      \"<number>\"\n    ],\n    \"exclude\": [\n      \"<number>\",\n      \"<number>\"\n    ]\n  },\n  \"keywords\": {\n    \"include\": [\n      {\n        \"keyword\": \"<string>\",\n        \"selected\": \"<boolean>\",\n        \"isCustom\": false\n      },\n      {\n        \"keyword\": \"<string>\",\n        \"selected\": \"<boolean>\",\n        \"isCustom\": false\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": 1001,\n    \"name\": \"High-intent shoppers\",\n    \"totalUsers\": 125000,\n    \"createdAt\": \"2025-11-01T09:00:00.000Z\",\n    \"geoLists\": {\n      \"include\": [\n        200\n      ],\n      \"exclude\": []\n    },\n    \"geo\": {\n      \"include\": [\n        237\n      ],\n      \"exclude\": []\n    },\n    \"updatedTime\": \"2025-11-02T12:00:00.000Z\",\n    \"isTest\": false,\n    \"geoLocations\": {\n      \"include\": [\n        {\n          \"id\": 237,\n          \"name\": \"Los Angeles\",\n          \"geoType\": {\n            \"id\": 4,\n            \"name\": \"Media Market\"\n          }\n        }\n      ],\n      \"exclude\": []\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dd48e946-f136-4310-ba98-17a4c158d58e",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "audiences",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "id",
+                      "description": "(Required) Audience identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"geoLists\": {\n    \"include\": [\n      \"<number>\",\n      \"<number>\"\n    ],\n    \"exclude\": [\n      \"<number>\",\n      \"<number>\"\n    ]\n  },\n  \"keywords\": {\n    \"include\": [\n      {\n        \"keyword\": \"<string>\",\n        \"selected\": \"<boolean>\",\n        \"isCustom\": false\n      },\n      {\n        \"keyword\": \"<string>\",\n        \"selected\": \"<boolean>\",\n        \"isCustom\": false\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": 2549.887254439405,\n    \"name\": \"string\",\n    \"totalUsers\": 3847.2874197266183,\n    \"createdAt\": \"string\",\n    \"geoLists\": {\n      \"include\": [\n        1646105582892562,\n        3654804698443386\n      ],\n      \"exclude\": [\n        7375959850692764,\n        6592952006107640\n      ]\n    },\n    \"geo\": {\n      \"include\": [\n        1847228393990508,\n        8265570044861819\n      ],\n      \"exclude\": [\n        3538376200845683,\n        6592695434143805\n      ]\n    },\n    \"updatedTime\": \"string\",\n    \"isTest\": true,\n    \"keywords\": {\n      \"include\": [\n        {\n          \"keyword\": \"string\",\n          \"selected\": false,\n          \"isCustom\": true\n        },\n        {\n          \"keyword\": \"string\",\n          \"selected\": true,\n          \"isCustom\": true\n        }\n      ]\n    },\n    \"geoLocations\": {\n      \"include\": [\n        {\n          \"id\": -8238326402825887,\n          \"name\": \"string\",\n          \"geoType\": {\n            \"id\": -4573493204380864,\n            \"name\": \"string\"\n          }\n        },\n        {\n          \"id\": 924740188970203,\n          \"name\": \"string\",\n          \"geoType\": {\n            \"id\": -4711757827718472,\n            \"name\": \"string\"\n          }\n        }\n      ],\n      \"exclude\": [\n        {\n          \"id\": 3950633899445177,\n          \"name\": \"string\",\n          \"geoType\": {\n            \"id\": 4040788356146447,\n            \"name\": \"string\"\n          }\n        },\n        {\n          \"id\": 8306332815590481,\n          \"name\": \"string\",\n          \"geoType\": {\n            \"id\": -5138086647313374,\n            \"name\": \"string\"\n          }\n        }\n      ]\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "00d3f620-5913-4133-87d9-9cdaa7167637",
+          "name": "Disassociate geo-lists from an audience",
+          "request": {
+            "name": "Disassociate geo-lists from an audience",
+            "description": {
+              "content": "Removes one or more geo-list associations from an audience.\n\n**Notes:** Geo-lists themselves are not deleted. Each requested id is attempted independently; the response lists which ids succeeded and which failed.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "audiences",
+                ":id",
+                "geo-lists",
+                "disassociate"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<number>",
+                  "key": "id",
+                  "description": "(Required) Audience identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"geoListIds\": [\n    \"<number>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d2a9cf3d-8a0e-478d-b4a6-03766d813a1b",
+              "name": "Dissociation outcomes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "audiences",
+                    ":id",
+                    "geo-lists",
+                    "disassociate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "id",
+                      "description": "(Required) Audience identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"geoListIds\": [\n    \"<number>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"succeeded\": [\n      10,\n      11\n    ],\n    \"failed\": [\n      99\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "857024ce-8751-4f55-9055-80248eda83ac",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "audiences",
+                    ":id",
+                    "geo-lists",
+                    "disassociate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "id",
+                      "description": "(Required) Audience identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"geoListIds\": [\n    \"<number>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"succeeded\": [\n      4588119464571480,\n      6623056461501408\n    ],\n    \"failed\": [\n      681473608364969,\n      4495985543599569\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a3f2e994-e8e9-4a5b-b37d-07a0379c437a",
+          "name": "Disassociate a geo-list from an audience",
+          "request": {
+            "name": "Disassociate a geo-list from an audience",
+            "description": {
+              "content": "Removes one geo-list association from an audience. The geo-list itself is not deleted.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "audiences",
+                ":id",
+                "geo-lists",
+                ":geoListId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<number>",
+                  "key": "id",
+                  "description": "(Required) Audience identifier."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<number>",
+                  "key": "geoListId",
+                  "description": "(Required) Geo-list identifier."
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "88fd4c98-5d9b-4dc1-b78e-40209891072c",
+              "name": "Geo-list disassociated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "audiences",
+                    ":id",
+                    "geo-lists",
+                    ":geoListId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "id",
+                      "description": "(Required) Audience identifier."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "geoListId",
+                      "description": "(Required) Geo-list identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f2c36299-3d20-4a11-a9cf-44d174a35c75",
+          "name": "List geo-lists",
+          "request": {
+            "name": "List geo-lists",
+            "description": {
+              "content": "Returns geo-lists for an advertiser.\n\n**Filters:** `advertiserId`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "audiences",
+                "geo-lists"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "advertiserId",
+                  "value": "<number>",
+                  "description": "(Required) Advertiser identifier whose geo lists will be listed."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<number>",
+                  "description": "1-based page number."
+                },
+                {
+                  "disabled": false,
+                  "key": "perPage",
+                  "value": "<number>",
+                  "description": "Results per page (maximum 100)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "061baba7-71c2-4d0c-9598-832a86a483a8",
+              "name": "Paginated geo-list results.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "audiences",
+                    "geo-lists"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "advertiserId",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "<number>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 200,\n      \"name\": \"West coast Media Markets\",\n      \"advertiserId\": 44\n    }\n  ],\n  \"pagination\": {\n    \"total\": 8,\n    \"perPage\": 25,\n    \"page\": 1,\n    \"previousPageUrl\": null,\n    \"nextPageUrl\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "13849d84-0c20-4efb-b668-ed72cc59596d",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "audiences",
+                    "geo-lists"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "advertiserId",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "<number>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 9471.312892772998,\n      \"name\": \"string\",\n      \"advertiserId\": 5110.975280066231\n    },\n    {\n      \"id\": 6111.714067420119,\n      \"name\": \"string\",\n      \"advertiserId\": 9585.435789019702\n    }\n  ],\n  \"pagination\": {\n    \"total\": 7189254358576771,\n    \"perPage\": 4115758525237819,\n    \"page\": 1,\n    \"previousPageUrl\": \"string\",\n    \"nextPageUrl\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0933baa7-e66f-431a-8dc1-587dc219e938",
+          "name": "Create a geo-list",
+          "request": {
+            "name": "Create a geo-list",
+            "description": {
+              "content": "Creates a reusable geo-list for advertiser targeting and returns the created list metadata.\n\nEach `geo[]` entry accepts one of two shapes:\n- **String form** Human readable geo values\n- **Numeric form** Pre-resolved location IDs\n\nThe two shapes may be mixed within a single request.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "audiences",
+                "geo-lists"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"advertiserId\": \"<number>\",\n  \"name\": \"<string>\",\n  \"geo\": [\n    {\n      \"geoType\": \"<string>\",\n      \"values\": [\n        \"<string>\"\n      ]\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b630ba9f-4dc0-4335-93a3-fbad86692bbb",
+              "name": "Created geo-list.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "audiences",
+                    "geo-lists"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"advertiserId\": \"<number>\",\n  \"name\": \"<string>\",\n  \"geo\": [\n    {\n      \"geoType\": \"<string>\",\n      \"values\": [\n        \"<string>\"\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": 200,\n    \"name\": \"West coast Media Markets\",\n    \"createTime\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d6e2ecd9-04a7-47af-9e98-b695c3546432",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "audiences",
+                    "geo-lists"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"advertiserId\": \"<number>\",\n  \"name\": \"<string>\",\n  \"geo\": [\n    {\n      \"geoType\": \"<string>\",\n      \"values\": [\n        \"<string>\"\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"name\": \"string\",\n    \"id\": 3130.8560265148813,\n    \"createTime\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b9cff194-9770-4de2-842b-bebe19a6aaaf",
+          "name": "Get geo-list locations",
+          "request": {
+            "name": "Get geo-list locations",
+            "description": {
+              "content": "Returns the locations contained in a geo list as a list of `{ id, name }` items.\n\nPass `?expand[]=geoType` (or `?expand=geoType`) to additionally include each item's structured `geoType: { id, name }` reference.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "audiences",
+                "geo-lists",
+                ":id",
+                "locations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "advertiserId",
+                  "value": "<number>",
+                  "description": "(Required) Advertiser identifier owning the geo list (required for authorization)."
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>",
+                  "description": "Optional fields to expand. Repeatable: `?expand=geoType` or `?expand[]=geoType`. When present each item includes its structured `geoType` reference."
+                },
+                {
+                  "disabled": false,
+                  "key": "expand",
+                  "value": "<string>",
+                  "description": "Optional fields to expand. Repeatable: `?expand=geoType` or `?expand[]=geoType`. When present each item includes its structured `geoType` reference."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<number>",
+                  "key": "id",
+                  "description": "(Required) Geo-list identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "cd20110f-cea0-40c5-bc74-f69a8caa10b7",
+              "name": "List of geo-list locations.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "audiences",
+                    "geo-lists",
+                    ":id",
+                    "locations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "advertiserId",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "id",
+                      "description": "(Required) Geo-list identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 2347563,\n      \"name\": \"California\",\n      \"geoType\": {\n        \"id\": 5,\n        \"name\": \"State / Region\"\n      }\n    },\n    {\n      \"id\": 2347591,\n      \"name\": \"Oregon\",\n      \"geoType\": {\n        \"id\": 5,\n        \"name\": \"State / Region\"\n      }\n    },\n    {\n      \"id\": 2347618,\n      \"name\": \"Washington\",\n      \"geoType\": {\n        \"id\": 5,\n        \"name\": \"State / Region\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c89cf8fa-9979-4ee1-abec-7446f07905c1",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "audiences",
+                    "geo-lists",
+                    ":id",
+                    "locations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "advertiserId",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "id",
+                      "description": "(Required) Geo-list identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": -6720480536166884,\n      \"name\": \"string\",\n      \"geoType\": {\n        \"id\": 7486300693773203,\n        \"name\": \"string\"\n      }\n    },\n    {\n      \"id\": 1533994996463761,\n      \"name\": \"string\",\n      \"geoType\": {\n        \"id\": -1553492658007352,\n        \"name\": \"string\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.mountain.com/ptv",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "b2543e3b-f9a8-4c3a-8041-ea3f9219bc30",
+    "name": "PTV API - audiences",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "PTV API authoritative source of truth for PTV data.\n\nContact Support:\n Name: MNTN Platform\n Email: support@mountain.com",
+      "type": "text/plain"
+    }
+  }
+}

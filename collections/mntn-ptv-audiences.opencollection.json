@@ -1,0 +1,384 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PTV API - audiences",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "audiences",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List audiences",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/audiences",
+            "params": [
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "query",
+                "description": "Advertiser identifier whose audiences will be listed."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "1-based page number."
+              },
+              {
+                "name": "perPage",
+                "value": "",
+                "type": "query",
+                "description": "Results per page (maximum 100)."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Case-insensitive substring match on audience name."
+              },
+              {
+                "name": "segmentTypes",
+                "value": "",
+                "type": "query",
+                "description": "Repeatable audience type filter."
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Optional fields to expand. Repeatable: `?expand=keywords` or `?expand[]=geoLocations`. `keywords` includes keyword state; `geoLocations` resolves the audience's `geo` location IDs into full `{ id, name, geoType }` objects under a `geoLocations` field."
+              }
+            ]
+          },
+          "docs": "Returns audiences for an advertiser.\n\n**Filters:** `advertiserId`, `search`, `segmentTypes` (repeatable)."
+        },
+        {
+          "info": {
+            "name": "Create an audience",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mountain.com/ptv/api/v1/audiences",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new audience for the advertiser. Keywords are resolved into an expression server-side; geo lists are attached as include/exclude associations after the audience is created."
+        },
+        {
+          "info": {
+            "name": "Get audience by campaign",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/audiences/campaign/:campaignId",
+            "params": [
+              {
+                "name": "campaignId",
+                "value": "",
+                "type": "path",
+                "description": "Campaign identifier."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "1-based page number."
+              },
+              {
+                "name": "perPage",
+                "value": "",
+                "type": "query",
+                "description": "Results per page (maximum 100)."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Case-insensitive substring match on audience name."
+              },
+              {
+                "name": "segmentTypes",
+                "value": "",
+                "type": "query",
+                "description": "Repeatable audience type filter."
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Optional fields to expand. Repeatable: `?expand=keywords` or `?expand[]=geoLocations`. `keywords` includes keyword state; `geoLocations` resolves the audience's `geo` location IDs into full `{ id, name, geoType }` objects under a `geoLocations` field."
+              }
+            ]
+          },
+          "docs": "Returns the audience linked to the given campaign ID."
+        },
+        {
+          "info": {
+            "name": "Search keywords",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/audiences/keywords",
+            "params": [
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "query",
+                "description": "Advertiser ID"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated search terms"
+              }
+            ]
+          },
+          "docs": "Search keywords"
+        },
+        {
+          "info": {
+            "name": "List/Search Geo Locations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/audiences/locations",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "1-based page number."
+              },
+              {
+                "name": "perPage",
+                "value": "",
+                "type": "query",
+                "description": "Results per page (maximum 500). Defaults to 250 — wider than the global default to support picker/autocomplete UIs."
+              },
+              {
+                "name": "geoTypeId",
+                "value": "",
+                "type": "query",
+                "description": "Filter by location type ID. Mutually exclusive with `geoTypeName`."
+              },
+              {
+                "name": "geoTypeName",
+                "value": "",
+                "type": "query",
+                "description": "Filter by location type name (case-insensitive exact match). Mutually exclusive with `geoTypeId`. Defaults to `Media Market` when neither is supplied."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Case-insensitive substring match across the location `name`, `location`, `sub_location1`, and `sub_location2`. When provided, results are ranked by best-column match position."
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Optional fields to expand. Repeatable: `?expand=geoType` or `?expand[]=geoType`. When present each item includes its structured `geoType` reference."
+              }
+            ]
+          },
+          "docs": "Returns geo locations from the US geo catalog.\n\n**Filters:** `search`, and **either** `geoTypeId` **or** `geoTypeName` (mutually exclusive). When neither geo-type filter is supplied. Results are restricted to the United States.\n\nPass `?expand[]=geoType` (or `?expand=geoType`) to additionally include each item's structured `geoType: { id, name }` reference."
+        },
+        {
+          "info": {
+            "name": "Get an audience",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/audiences/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Audience identifier."
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Optional fields to expand. Repeatable: `?expand=keywords` or `?expand[]=geoLocations`. `keywords` includes keyword state; `geoLocations` resolves the audience's `geo` location IDs into full `{ id, name, geoType }` objects under a `geoLocations` field."
+              }
+            ]
+          },
+          "docs": "Returns a single audience by ID."
+        },
+        {
+          "info": {
+            "name": "Patch an audience",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.mountain.com/ptv/api/v1/audiences/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Audience identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates parts of an audience and returns the refreshed audience."
+        },
+        {
+          "info": {
+            "name": "Disassociate geo-lists from an audience",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mountain.com/ptv/api/v1/audiences/:id/geo-lists/disassociate",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Audience identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Removes one or more geo-list associations from an audience.\n\n**Notes:** Geo-lists themselves are not deleted. Each requested id is attempted independently; the response lists which ids succeeded and which failed."
+        },
+        {
+          "info": {
+            "name": "Disassociate a geo-list from an audience",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.mountain.com/ptv/api/v1/audiences/:id/geo-lists/:geoListId",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Audience identifier."
+              },
+              {
+                "name": "geoListId",
+                "value": "",
+                "type": "path",
+                "description": "Geo-list identifier."
+              }
+            ]
+          },
+          "docs": "Removes one geo-list association from an audience. The geo-list itself is not deleted."
+        },
+        {
+          "info": {
+            "name": "List geo-lists",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/audiences/geo-lists",
+            "params": [
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "query",
+                "description": "Advertiser identifier whose geo lists will be listed."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "1-based page number."
+              },
+              {
+                "name": "perPage",
+                "value": "",
+                "type": "query",
+                "description": "Results per page (maximum 100)."
+              }
+            ]
+          },
+          "docs": "Returns geo-lists for an advertiser.\n\n**Filters:** `advertiserId`."
+        },
+        {
+          "info": {
+            "name": "Create a geo-list",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mountain.com/ptv/api/v1/audiences/geo-lists",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a reusable geo-list for advertiser targeting and returns the created list metadata.\n\nEach `geo[]` entry accepts one of two shapes:\n- **String form** Human readable geo values\n- **Numeric form** Pre-resolved location IDs\n\nThe two shapes may be mixed within a single request."
+        },
+        {
+          "info": {
+            "name": "Get geo-list locations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/audiences/geo-lists/:id/locations",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Geo-list identifier."
+              },
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "query",
+                "description": "Advertiser identifier owning the geo list (required for authorization)."
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Optional fields to expand. Repeatable: `?expand=geoType` or `?expand[]=geoType`. When present each item includes its structured `geoType` reference."
+              }
+            ]
+          },
+          "docs": "Returns the locations contained in a geo list as a list of `{ id, name }` items.\n\nPass `?expand[]=geoType` (or `?expand=geoType`) to additionally include each item's structured `geoType: { id, name }` reference."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

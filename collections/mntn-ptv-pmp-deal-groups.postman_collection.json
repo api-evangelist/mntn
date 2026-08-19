@@ -1,0 +1,904 @@
+{
+  "item": [
+    {
+      "id": "870eff5c-5148-405a-9ddb-5739172ba2df",
+      "name": "pmp-deal-groups",
+      "description": {
+        "content": "Private marketplace deal-group management and deal membership.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "174da8ce-83fd-430a-abe3-ed4cf54adc25",
+          "name": "List PMP deal groups",
+          "request": {
+            "name": "List PMP deal groups",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "deal-groups"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<number>",
+                  "description": "1-based page number."
+                },
+                {
+                  "disabled": false,
+                  "key": "perPage",
+                  "value": "<number>",
+                  "description": "Results per page (maximum 100)."
+                },
+                {
+                  "disabled": false,
+                  "key": "sortBy",
+                  "value": "<string>",
+                  "description": "Field to sort by. Defaults to dealGroupId."
+                },
+                {
+                  "disabled": false,
+                  "key": "sortOrder",
+                  "value": "<string>",
+                  "description": "Sort order. Defaults to asc."
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "Case-insensitive name substring (≤ 200 chars)."
+                },
+                {
+                  "disabled": false,
+                  "key": "partnershipDealType",
+                  "value": "<string>",
+                  "description": "Filter groups by partnership deal type."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "41da611e-ab66-4946-9b63-53f44d031ba5",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "deal-groups"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "partnershipDealType",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"dealGroupId\": 5483529174700931,\n      \"name\": \"string\",\n      \"startTime\": \"string\",\n      \"endTime\": \"string\",\n      \"createTime\": \"string\",\n      \"updateTime\": \"string\",\n      \"createdBy\": 167962746991075,\n      \"channelId\": -4857665818445624,\n      \"channelName\": \"string\",\n      \"partnershipDealType\": \"PUB_DIRECT\",\n      \"pmpDeals\": [\n        {\n          \"pmpDealId\": 5383189024175439,\n          \"name\": \"string\"\n        },\n        {\n          \"pmpDealId\": -861794379044058,\n          \"name\": \"string\"\n        }\n      ]\n    },\n    {\n      \"dealGroupId\": 8830728471979487,\n      \"name\": \"string\",\n      \"startTime\": \"string\",\n      \"endTime\": \"string\",\n      \"createTime\": \"string\",\n      \"updateTime\": \"string\",\n      \"createdBy\": 152939816283997,\n      \"channelId\": -7368024676617291,\n      \"channelName\": \"string\",\n      \"partnershipDealType\": \"EXCLUSIVE\",\n      \"pmpDeals\": [\n        {\n          \"pmpDealId\": 4959084735625881,\n          \"name\": \"string\"\n        },\n        {\n          \"pmpDealId\": 6635160251003749,\n          \"name\": \"string\"\n        }\n      ]\n    }\n  ],\n  \"pagination\": {\n    \"total\": 8932637460122433,\n    \"perPage\": 614431161212588,\n    \"page\": 1,\n    \"previousPageUrl\": \"string\",\n    \"nextPageUrl\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "716fa0b1-323e-4372-9a7a-0cfb26e3b053",
+          "name": "Create a PMP deal group",
+          "request": {
+            "name": "Create a PMP deal group",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "deal-groups"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"channelId\": \"<integer>\",\n  \"startTime\": \"<dateTime>\",\n  \"endTime\": \"<dateTime>\",\n  \"partnershipDealType\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2359f6dc-9d2c-42a9-a005-3325127d69f2",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "deal-groups"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"channelId\": \"<integer>\",\n  \"startTime\": \"<dateTime>\",\n  \"endTime\": \"<dateTime>\",\n  \"partnershipDealType\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"dealGroupId\": -3321097389653850,\n    \"name\": \"string\",\n    \"startTime\": \"string\",\n    \"endTime\": \"string\",\n    \"createTime\": \"string\",\n    \"updateTime\": \"string\",\n    \"createdBy\": -281045511321380,\n    \"channelId\": -2201895006854428,\n    \"channelName\": \"string\",\n    \"partnershipDealType\": \"PUB_DIRECT\",\n    \"pmpDeals\": [\n      {\n        \"pmpDealId\": -1726173639034704,\n        \"name\": \"string\"\n      },\n      {\n        \"pmpDealId\": -3317721015106510,\n        \"name\": \"string\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "740b2400-532d-401d-91f0-e27520d3b882",
+          "name": "Bulk-delete PMP deal groups",
+          "request": {
+            "name": "Bulk-delete PMP deal groups",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "deal-groups",
+                "bulk-delete"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dealGroupIds\": [\n    \"<integer>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "997b12c7-3e7f-4dea-ab6a-82ad79190ee2",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "deal-groups",
+                    "bulk-delete"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"dealGroupIds\": [\n    \"<integer>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"groupsDeleted\": 4957236550872051\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c0a27192-1874-439a-8450-f0c3a80514f1",
+          "name": "Get a PMP deal group",
+          "request": {
+            "name": "Get a PMP deal group",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "deal-groups",
+                ":dealGroupId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<number>",
+                  "key": "dealGroupId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "846fa362-45db-4a5f-a380-34c29c76f6a2",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "deal-groups",
+                    ":dealGroupId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "dealGroupId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"dealGroupId\": -3321097389653850,\n    \"name\": \"string\",\n    \"startTime\": \"string\",\n    \"endTime\": \"string\",\n    \"createTime\": \"string\",\n    \"updateTime\": \"string\",\n    \"createdBy\": -281045511321380,\n    \"channelId\": -2201895006854428,\n    \"channelName\": \"string\",\n    \"partnershipDealType\": \"PUB_DIRECT\",\n    \"pmpDeals\": [\n      {\n        \"pmpDealId\": -1726173639034704,\n        \"name\": \"string\"\n      },\n      {\n        \"pmpDealId\": -3317721015106510,\n        \"name\": \"string\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bf624760-fcc7-448e-a4ec-b7a4c1b8ac92",
+          "name": "Update a PMP deal group",
+          "request": {
+            "name": "Update a PMP deal group",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "deal-groups",
+                ":dealGroupId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<number>",
+                  "key": "dealGroupId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"startTime\": \"<dateTime>\",\n  \"endTime\": \"<dateTime>\",\n  \"channelId\": \"<integer>\",\n  \"partnershipDealType\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "214c97a1-aeff-424a-834f-760591487efb",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "deal-groups",
+                    ":dealGroupId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "dealGroupId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"startTime\": \"<dateTime>\",\n  \"endTime\": \"<dateTime>\",\n  \"channelId\": \"<integer>\",\n  \"partnershipDealType\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"dealGroupId\": -3321097389653850,\n    \"name\": \"string\",\n    \"startTime\": \"string\",\n    \"endTime\": \"string\",\n    \"createTime\": \"string\",\n    \"updateTime\": \"string\",\n    \"createdBy\": -281045511321380,\n    \"channelId\": -2201895006854428,\n    \"channelName\": \"string\",\n    \"partnershipDealType\": \"PUB_DIRECT\",\n    \"pmpDeals\": [\n      {\n        \"pmpDealId\": -1726173639034704,\n        \"name\": \"string\"\n      },\n      {\n        \"pmpDealId\": -3317721015106510,\n        \"name\": \"string\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e174aad4-4210-408d-849f-258ae3f42965",
+          "name": "Delete a PMP deal group",
+          "request": {
+            "name": "Delete a PMP deal group",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "deal-groups",
+                ":dealGroupId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<number>",
+                  "key": "dealGroupId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "23cc59e8-a10a-40bf-abc3-92bb1f264225",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "deal-groups",
+                    ":dealGroupId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "dealGroupId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3447984a-62b6-4a26-aae6-7152ddcbb543",
+          "name": "Add a deal to a deal group",
+          "request": {
+            "name": "Add a deal to a deal group",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "deal-groups",
+                ":dealGroupId",
+                "deals",
+                ":pmpDealId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<number>",
+                  "key": "dealGroupId",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<number>",
+                  "key": "pmpDealId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "12f4e0ab-4922-4f28-ad5d-ff5453811c0e",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "deal-groups",
+                    ":dealGroupId",
+                    "deals",
+                    ":pmpDealId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "dealGroupId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "pmpDealId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"pmpDealId\": -3767533171713616,\n    \"dealGroupId\": -5934812441477502,\n    \"createTime\": \"string\",\n    \"updateTime\": \"string\",\n    \"createdBy\": -5784618512564088\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "13267f5d-7b47-4e00-9204-1cfc792dc8d8",
+          "name": "Remove a deal from a deal group",
+          "request": {
+            "name": "Remove a deal from a deal group",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "deal-groups",
+                ":dealGroupId",
+                "deals",
+                ":pmpDealId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<number>",
+                  "key": "dealGroupId",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<number>",
+                  "key": "pmpDealId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "69de83b7-71f6-4a14-8202-653e3d74c226",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "deal-groups",
+                    ":dealGroupId",
+                    "deals",
+                    ":pmpDealId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "dealGroupId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "pmpDealId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.mountain.com/ptv",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "5a9da16e-9c2e-4586-a517-57efa12f260f",
+    "name": "PTV API - pmp-deal-groups",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "PTV API authoritative source of truth for PTV data.\n\nContact Support:\n Name: MNTN Platform\n Email: support@mountain.com",
+      "type": "text/plain"
+    }
+  }
+}

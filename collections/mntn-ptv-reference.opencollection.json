@@ -1,0 +1,90 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PTV API - reference",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "reference",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List allowed goal types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/reference/budget/goals"
+          },
+          "docs": "Returns canonical goal types accepted by campaign and budget APIs."
+        },
+        {
+          "info": {
+            "name": "List allowed budget types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/reference/budget/types"
+          },
+          "docs": "Returns canonical budget type values accepted by budget mutation APIs."
+        },
+        {
+          "info": {
+            "name": "List allowed geo targeting types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/reference/geo/types"
+          },
+          "docs": "Returns supported geo selector types sourced from `geo.location_types` (cached for 1 week). Use the `name` value as the `geoTypeName` filter on `GET /api/v1/audiences/locations`."
+        },
+        {
+          "info": {
+            "name": "List allowed campaign statuses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/reference/campaign/statuses"
+          },
+          "docs": "Returns supported campaign statuses."
+        },
+        {
+          "info": {
+            "name": "List allowed campaign objectives",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/reference/campaign/objectives"
+          },
+          "docs": "Returns supported campaign objective types."
+        },
+        {
+          "info": {
+            "name": "List allowed audience segment types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/reference/audience/segment-types"
+          },
+          "docs": "Returns supported audience segment types."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

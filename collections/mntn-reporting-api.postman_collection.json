@@ -1,0 +1,1801 @@
+{
+  "item": [
+    {
+      "id": "3991eba6-c1ad-4e1b-9e70-bbfec8bfd10c",
+      "name": "API",
+      "description": {
+        "content": "Public reporting data (`/apidata`)",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "abee1d77-8480-420c-80fe-147c635f05ba",
+          "name": "Run a reporting query (GET)",
+          "request": {
+            "name": "Run a reporting query (GET)",
+            "description": {
+              "content": "Validates the API `key`, resolves the advertiser, and executes a reporting query. Prefer **POST /apidata** when sending a large **`filter`** object.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "apidata"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "begin",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "data",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "key",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "sum",
+                  "value": "[\"<string>\",\"<string>\"]",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "{\"key_0\":256.81294754826945}",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "end",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "format",
+                  "value": "human",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "formatdata",
+                  "value": "false",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "fullname",
+                  "value": "<boolean>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "<integer>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "1.09p55O asc",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "accountTypes",
+                  "value": "[\"<integer>\",\"<integer>\"]",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "ids",
+                  "value": "[\"<integer>\",\"<integer>\"]",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "be42e59b-356c-49d9-a342-ce7dbafe585b",
+              "name": "Report data in the requested format",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "apidata"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "begin",
+                      "value": "2020-01-01"
+                    },
+                    {
+                      "key": "data",
+                      "value": "graph.day,graph.impressions"
+                    },
+                    {
+                      "key": "key",
+                      "value": "YOUR_API_KEY"
+                    },
+                    {
+                      "key": "sum",
+                      "value": "campaigninfo.name,campaigninfo.name"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "[object Object]"
+                    },
+                    {
+                      "key": "end",
+                      "value": "2023-12-31"
+                    },
+                    {
+                      "key": "format",
+                      "value": "human"
+                    },
+                    {
+                      "key": "formatdata",
+                      "value": "true"
+                    },
+                    {
+                      "key": "fullname",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "50"
+                    },
+                    {
+                      "key": "sort",
+                      "value": ".eBx.1.. asc"
+                    },
+                    {
+                      "key": "accountTypes",
+                      "value": "<integer>,<integer>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<integer>,<integer>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"report-name\": \"Report\",\n  \"publisher-name\": \"Example Advertiser\",\n  \"begin\": \"2025-07-01T00:00:00\",\n  \"end\": \"2025-08-15T23:59:59\",\n  \"columns\": [\n    {\n      \"table\": \"inventory\",\n      \"name\": \"day\",\n      \"friendly\": \"Day\",\n      \"alias\": \"Day\",\n      \"help\": \"The date of the data\",\n      \"format\": \"date\",\n      \"icon\": \"calendar\",\n      \"friendly-suffix\": \"\",\n      \"target_direction_negative\": {}\n    },\n    {\n      \"table\": \"inventory\",\n      \"name\": \"day\",\n      \"friendly\": \"Day\",\n      \"alias\": \"Day\",\n      \"help\": \"The date of the data\",\n      \"format\": \"date\",\n      \"icon\": \"calendar\",\n      \"friendly-suffix\": \"\",\n      \"target_direction_negative\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "00c26ce5-5a0a-47af-b371-17b441c45491",
+              "name": "Invalid request parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "apidata"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "begin",
+                      "value": "2020-01-01"
+                    },
+                    {
+                      "key": "data",
+                      "value": "graph.day,graph.impressions"
+                    },
+                    {
+                      "key": "key",
+                      "value": "YOUR_API_KEY"
+                    },
+                    {
+                      "key": "sum",
+                      "value": "campaigninfo.name,campaigninfo.name"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "[object Object]"
+                    },
+                    {
+                      "key": "end",
+                      "value": "2023-12-31"
+                    },
+                    {
+                      "key": "format",
+                      "value": "human"
+                    },
+                    {
+                      "key": "formatdata",
+                      "value": "true"
+                    },
+                    {
+                      "key": "fullname",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "50"
+                    },
+                    {
+                      "key": "sort",
+                      "value": ".eBx.1.. asc"
+                    },
+                    {
+                      "key": "accountTypes",
+                      "value": "<integer>,<integer>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<integer>,<integer>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d423fbe2-f20d-4754-8e99-53ec9b7f13ed",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "apidata"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "begin",
+                      "value": "2020-01-01"
+                    },
+                    {
+                      "key": "data",
+                      "value": "graph.day,graph.impressions"
+                    },
+                    {
+                      "key": "key",
+                      "value": "YOUR_API_KEY"
+                    },
+                    {
+                      "key": "sum",
+                      "value": "campaigninfo.name,campaigninfo.name"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "[object Object]"
+                    },
+                    {
+                      "key": "end",
+                      "value": "2023-12-31"
+                    },
+                    {
+                      "key": "format",
+                      "value": "human"
+                    },
+                    {
+                      "key": "formatdata",
+                      "value": "true"
+                    },
+                    {
+                      "key": "fullname",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "50"
+                    },
+                    {
+                      "key": "sort",
+                      "value": ".eBx.1.. asc"
+                    },
+                    {
+                      "key": "accountTypes",
+                      "value": "<integer>,<integer>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<integer>,<integer>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1d558db4-80e2-4bc7-9733-e9ba954c3d57",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "apidata"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "begin",
+                      "value": "2020-01-01"
+                    },
+                    {
+                      "key": "data",
+                      "value": "graph.day,graph.impressions"
+                    },
+                    {
+                      "key": "key",
+                      "value": "YOUR_API_KEY"
+                    },
+                    {
+                      "key": "sum",
+                      "value": "campaigninfo.name,campaigninfo.name"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "[object Object]"
+                    },
+                    {
+                      "key": "end",
+                      "value": "2023-12-31"
+                    },
+                    {
+                      "key": "format",
+                      "value": "human"
+                    },
+                    {
+                      "key": "formatdata",
+                      "value": "true"
+                    },
+                    {
+                      "key": "fullname",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "50"
+                    },
+                    {
+                      "key": "sort",
+                      "value": ".eBx.1.. asc"
+                    },
+                    {
+                      "key": "accountTypes",
+                      "value": "<integer>,<integer>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<integer>,<integer>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "04f9efbf-300d-43a1-884f-ada17fa18092",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "apidata"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "begin",
+                      "value": "2020-01-01"
+                    },
+                    {
+                      "key": "data",
+                      "value": "graph.day,graph.impressions"
+                    },
+                    {
+                      "key": "key",
+                      "value": "YOUR_API_KEY"
+                    },
+                    {
+                      "key": "sum",
+                      "value": "campaigninfo.name,campaigninfo.name"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "[object Object]"
+                    },
+                    {
+                      "key": "end",
+                      "value": "2023-12-31"
+                    },
+                    {
+                      "key": "format",
+                      "value": "human"
+                    },
+                    {
+                      "key": "formatdata",
+                      "value": "true"
+                    },
+                    {
+                      "key": "fullname",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "50"
+                    },
+                    {
+                      "key": "sort",
+                      "value": ".eBx.1.. asc"
+                    },
+                    {
+                      "key": "accountTypes",
+                      "value": "<integer>,<integer>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<integer>,<integer>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6851d172-5ce5-44f4-b3e5-849b0a87a9d4",
+              "name": "Payload Too Large — the query exceeds server memory limits. Use the asynchronous /batch endpoint for large requests. See [Batch docs](https://api3.mountain.com/docs#batch/description/overview).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "apidata"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "begin",
+                      "value": "2020-01-01"
+                    },
+                    {
+                      "key": "data",
+                      "value": "graph.day,graph.impressions"
+                    },
+                    {
+                      "key": "key",
+                      "value": "YOUR_API_KEY"
+                    },
+                    {
+                      "key": "sum",
+                      "value": "campaigninfo.name,campaigninfo.name"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "[object Object]"
+                    },
+                    {
+                      "key": "end",
+                      "value": "2023-12-31"
+                    },
+                    {
+                      "key": "format",
+                      "value": "human"
+                    },
+                    {
+                      "key": "formatdata",
+                      "value": "true"
+                    },
+                    {
+                      "key": "fullname",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "50"
+                    },
+                    {
+                      "key": "sort",
+                      "value": ".eBx.1.. asc"
+                    },
+                    {
+                      "key": "accountTypes",
+                      "value": "<integer>,<integer>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<integer>,<integer>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9af49a01-f281-4593-8675-b31e05961f80",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "apidata"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "begin",
+                      "value": "2020-01-01"
+                    },
+                    {
+                      "key": "data",
+                      "value": "graph.day,graph.impressions"
+                    },
+                    {
+                      "key": "key",
+                      "value": "YOUR_API_KEY"
+                    },
+                    {
+                      "key": "sum",
+                      "value": "campaigninfo.name,campaigninfo.name"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "[object Object]"
+                    },
+                    {
+                      "key": "end",
+                      "value": "2023-12-31"
+                    },
+                    {
+                      "key": "format",
+                      "value": "human"
+                    },
+                    {
+                      "key": "formatdata",
+                      "value": "true"
+                    },
+                    {
+                      "key": "fullname",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "50"
+                    },
+                    {
+                      "key": "sort",
+                      "value": ".eBx.1.. asc"
+                    },
+                    {
+                      "key": "accountTypes",
+                      "value": "<integer>,<integer>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<integer>,<integer>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cf185657-b7ac-447e-9c77-b2b760fa398d",
+              "name": "Gateway Timeout — the query exceeded the synchronous request time limit.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "apidata"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "begin",
+                      "value": "2020-01-01"
+                    },
+                    {
+                      "key": "data",
+                      "value": "graph.day,graph.impressions"
+                    },
+                    {
+                      "key": "key",
+                      "value": "YOUR_API_KEY"
+                    },
+                    {
+                      "key": "sum",
+                      "value": "campaigninfo.name,campaigninfo.name"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "[object Object]"
+                    },
+                    {
+                      "key": "end",
+                      "value": "2023-12-31"
+                    },
+                    {
+                      "key": "format",
+                      "value": "human"
+                    },
+                    {
+                      "key": "formatdata",
+                      "value": "true"
+                    },
+                    {
+                      "key": "fullname",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "50"
+                    },
+                    {
+                      "key": "sort",
+                      "value": ".eBx.1.. asc"
+                    },
+                    {
+                      "key": "accountTypes",
+                      "value": "<integer>,<integer>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<integer>,<integer>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Gateway Timeout",
+              "code": 504,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e9e6c485-860d-4764-bcee-639bc62c35b6",
+          "name": "Run a reporting query (POST)",
+          "request": {
+            "name": "Run a reporting query (POST)",
+            "description": {
+              "content": "Same semantics as GET, with a JSON body for `filter`, column lists, and pagination. Recommended for non-trivial `filter` payloads.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "apidata"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"begin\": \"<string>\",\n  \"data\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"key\": \"<string>\",\n  \"sum\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"filter\": {\n    \"key_0\": \"string\"\n  },\n  \"end\": \"<string>\",\n  \"format\": \"human\",\n  \"formatdata\": false,\n  \"fullname\": \"<boolean>\",\n  \"limit\": \"<integer>\",\n  \"offset\": \"<integer>\",\n  \"sort\": \".L desc\",\n  \"dataColumns\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ef04df4b-6dc6-4764-bb24-853e99e8b741",
+              "name": "Report data in the requested format",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "apidata"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"begin\": \"2020-01-01\",\n  \"data\": [\n    \"graph.impressions\",\n    \"graph.impressions\"\n  ],\n  \"key\": \"YOUR_API_KEY\",\n  \"sum\": [\n    \"campaigninfo.name\",\n    \"campaigninfo.name\"\n  ],\n  \"filter\": {\n    \"key_0\": \"string\",\n    \"key_1\": 606\n  },\n  \"end\": \"2023-12-31\",\n  \"format\": \"human\",\n  \"formatdata\": true,\n  \"fullname\": \"<boolean>\",\n  \"limit\": 50,\n  \"offset\": 50,\n  \"sort\": \"..3..3.98i. asc\",\n  \"dataColumns\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"report-name\": \"Report\",\n  \"publisher-name\": \"Example Advertiser\",\n  \"begin\": \"2025-07-01T00:00:00\",\n  \"end\": \"2025-08-15T23:59:59\",\n  \"columns\": [\n    {\n      \"table\": \"inventory\",\n      \"name\": \"day\",\n      \"friendly\": \"Day\",\n      \"alias\": \"Day\",\n      \"help\": \"The date of the data\",\n      \"format\": \"date\",\n      \"icon\": \"calendar\",\n      \"friendly-suffix\": \"\",\n      \"target_direction_negative\": {}\n    },\n    {\n      \"table\": \"inventory\",\n      \"name\": \"day\",\n      \"friendly\": \"Day\",\n      \"alias\": \"Day\",\n      \"help\": \"The date of the data\",\n      \"format\": \"date\",\n      \"icon\": \"calendar\",\n      \"friendly-suffix\": \"\",\n      \"target_direction_negative\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8e0d2c96-0877-4092-a74e-ae8983e6d545",
+              "name": "Invalid request parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "apidata"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"begin\": \"2020-01-01\",\n  \"data\": [\n    \"graph.impressions\",\n    \"graph.impressions\"\n  ],\n  \"key\": \"YOUR_API_KEY\",\n  \"sum\": [\n    \"campaigninfo.name\",\n    \"campaigninfo.name\"\n  ],\n  \"filter\": {\n    \"key_0\": \"string\",\n    \"key_1\": 606\n  },\n  \"end\": \"2023-12-31\",\n  \"format\": \"human\",\n  \"formatdata\": true,\n  \"fullname\": \"<boolean>\",\n  \"limit\": 50,\n  \"offset\": 50,\n  \"sort\": \"..3..3.98i. asc\",\n  \"dataColumns\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d5061451-5f89-4b52-819a-1b9992dbd0fb",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "apidata"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"begin\": \"2020-01-01\",\n  \"data\": [\n    \"graph.impressions\",\n    \"graph.impressions\"\n  ],\n  \"key\": \"YOUR_API_KEY\",\n  \"sum\": [\n    \"campaigninfo.name\",\n    \"campaigninfo.name\"\n  ],\n  \"filter\": {\n    \"key_0\": \"string\",\n    \"key_1\": 606\n  },\n  \"end\": \"2023-12-31\",\n  \"format\": \"human\",\n  \"formatdata\": true,\n  \"fullname\": \"<boolean>\",\n  \"limit\": 50,\n  \"offset\": 50,\n  \"sort\": \"..3..3.98i. asc\",\n  \"dataColumns\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8e462efc-2fb8-4cbb-801d-1edcdaa06422",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "apidata"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"begin\": \"2020-01-01\",\n  \"data\": [\n    \"graph.impressions\",\n    \"graph.impressions\"\n  ],\n  \"key\": \"YOUR_API_KEY\",\n  \"sum\": [\n    \"campaigninfo.name\",\n    \"campaigninfo.name\"\n  ],\n  \"filter\": {\n    \"key_0\": \"string\",\n    \"key_1\": 606\n  },\n  \"end\": \"2023-12-31\",\n  \"format\": \"human\",\n  \"formatdata\": true,\n  \"fullname\": \"<boolean>\",\n  \"limit\": 50,\n  \"offset\": 50,\n  \"sort\": \"..3..3.98i. asc\",\n  \"dataColumns\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "74c9e1ac-d986-47c1-ae51-9a960a5aaf84",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "apidata"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"begin\": \"2020-01-01\",\n  \"data\": [\n    \"graph.impressions\",\n    \"graph.impressions\"\n  ],\n  \"key\": \"YOUR_API_KEY\",\n  \"sum\": [\n    \"campaigninfo.name\",\n    \"campaigninfo.name\"\n  ],\n  \"filter\": {\n    \"key_0\": \"string\",\n    \"key_1\": 606\n  },\n  \"end\": \"2023-12-31\",\n  \"format\": \"human\",\n  \"formatdata\": true,\n  \"fullname\": \"<boolean>\",\n  \"limit\": 50,\n  \"offset\": 50,\n  \"sort\": \"..3..3.98i. asc\",\n  \"dataColumns\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "41d23a9c-5e39-4f09-88a6-ccb5f48d347e",
+              "name": "Payload Too Large — the query exceeds server memory limits. Use the asynchronous /batch endpoint for large requests. See [Batch docs](https://api3.mountain.com/docs#batch/description/overview).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "apidata"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"begin\": \"2020-01-01\",\n  \"data\": [\n    \"graph.impressions\",\n    \"graph.impressions\"\n  ],\n  \"key\": \"YOUR_API_KEY\",\n  \"sum\": [\n    \"campaigninfo.name\",\n    \"campaigninfo.name\"\n  ],\n  \"filter\": {\n    \"key_0\": \"string\",\n    \"key_1\": 606\n  },\n  \"end\": \"2023-12-31\",\n  \"format\": \"human\",\n  \"formatdata\": true,\n  \"fullname\": \"<boolean>\",\n  \"limit\": 50,\n  \"offset\": 50,\n  \"sort\": \"..3..3.98i. asc\",\n  \"dataColumns\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3b7fe2d4-4fd7-42d8-b119-c391a4a578a5",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "apidata"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"begin\": \"2020-01-01\",\n  \"data\": [\n    \"graph.impressions\",\n    \"graph.impressions\"\n  ],\n  \"key\": \"YOUR_API_KEY\",\n  \"sum\": [\n    \"campaigninfo.name\",\n    \"campaigninfo.name\"\n  ],\n  \"filter\": {\n    \"key_0\": \"string\",\n    \"key_1\": 606\n  },\n  \"end\": \"2023-12-31\",\n  \"format\": \"human\",\n  \"formatdata\": true,\n  \"fullname\": \"<boolean>\",\n  \"limit\": 50,\n  \"offset\": 50,\n  \"sort\": \"..3..3.98i. asc\",\n  \"dataColumns\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "01dfeaa7-0096-4e57-b990-52c8d3828a13",
+              "name": "Gateway Timeout — the query exceeded the synchronous request time limit.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "apidata"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"begin\": \"2020-01-01\",\n  \"data\": [\n    \"graph.impressions\",\n    \"graph.impressions\"\n  ],\n  \"key\": \"YOUR_API_KEY\",\n  \"sum\": [\n    \"campaigninfo.name\",\n    \"campaigninfo.name\"\n  ],\n  \"filter\": {\n    \"key_0\": \"string\",\n    \"key_1\": 606\n  },\n  \"end\": \"2023-12-31\",\n  \"format\": \"human\",\n  \"formatdata\": true,\n  \"fullname\": \"<boolean>\",\n  \"limit\": 50,\n  \"offset\": 50,\n  \"sort\": \"..3..3.98i. asc\",\n  \"dataColumns\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Gateway Timeout",
+              "code": 504,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e62d5588-db98-4b88-8cf7-7f6d20808891",
+          "name": "List reporting metadata",
+          "request": {
+            "name": "List reporting metadata",
+            "description": {
+              "content": "Returns tables, columns and help text available to the advertiser (same `key` and `format` query parameters as **GET /apidata**). \n The response shape depends on `format`: `json` returns a structured JSON object, while `csv`, `excel`, and `human` return tabular text/binary representations of the same metadata. \n There is **no** `filter` query parameter on this route; call **`/apidata`** to apply **`filter`**. Use **`/apilist`** first to discover column identifiers for `data`, `sum`, and `filter`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "apilist"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "key",
+                  "value": "<string>",
+                  "description": "(Required) Advertiser API key (required on every request)."
+                },
+                {
+                  "disabled": false,
+                  "key": "format",
+                  "value": "human",
+                  "description": "defines the content type of the response"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1fff1d7e-b929-429f-8048-1bcbec890455",
+              "name": "Metadata payload in the requested format",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "apilist"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "YOUR_API_KEY"
+                    },
+                    {
+                      "key": "format",
+                      "value": "human"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tables\": [\n    {\n      \"name\": \"Inventory\",\n      \"friendly\": \"Inventory Data\",\n      \"help\": \"Contains inventory information\",\n      \"columns\": [\n        {\n          \"name\": \"Day\",\n          \"friendly\": \"Day\",\n          \"help\": \"The date of the data\",\n          \"format\": \"date\",\n          \"icon\": \"calendar\",\n          \"table\": \"Inventory\",\n          \"fully_qualified_name\": \"Inventory.Day\"\n        },\n        {\n          \"name\": \"Day\",\n          \"friendly\": \"Day\",\n          \"help\": \"The date of the data\",\n          \"format\": \"date\",\n          \"icon\": \"calendar\",\n          \"table\": \"Inventory\",\n          \"fully_qualified_name\": \"Inventory.Day\"\n        }\n      ]\n    },\n    {\n      \"name\": \"Inventory\",\n      \"friendly\": \"Inventory Data\",\n      \"help\": \"Contains inventory information\",\n      \"columns\": [\n        {\n          \"name\": \"Day\",\n          \"friendly\": \"Day\",\n          \"help\": \"The date of the data\",\n          \"format\": \"date\",\n          \"icon\": \"calendar\",\n          \"table\": \"Inventory\",\n          \"fully_qualified_name\": \"Inventory.Day\"\n        },\n        {\n          \"name\": \"Day\",\n          \"friendly\": \"Day\",\n          \"help\": \"The date of the data\",\n          \"format\": \"date\",\n          \"icon\": \"calendar\",\n          \"table\": \"Inventory\",\n          \"fully_qualified_name\": \"Inventory.Day\"\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c1aaaadc-b35c-43bc-92f5-dd432617bc47",
+              "name": "Invalid request parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "apilist"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "YOUR_API_KEY"
+                    },
+                    {
+                      "key": "format",
+                      "value": "human"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3eb08114-70f9-4594-901e-c13259081183",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "apilist"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "YOUR_API_KEY"
+                    },
+                    {
+                      "key": "format",
+                      "value": "human"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b41db95e-f6a4-4473-b5d0-3dfa8a565f68",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "apilist"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "YOUR_API_KEY"
+                    },
+                    {
+                      "key": "format",
+                      "value": "human"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8cdbecec-bb70-4483-b57b-9df52c0650b6",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "apilist"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "YOUR_API_KEY"
+                    },
+                    {
+                      "key": "format",
+                      "value": "human"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "175e35a6-1bb6-476b-b565-01db33b94592",
+              "name": "Payload Too Large — the query exceeds server memory limits. Use the asynchronous /batch endpoint for large requests.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "apilist"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "YOUR_API_KEY"
+                    },
+                    {
+                      "key": "format",
+                      "value": "human"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9032a2a4-4292-4dae-a0bf-29895d1314f1",
+              "name": "An unexpected error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "apilist"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "YOUR_API_KEY"
+                    },
+                    {
+                      "key": "format",
+                      "value": "human"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "95420061-4ca1-4303-baea-23512fef91cc",
+              "name": "Gateway Timeout — the query exceeded the synchronous request time limit.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "apilist"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "YOUR_API_KEY"
+                    },
+                    {
+                      "key": "format",
+                      "value": "human"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Gateway Timeout",
+              "code": 504,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://api3.mntn.com/problems/query-timeout\",\n  \"title\": \"Gateway Timeout\",\n  \"status\": 504,\n  \"detail\": \"Gateway Timeout\",\n  \"instance\": \"/data?aid=12345\",\n  \"timestamp\": \"2026-01-08T17:21:59.445461Z\",\n  \"errorCode\": \"QUERY_TIMEOUT\",\n  \"traceId\": \"64a8b3c2d1e0f9876543210abcdef123\",\n  \"errors\": [\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    },\n    {\n      \"field\": \"aid\",\n      \"message\": \"Advertiser ID is required\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api3.mountain.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "query"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "b9be2360-b803-4a2a-a128-b4eab3dda9cf",
+    "name": "MNTN Reporting API - API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "## Overview\n\nPublic partner reporting surface: **`GET /apilist`** (metadata) and **`GET` / `POST /apidata`**\n(query execution). Authenticate with your API key on each request.\n\n## Data model\n\nSame reporting schema as the broader MNTN platform: **Info** tables (dimensions) and **Summary**\ntables (metrics), joinable on shared keys. Column names in requests use fully qualified identifiers\n(for example `campaigninfo.name`, `graph.impressions`).\n\n## `/apilist`\n\nReturns tables and columns available to the authenticated advertiser.\n\n**Example**\n\n```\nGET /apilist?format=json&key=YOUR_API_KEY\n```\n\n## `/apidata`\n\nReturns rows for the requested columns, date range, filters, and format.\n\n**Tips**\n\n- Prefer **`POST /apidata`** for large filter payloads.\n- Use pagination (`limit` / `offset`) where supported.\n- CSV/Excel exports may be row-capped; see rate limits in platform documentation.\n",
+      "type": "text/plain"
+    }
+  }
+}

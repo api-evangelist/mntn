@@ -1,0 +1,839 @@
+{
+  "item": [
+    {
+      "id": "143ed0c7-1604-44b9-89de-d20842eba209",
+      "name": "reference",
+      "description": {
+        "content": "Enumerations and lookup data shared across endpoints.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "8e74ead4-4f35-4c76-ae8d-d9413a883e3a",
+          "name": "List allowed goal types",
+          "request": {
+            "name": "List allowed goal types",
+            "description": {
+              "content": "Returns canonical goal types accepted by campaign and budget APIs.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "reference",
+                "budget",
+                "goals"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "66fa9759-2285-4c2f-9106-c4c4dfbcadb6",
+              "name": "Reference list.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "reference",
+                    "budget",
+                    "goals"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"ROAS\",\n      \"description\": \"Return on Ad Spend\"\n    },\n    {\n      \"id\": 16,\n      \"name\": \"CPA\",\n      \"description\": \"Cost per Acquisition\"\n    },\n    {\n      \"id\": 3,\n      \"name\": \"ECPA\",\n      \"description\": \"Effective Cost per Acquisition\"\n    },\n    {\n      \"id\": 14,\n      \"name\": \"COST_PER_COMPLETED_VIEW\",\n      \"description\": \"Cost per Completed View\"\n    },\n    {\n      \"id\": 13,\n      \"name\": \"COST_PER_VISIT\",\n      \"description\": \"Cost per Visit\"\n    },\n    {\n      \"id\": 9,\n      \"name\": \"REACH\",\n      \"description\": \"Reach\"\n    },\n    {\n      \"id\": 10,\n      \"name\": \"CLICKS\",\n      \"description\": \"Clicks\"\n    },\n    {\n      \"id\": 12,\n      \"name\": \"VISITS\",\n      \"description\": \"Visits\"\n    },\n    {\n      \"id\": 15,\n      \"name\": \"VISIT_RATE\",\n      \"description\": \"Visit Rate\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "043889ec-dd51-4f49-8d9d-a7afd6149941",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "reference",
+                    "budget",
+                    "goals"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 368.50033523494807,\n      \"name\": \"string\",\n      \"description\": \"string\"\n    },\n    {\n      \"id\": 4267.857562532324,\n      \"name\": \"string\",\n      \"description\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "92841b24-177f-4fb9-b2fc-083914c2d61e",
+          "name": "List allowed budget types",
+          "request": {
+            "name": "List allowed budget types",
+            "description": {
+              "content": "Returns canonical budget type values accepted by budget mutation APIs.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "reference",
+                "budget",
+                "types"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d648bef2-646d-4d40-80e8-c6546ff67b54",
+              "name": "Reference list.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "reference",
+                    "budget",
+                    "types"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"MONTHLY\",\n      \"description\": \"Monthly recurring budget\"\n    },\n    {\n      \"id\": 3,\n      \"name\": \"FLIGHTED\",\n      \"description\": \"Flighted budget with start/end dates\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f0cbe777-c46a-46cc-9c50-04c57b42ad82",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "reference",
+                    "budget",
+                    "types"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 368.50033523494807,\n      \"name\": \"string\",\n      \"description\": \"string\"\n    },\n    {\n      \"id\": 4267.857562532324,\n      \"name\": \"string\",\n      \"description\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c3506704-ae80-4919-97dc-5e768d520c0c",
+          "name": "List allowed geo targeting types",
+          "request": {
+            "name": "List allowed geo targeting types",
+            "description": {
+              "content": "Returns supported geo selector types sourced from `geo.location_types` (cached for 1 week). Use the `name` value as the `geoTypeName` filter on `GET /api/v1/audiences/locations`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "reference",
+                "geo",
+                "types"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "afc00593-c060-4f53-bd63-2db7a700fefe",
+              "name": "Reference list.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "reference",
+                    "geo",
+                    "types"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 5,\n      \"name\": \"STATE\"\n    },\n    {\n      \"id\": 6,\n      \"name\": \"CITY\"\n    },\n    {\n      \"id\": 4,\n      \"name\": \"Media Market\"\n    },\n    {\n      \"id\": 7,\n      \"name\": \"ZIP_CODE\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "69a4c4f9-2ef9-4a58-82d9-2c310b44de0f",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "reference",
+                    "geo",
+                    "types"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 368.50033523494807,\n      \"name\": \"string\",\n      \"description\": \"string\"\n    },\n    {\n      \"id\": 4267.857562532324,\n      \"name\": \"string\",\n      \"description\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d68d1422-d328-4dd1-a2c8-642164c93ad0",
+          "name": "List allowed campaign statuses",
+          "request": {
+            "name": "List allowed campaign statuses",
+            "description": {
+              "content": "Returns supported campaign statuses.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "reference",
+                "campaign",
+                "statuses"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9a3535f6-e4a8-4917-9668-0edbe744092f",
+              "name": "Reference list.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "reference",
+                    "campaign",
+                    "statuses"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"incomplete\",\n      \"name\": \"incomplete\",\n      \"description\": \"Incomplete\"\n    },\n    {\n      \"id\": \"ready\",\n      \"name\": \"ready\",\n      \"description\": \"Ready\"\n    },\n    {\n      \"id\": \"live\",\n      \"name\": \"live\",\n      \"description\": \"Live\"\n    },\n    {\n      \"id\": \"scheduled\",\n      \"name\": \"scheduled\",\n      \"description\": \"Scheduled\"\n    },\n    {\n      \"id\": \"paused\",\n      \"name\": \"paused\",\n      \"description\": \"Paused\"\n    },\n    {\n      \"id\": \"ended\",\n      \"name\": \"ended\",\n      \"description\": \"Ended\"\n    },\n    {\n      \"id\": \"archived\",\n      \"name\": \"archived\",\n      \"description\": \"Archived\"\n    },\n    {\n      \"id\": \"build\",\n      \"name\": \"build\",\n      \"description\": \"Build\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "72335cb0-d3ac-4c76-888e-212e88cda362",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "reference",
+                    "campaign",
+                    "statuses"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"description\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"description\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "97eb889e-dc8a-420c-85f1-e93a08490e30",
+          "name": "List allowed campaign objectives",
+          "request": {
+            "name": "List allowed campaign objectives",
+            "description": {
+              "content": "Returns supported campaign objective types.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "reference",
+                "campaign",
+                "objectives"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "87c0ae9d-67a1-42ec-93ce-6049e75bc23d",
+              "name": "Reference list.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "reference",
+                    "campaign",
+                    "objectives"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"PROSPECTING\",\n      \"name\": \"PROSPECTING\",\n      \"description\": \"Prospecting\"\n    },\n    {\n      \"id\": \"RETARGETING\",\n      \"name\": \"RETARGETING\",\n      \"description\": \"Retargeting\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "06ba6838-eab3-4d47-a3d8-c341a64438e4",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "reference",
+                    "campaign",
+                    "objectives"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"description\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"description\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ff20af8f-850e-49dd-982c-9662fb84f7c0",
+          "name": "List allowed audience segment types",
+          "request": {
+            "name": "List allowed audience segment types",
+            "description": {
+              "content": "Returns supported audience segment types.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "reference",
+                "audience",
+                "segment-types"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8895492b-8c15-4508-8c31-045f9ea075e6",
+              "name": "Reference list.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "reference",
+                    "audience",
+                    "segment-types"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"OPM\",\n      \"description\": \"OPM\"\n    },\n    {\n      \"id\": 2,\n      \"name\": \"FPA\",\n      \"description\": \"FPA\"\n    },\n    {\n      \"id\": 3,\n      \"name\": \"AUTO DEFAULT\",\n      \"description\": \"Auto Default\"\n    },\n    {\n      \"id\": 4,\n      \"name\": \"5 PLUS PV\",\n      \"description\": \"5+ PV\"\n    },\n    {\n      \"id\": 5,\n      \"name\": \"CART\",\n      \"description\": \"Cart\"\n    },\n    {\n      \"id\": 6,\n      \"name\": \"HIGH INTENT C\",\n      \"description\": \"High Intent C\"\n    },\n    {\n      \"id\": 7,\n      \"name\": \"EGO\",\n      \"description\": \"Ego\"\n    },\n    {\n      \"id\": 8,\n      \"name\": \"EXT\",\n      \"description\": \"EXT\"\n    },\n    {\n      \"id\": 9,\n      \"name\": \"HIGH INTENT B\",\n      \"description\": \"High Intent B\"\n    },\n    {\n      \"id\": 10,\n      \"name\": \"1_PLUS_PV\",\n      \"description\": \"1+ PV\"\n    },\n    {\n      \"id\": 11,\n      \"name\": \"1 PLUS CONVERSION\",\n      \"description\": \"1+ Conversion\"\n    },\n    {\n      \"id\": 12,\n      \"name\": \"CONTROL GROUP AUDIENCE\",\n      \"description\": \"Control Group Audience\"\n    },\n    {\n      \"id\": 13,\n      \"name\": \"EGO CAMPAIGN AUDIENCE\",\n      \"description\": \"Ego Campaign Audience\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7a2a9a59-6067-4c37-b2da-da3a84dec1e1",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "reference",
+                    "audience",
+                    "segment-types"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 368.50033523494807,\n      \"name\": \"string\",\n      \"description\": \"string\"\n    },\n    {\n      \"id\": 4267.857562532324,\n      \"name\": \"string\",\n      \"description\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.mountain.com/ptv",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "f9c4861e-e9c7-4a63-87fb-c9523390c4ed",
+    "name": "PTV API - reference",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "PTV API authoritative source of truth for PTV data.\n\nContact Support:\n Name: MNTN Platform\n Email: support@mountain.com",
+      "type": "text/plain"
+    }
+  }
+}

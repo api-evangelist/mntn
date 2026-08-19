@@ -1,0 +1,432 @@
+{
+  "item": [
+    {
+      "id": "9c99a5bc-4314-4d3e-af0e-cf94ab621a7b",
+      "name": "flights",
+      "description": {
+        "content": "Flight (budget window) reads and updates within a campaign.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "312792c6-ad23-4b61-a98e-a7eb3cfa2008",
+          "name": "Get a flight",
+          "request": {
+            "name": "Get a flight",
+            "description": {
+              "content": "Returns a single flight (budget window) for a campaign.\n\n**Notes:** Pass `current` as the flight ID to resolve the active flight.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "campaigns",
+                ":id",
+                "flight",
+                ":flight_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Campaign identifier."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "flight_id",
+                  "description": "(Required) Flight identifier, or `current` to resolve the active flight."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "889849e4-3bb4-44c7-a2c0-470d7b397e4c",
+              "name": "Single flight.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "campaigns",
+                    ":id",
+                    "flight",
+                    ":flight_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Campaign identifier."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flight_id",
+                      "description": "(Required) Flight identifier, or `current` to resolve the active flight."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"flightId\": 9001,\n    \"campaignId\": 501,\n    \"startTime\": \"2026-01-01T00:00:00.000Z\",\n    \"endTime\": \"2026-03-31T23:59:59.000Z\",\n    \"budget\": 5000,\n    \"budgetType\": \"FLIGHTED\",\n    \"status\": \"ACTIVE\",\n    \"createTime\": \"2025-12-15T08:00:00.000Z\",\n    \"updateTime\": \"2026-01-10T12:30:00.000Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6e4b556b-ec2d-42c6-a7ac-b427154bd1e3",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "campaigns",
+                    ":id",
+                    "flight",
+                    ":flight_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Campaign identifier."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flight_id",
+                      "description": "(Required) Flight identifier, or `current` to resolve the active flight."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"flightId\": 6953.214883770089,\n    \"campaignId\": 375.68789560312285,\n    \"startTime\": \"string\",\n    \"endTime\": \"string\",\n    \"budget\": 1326.991793528821,\n    \"budgetType\": \"FLIGHTED\",\n    \"status\": \"ACTIVE\",\n    \"createTime\": \"string\",\n    \"updateTime\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fa39ff1c-cc15-4d49-abc0-e2077be7a4a6",
+          "name": "Patch a flight",
+          "request": {
+            "name": "Patch a flight",
+            "description": {
+              "content": "Updates the budget amount and billing cadence for a specific campaign flight.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "campaigns",
+                ":id",
+                "flight",
+                ":flight_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Campaign identifier."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "flight_id",
+                  "description": "(Required) Flight identifier, or `current` to resolve the active flight."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"budget\": \"<number>\",\n  \"budgetType\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f4496bba-d5d5-459f-a60c-15099a2265b3",
+              "name": "Updated flight.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "campaigns",
+                    ":id",
+                    "flight",
+                    ":flight_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Campaign identifier."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flight_id",
+                      "description": "(Required) Flight identifier, or `current` to resolve the active flight."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"budget\": \"<number>\",\n  \"budgetType\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"flightId\": 9001,\n    \"campaignId\": 501,\n    \"startTime\": \"2026-01-01T00:00:00.000Z\",\n    \"endTime\": \"2026-03-31T23:59:59.000Z\",\n    \"budget\": 5000,\n    \"budgetType\": \"FLIGHTED\",\n    \"status\": \"ACTIVE\",\n    \"createTime\": \"2025-12-15T08:00:00.000Z\",\n    \"updateTime\": \"2026-01-10T12:30:00.000Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "63c2f0bb-1b48-496f-bd18-0ef3e4cf03d0",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "campaigns",
+                    ":id",
+                    "flight",
+                    ":flight_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Campaign identifier."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flight_id",
+                      "description": "(Required) Flight identifier, or `current` to resolve the active flight."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"budget\": \"<number>\",\n  \"budgetType\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"flightId\": 6953.214883770089,\n    \"campaignId\": 375.68789560312285,\n    \"startTime\": \"string\",\n    \"endTime\": \"string\",\n    \"budget\": 1326.991793528821,\n    \"budgetType\": \"FLIGHTED\",\n    \"status\": \"ACTIVE\",\n    \"createTime\": \"string\",\n    \"updateTime\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.mountain.com/ptv",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "40bd01b2-3ccc-4fbb-ba1e-3b2c36d8e574",
+    "name": "PTV API - flights",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "PTV API authoritative source of truth for PTV data.\n\nContact Support:\n Name: MNTN Platform\n Email: support@mountain.com",
+      "type": "text/plain"
+    }
+  }
+}

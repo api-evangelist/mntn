@@ -1,0 +1,194 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PTV API - reporting",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "reporting",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Run a custom report",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mountain.com/ptv/api/v1/reports",
+            "params": [
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "query",
+                "description": "Run reports against the specified advertiser."
+              },
+              {
+                "name": "campaignIds",
+                "value": "",
+                "type": "query",
+                "description": "Optional campaign group IDs. Defaults to all campaigns owned by the advertiser. Intersected with the authenticated actor's campaign scope."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Runs a custom report against the reporting warehouse with caller-supplied parameters.\n\n**Notes:** Call `GET /reports/meta` first to discover available tables and columns."
+        },
+        {
+          "info": {
+            "name": "Get reporting metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/reports/meta",
+            "params": [
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "query",
+                "description": "Advertiser identifier whose reporting metadata will be returned."
+              },
+              {
+                "name": "tables",
+                "value": "",
+                "type": "query",
+                "description": "Filter to specific table names."
+              }
+            ]
+          },
+          "docs": "Returns available tables, columns, and metadata for the requesting advertiser.\n\n**Filters:** `advertiserId`, `tables` (repeatable)."
+        },
+        {
+          "info": {
+            "name": "List export jobs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/reports/batch",
+            "params": [
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "query",
+                "description": "List batch exports owned by the specified advertiser."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated or repeated status filter (QUEUED, PROCESSING, SUCCEEDED, FAILED)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "1-based page number."
+              },
+              {
+                "name": "perPage",
+                "value": "",
+                "type": "query",
+                "description": "Results per page (maximum 100)."
+              }
+            ]
+          },
+          "docs": "Returns a paginated list of recent batch jobs for the advertiser.\n\n**Filters:** `advertiserId`, `status` (comma-separated or repeated)."
+        },
+        {
+          "info": {
+            "name": "Submit a CSV export job",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mountain.com/ptv/api/v1/reports/batch",
+            "params": [
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "query",
+                "description": "Run reports against the specified advertiser."
+              },
+              {
+                "name": "campaignIds",
+                "value": "",
+                "type": "query",
+                "description": "Optional campaign group IDs. Defaults to all campaigns owned by the advertiser. Intersected with the authenticated actor's campaign scope."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Queues an asynchronous CSV export for the advertiser. Returns a `batchId` immediately;\npoll `GET /reports/batch/:batchId` until `SUCCEEDED`, then use the signed `downloadUrl`."
+        },
+        {
+          "info": {
+            "name": "Get batch status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/reports/batch/:batchId",
+            "params": [
+              {
+                "name": "batchId",
+                "value": "",
+                "type": "path",
+                "description": "Batch identifier."
+              },
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "query",
+                "description": "Advertiser identifier owning the batch export."
+              }
+            ]
+          },
+          "docs": "Returns batch status. When `SUCCEEDED` and within retention, a freshly-signed `downloadUrl` is included; clients should not treat the URL as stable."
+        },
+        {
+          "info": {
+            "name": "Regenerate a new signed URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mountain.com/ptv/api/v1/reports/batch/:batchId/regenerate-url",
+            "params": [
+              {
+                "name": "batchId",
+                "value": "",
+                "type": "path",
+                "description": "Batch identifier."
+              },
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "query",
+                "description": "Advertiser identifier owning the batch export."
+              }
+            ]
+          },
+          "docs": "Returns a new signed URL for the result file without re-executing the query."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

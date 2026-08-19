@@ -1,0 +1,78 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PTV API - flights",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "flights",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a flight",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/campaigns/:id/flight/:flight_id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Campaign identifier."
+              },
+              {
+                "name": "flight_id",
+                "value": "",
+                "type": "path",
+                "description": "Flight identifier, or `current` to resolve the active flight."
+              }
+            ]
+          },
+          "docs": "Returns a single flight (budget window) for a campaign.\n\n**Notes:** Pass `current` as the flight ID to resolve the active flight."
+        },
+        {
+          "info": {
+            "name": "Patch a flight",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.mountain.com/ptv/api/v1/campaigns/:id/flight/:flight_id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Campaign identifier."
+              },
+              {
+                "name": "flight_id",
+                "value": "",
+                "type": "path",
+                "description": "Flight identifier, or `current` to resolve the active flight."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the budget amount and billing cadence for a specific campaign flight."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

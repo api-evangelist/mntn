@@ -1,0 +1,88 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PTV API - pmp-campaign-deals",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "pmp-campaign-deals",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List deal groups linked to a campaign",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/campaigns/:campaignId/deal-groups",
+            "params": [
+              {
+                "name": "campaignId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List deal groups linked to a campaign"
+        },
+        {
+          "info": {
+            "name": "Link a campaign to a deal group",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.mountain.com/ptv/api/v1/campaigns/:campaignId/deal-groups/:dealGroupId",
+            "params": [
+              {
+                "name": "campaignId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "dealGroupId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Link a campaign to a deal group"
+        },
+        {
+          "info": {
+            "name": "Unlink a campaign from a deal group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.mountain.com/ptv/api/v1/campaigns/:campaignId/deal-groups/:dealGroupId",
+            "params": [
+              {
+                "name": "campaignId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "dealGroupId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Unlink a campaign from a deal group"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

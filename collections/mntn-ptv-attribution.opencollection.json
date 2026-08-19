@@ -1,0 +1,150 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PTV API - attribution",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "attribution",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Attribution Windows",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/advertisers/:advertiserId/attribution/windows",
+            "params": [
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "path",
+                "description": "Advertiser identifier."
+              }
+            ]
+          },
+          "docs": "Returns the advertiser's retargeting, prospecting, and conversion attribution windows."
+        },
+        {
+          "info": {
+            "name": "Update Attribution Windows",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.mountain.com/ptv/api/v1/advertisers/:advertiserId/attribution/windows",
+            "params": [
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "path",
+                "description": "Advertiser identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates one or more advertiser attribution windows. Omitted windows are left unchanged."
+        },
+        {
+          "info": {
+            "name": "Run Visit And Conversion Estimates",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mountain.com/ptv/api/v1/advertisers/:advertiserId/attribution/estimates",
+            "params": [
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "path",
+                "description": "Advertiser identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Estimates visit and conversion impact for proposed attribution windows by objective.\n\n**Notes:**\n- `retargetingWindowMinutes`, `prospectingWindowMinutes`, and `conversionWindowMinutes` are all in minutes (including conversion)."
+        },
+        {
+          "info": {
+            "name": "Get Current Sales Cycle",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/advertisers/:advertiserId/attribution/sales-cycle",
+            "params": [
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "path",
+                "description": "Advertiser identifier."
+              }
+            ]
+          },
+          "docs": "Returns the advertiser's current sales-cycle length derived from the last 30 days of activity."
+        },
+        {
+          "info": {
+            "name": "Get Blacklist Query Params",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/advertisers/:advertiserId/attribution/blacklist-query-params",
+            "params": [
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "path",
+                "description": "Advertiser identifier."
+              }
+            ]
+          },
+          "docs": "Returns verified-visit blacklist query parameters for the advertiser."
+        },
+        {
+          "info": {
+            "name": "Replace Blacklist Query Params",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.mountain.com/ptv/api/v1/advertisers/:advertiserId/attribution/blacklist-query-params",
+            "params": [
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "path",
+                "description": "Advertiser identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Fully replaces verified-visit blacklist query parameters for the advertiser."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

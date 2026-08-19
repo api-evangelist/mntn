@@ -1,0 +1,286 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PTV API - pixel",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "pixel",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get recommended pixel signal strategies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/advertisers/:advertiserId/pixel/signal-strategies",
+            "params": [
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "path",
+                "description": "Advertiser identifier."
+              }
+            ]
+          },
+          "docs": "Returns smart pixel configuration signal strategies for install recommendations."
+        },
+        {
+          "info": {
+            "name": "Get pixel health overview",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mountain.com/ptv/api/v1/advertisers/:advertiserId/pixel/health-overview",
+            "params": [
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "path",
+                "description": "Advertiser identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns pixel health overview data for the advertiser and site URL."
+        },
+        {
+          "info": {
+            "name": "Check and save pixel warnings",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mountain.com/ptv/api/v1/advertisers/:advertiserId/pixel/warnings/check",
+            "params": [
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "path",
+                "description": "Advertiser identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Evaluates entered URLs for pixel warnings and persists the results."
+        },
+        {
+          "info": {
+            "name": "Check recent Redis pixel events",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mountain.com/ptv/api/v1/advertisers/:advertiserId/pixel/verification/check-redis-events",
+            "params": [
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "path",
+                "description": "Advertiser identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Checks whether recent tracking and conversion pixel events exist in Redis."
+        },
+        {
+          "info": {
+            "name": "Get recent pixel events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/advertisers/:advertiserId/pixel/verification/events",
+            "params": [
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "path",
+                "description": "Advertiser identifier."
+              },
+              {
+                "name": "lookbackSeconds",
+                "value": "",
+                "type": "query",
+                "description": "Lookback window in seconds."
+              }
+            ]
+          },
+          "docs": "Gets recent tracking and conversion pixel events."
+        },
+        {
+          "info": {
+            "name": "Listen for tracking pixel pageview events",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mountain.com/ptv/api/v1/advertisers/:advertiserId/pixel/verification/listen-pageviews",
+            "params": [
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "path",
+                "description": "Advertiser identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Blocks until tracking pixel pageview events are observed or the timeout elapses."
+        },
+        {
+          "info": {
+            "name": "Listen for conversion pixel events",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mountain.com/ptv/api/v1/advertisers/:advertiserId/pixel/verification/listen-conversions",
+            "params": [
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "path",
+                "description": "Advertiser identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Blocks until conversion pixel events are observed or the timeout elapses."
+        },
+        {
+          "info": {
+            "name": "Scrape advertiser site for pixel setup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mountain.com/ptv/api/v1/advertisers/:advertiserId/pixel/verification/scrape-page",
+            "params": [
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "path",
+                "description": "Advertiser identifier."
+              }
+            ]
+          },
+          "docs": "Scrapes the advertiser site to detect pixel installation details."
+        },
+        {
+          "info": {
+            "name": "Analyze and configure pixel order IDs",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mountain.com/ptv/api/v1/advertisers/:advertiserId/pixel/verification/handle-order-ids",
+            "params": [
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "path",
+                "description": "Advertiser identifier."
+              }
+            ]
+          },
+          "docs": "Analyzes order ID configuration and applies recommended pixel settings."
+        },
+        {
+          "info": {
+            "name": "Get GA4 measurement IDs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/advertisers/:advertiserId/pixel/ga4-ids",
+            "params": [
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "path",
+                "description": "Advertiser identifier."
+              }
+            ]
+          },
+          "docs": "Returns stored GA4 measurement IDs for the advertiser."
+        },
+        {
+          "info": {
+            "name": "Store GA4 measurement IDs",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.mountain.com/ptv/api/v1/advertisers/:advertiserId/pixel/ga4-ids",
+            "params": [
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "path",
+                "description": "Advertiser identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Persists GA4 measurement IDs for the advertiser."
+        },
+        {
+          "info": {
+            "name": "Update conversion pixel opt-out status",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.mountain.com/ptv/api/v1/advertisers/:advertiserId/pixel/conversion-opt-out",
+            "params": [
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "path",
+                "description": "Advertiser identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Enables or disables conversion pixel opt-out for the advertiser."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

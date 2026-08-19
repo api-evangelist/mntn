@@ -1,0 +1,70 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PTV API - organizations",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "organizations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Update organization mode",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.mountain.com/ptv/api/v1/orgs/:publicOrgId/mode",
+            "params": [
+              {
+                "name": "publicOrgId",
+                "value": "",
+                "type": "path",
+                "description": "Public organization identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sets organization mode (multi or single). Proxies to advertiser PATCH /orgs/:id with a mode-only body."
+        },
+        {
+          "info": {
+            "name": "Update organization name",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.mountain.com/ptv/api/v1/orgs/:publicOrgId",
+            "params": [
+              {
+                "name": "publicOrgId",
+                "value": "",
+                "type": "path",
+                "description": "Public organization identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the organization display name. Proxies to advertiser PATCH /orgs/:id with a name-only body."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

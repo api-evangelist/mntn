@@ -1,0 +1,92 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PTV API - advertisers",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "advertisers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List/Search advertisers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/advertisers",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "1-based page number."
+              },
+              {
+                "name": "perPage",
+                "value": "",
+                "type": "query",
+                "description": "Results per page (maximum 100)."
+              },
+              {
+                "name": "query",
+                "value": "",
+                "type": "query",
+                "description": "Cross-field search across permitted advertiser fields (OR). Numeric values also match advertiser ID."
+              },
+              {
+                "name": "companyName",
+                "value": "",
+                "type": "query",
+                "description": "Case-insensitive substring match on company name."
+              },
+              {
+                "name": "companyUrl",
+                "value": "",
+                "type": "query",
+                "description": "Case-insensitive substring match on company URL."
+              },
+              {
+                "name": "timezone",
+                "value": "",
+                "type": "query",
+                "description": "Case-insensitive substring match on IANA timezone."
+              }
+            ]
+          },
+          "docs": "Returns advertisers the caller is authorized to see, sorted by company name. Optionally filter by company name, company URL, timezone, or a cross-field query. Omitting filters returns the full authorized list. Searchable fields depend on the caller's advertiser view tier."
+        },
+        {
+          "info": {
+            "name": "Get an advertiser",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/advertisers/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Advertiser identifier."
+              }
+            ]
+          },
+          "docs": "Returns a single advertiser by ID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

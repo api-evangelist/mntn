@@ -1,0 +1,207 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PTV API - pmp-deal-groups",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "pmp-deal-groups",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List PMP deal groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/deal-groups",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "1-based page number."
+              },
+              {
+                "name": "perPage",
+                "value": "",
+                "type": "query",
+                "description": "Results per page (maximum 100)."
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Field to sort by. Defaults to dealGroupId."
+              },
+              {
+                "name": "sortOrder",
+                "value": "",
+                "type": "query",
+                "description": "Sort order. Defaults to asc."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Case-insensitive name substring (≤ 200 chars)."
+              },
+              {
+                "name": "partnershipDealType",
+                "value": "",
+                "type": "query",
+                "description": "Filter groups by partnership deal type."
+              }
+            ]
+          },
+          "docs": "List PMP deal groups"
+        },
+        {
+          "info": {
+            "name": "Create a PMP deal group",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mountain.com/ptv/api/v1/deal-groups",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a PMP deal group"
+        },
+        {
+          "info": {
+            "name": "Bulk-delete PMP deal groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mountain.com/ptv/api/v1/deal-groups/bulk-delete",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Bulk-delete PMP deal groups"
+        },
+        {
+          "info": {
+            "name": "Get a PMP deal group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/deal-groups/:dealGroupId",
+            "params": [
+              {
+                "name": "dealGroupId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a PMP deal group"
+        },
+        {
+          "info": {
+            "name": "Update a PMP deal group",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.mountain.com/ptv/api/v1/deal-groups/:dealGroupId",
+            "params": [
+              {
+                "name": "dealGroupId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a PMP deal group"
+        },
+        {
+          "info": {
+            "name": "Delete a PMP deal group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.mountain.com/ptv/api/v1/deal-groups/:dealGroupId",
+            "params": [
+              {
+                "name": "dealGroupId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a PMP deal group"
+        },
+        {
+          "info": {
+            "name": "Add a deal to a deal group",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.mountain.com/ptv/api/v1/deal-groups/:dealGroupId/deals/:pmpDealId",
+            "params": [
+              {
+                "name": "dealGroupId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "pmpDealId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Add a deal to a deal group"
+        },
+        {
+          "info": {
+            "name": "Remove a deal from a deal group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.mountain.com/ptv/api/v1/deal-groups/:dealGroupId/deals/:pmpDealId",
+            "params": [
+              {
+                "name": "dealGroupId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "pmpDealId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Remove a deal from a deal group"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

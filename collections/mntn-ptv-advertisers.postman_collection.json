@@ -1,0 +1,409 @@
+{
+  "item": [
+    {
+      "id": "18dd3d26-a9f0-4f35-8ce7-991d11ecba56",
+      "name": "advertisers",
+      "description": {
+        "content": "Advertiser directory.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "de8663d4-62ed-4282-b35f-fbb3e15f5ee4",
+          "name": "List/Search advertisers",
+          "request": {
+            "name": "List/Search advertisers",
+            "description": {
+              "content": "Returns advertisers the caller is authorized to see, sorted by company name. Optionally filter by company name, company URL, timezone, or a cross-field query. Omitting filters returns the full authorized list. Searchable fields depend on the caller's advertiser view tier.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "advertisers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<number>",
+                  "description": "1-based page number."
+                },
+                {
+                  "disabled": false,
+                  "key": "perPage",
+                  "value": "<number>",
+                  "description": "Results per page (maximum 100)."
+                },
+                {
+                  "disabled": false,
+                  "key": "query",
+                  "value": "<string>",
+                  "description": "Cross-field search across permitted advertiser fields (OR). Numeric values also match advertiser ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "companyName",
+                  "value": "<string>",
+                  "description": "Case-insensitive substring match on company name."
+                },
+                {
+                  "disabled": false,
+                  "key": "companyUrl",
+                  "value": "<string>",
+                  "description": "Case-insensitive substring match on company URL."
+                },
+                {
+                  "disabled": false,
+                  "key": "timezone",
+                  "value": "<string>",
+                  "description": "Case-insensitive substring match on IANA timezone."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8e106816-fd10-43c8-9ccf-43dd3ddf37b8",
+              "name": "Paginated advertiser list.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "advertisers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "query",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "companyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "companyUrl",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timezone",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"advertiserId\": 9411.068141121274,\n      \"companyName\": \"string\",\n      \"companyUrl\": \"string\",\n      \"timezone\": \"string\"\n    },\n    {\n      \"advertiserId\": 9265.7484086476,\n      \"companyName\": \"string\",\n      \"companyUrl\": \"string\",\n      \"timezone\": \"string\"\n    }\n  ],\n  \"pagination\": {\n    \"total\": 4736195232710124,\n    \"perPage\": 5336582647769526,\n    \"previousPageUrl\": \"string\",\n    \"nextPageUrl\": \"string\",\n    \"page\": 1\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b2ed14f1-2d3a-41ba-95d1-73ccd8a7f4a7",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "advertisers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "query",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "companyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "companyUrl",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timezone",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"advertiserId\": 8944.972189102926,\n      \"companyName\": \"string\",\n      \"companyUrl\": \"string\",\n      \"timezone\": \"string\"\n    },\n    {\n      \"advertiserId\": 632.2775602313712,\n      \"companyName\": \"string\",\n      \"companyUrl\": \"string\",\n      \"timezone\": \"string\"\n    }\n  ],\n  \"pagination\": {\n    \"total\": 3436394718962620,\n    \"perPage\": 270934610694855,\n    \"page\": 1,\n    \"previousPageUrl\": \"string\",\n    \"nextPageUrl\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8ec1d676-f6b2-4f4a-ad03-0b0a40480684",
+          "name": "Get an advertiser",
+          "request": {
+            "name": "Get an advertiser",
+            "description": {
+              "content": "Returns a single advertiser by ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "advertisers",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<number>",
+                  "key": "id",
+                  "description": "(Required) Advertiser identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "713922e4-c8ca-4ccc-a1d3-fc9ad76a64b0",
+              "name": "Single advertiser.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "advertisers",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "id",
+                      "description": "(Required) Advertiser identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"advertiserId\": 6871.610345428205,\n    \"companyName\": \"string\",\n    \"companyUrl\": \"string\",\n    \"timezone\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b9f4d7a1-757b-499a-a68e-e6c80fc65d7a",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "advertisers",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "id",
+                      "description": "(Required) Advertiser identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"advertiserId\": 2584.8419232398223,\n    \"companyName\": \"string\",\n    \"companyUrl\": \"string\",\n    \"timezone\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.mountain.com/ptv",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "c4568353-58fe-44ad-80b0-aca3dfb134e2",
+    "name": "PTV API - advertisers",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "PTV API authoritative source of truth for PTV data.\n\nContact Support:\n Name: MNTN Platform\n Email: support@mountain.com",
+      "type": "text/plain"
+    }
+  }
+}

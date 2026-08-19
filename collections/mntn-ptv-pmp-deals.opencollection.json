@@ -1,0 +1,197 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PTV API - pmp-deals",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "pmp-deals",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List PMP deals",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/deals",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "1-based page number."
+              },
+              {
+                "name": "perPage",
+                "value": "",
+                "type": "query",
+                "description": "Results per page (maximum 100)."
+              },
+              {
+                "name": "partnerId",
+                "value": "",
+                "type": "query",
+                "description": "Filter to a single partner."
+              },
+              {
+                "name": "active",
+                "value": "",
+                "type": "query",
+                "description": "Filter by active status."
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Field to sort by. Defaults to pmpDealId."
+              },
+              {
+                "name": "sortOrder",
+                "value": "",
+                "type": "query",
+                "description": "Sort order. Defaults to desc."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Case-insensitive substring matched over name and partnerDealId (≤ 200 chars)."
+              },
+              {
+                "name": "partnerDealId",
+                "value": "",
+                "type": "query",
+                "description": "Exact partner-assigned deal ID. Returns the single matching deal, or an empty list."
+              },
+              {
+                "name": "partnershipDealType",
+                "value": "",
+                "type": "query",
+                "description": "Filter deals by partnership deal type."
+              }
+            ]
+          },
+          "docs": "List PMP deals"
+        },
+        {
+          "info": {
+            "name": "Create a PMP deal",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mountain.com/ptv/api/v1/deals",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a PMP deal"
+        },
+        {
+          "info": {
+            "name": "Bulk-deactivate PMP deals",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mountain.com/ptv/api/v1/deals/bulk-deactivate",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Bulk-deactivate PMP deals"
+        },
+        {
+          "info": {
+            "name": "Get a PMP deal",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/deals/:pmpDealId",
+            "params": [
+              {
+                "name": "pmpDealId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a PMP deal"
+        },
+        {
+          "info": {
+            "name": "Update a PMP deal",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.mountain.com/ptv/api/v1/deals/:pmpDealId",
+            "params": [
+              {
+                "name": "pmpDealId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a PMP deal"
+        },
+        {
+          "info": {
+            "name": "Delete a PMP deal",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.mountain.com/ptv/api/v1/deals/:pmpDealId",
+            "params": [
+              {
+                "name": "pmpDealId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a PMP deal"
+        },
+        {
+          "info": {
+            "name": "List deal groups a deal belongs to",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/deals/:pmpDealId/deal-groups",
+            "params": [
+              {
+                "name": "pmpDealId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List deal groups a deal belongs to"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,1088 @@
+{
+  "item": [
+    {
+      "id": "3968f56f-50c5-4fa9-bda4-174406e3171d",
+      "name": "attribution",
+      "description": {
+        "content": "Advertiser attribution windows, estimates, sales cycle, and verified-visit blacklist settings.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "25d00495-4b38-40e1-af8b-88f3578dbea7",
+          "name": "Get Attribution Windows",
+          "request": {
+            "name": "Get Attribution Windows",
+            "description": {
+              "content": "Returns the advertiser's retargeting, prospecting, and conversion attribution windows.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "advertisers",
+                ":advertiserId",
+                "attribution",
+                "windows"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<number>",
+                  "key": "advertiserId",
+                  "description": "(Required) Advertiser identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "db20f3ef-60b3-4269-b816-ef6c03ad2748",
+              "name": "Single attribution windows payload.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "advertisers",
+                    ":advertiserId",
+                    "attribution",
+                    "windows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "advertiserId",
+                      "description": "(Required) Advertiser identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"retargetingVerifiedViewWindow\": {\n      \"days\": 7,\n      \"hours\": 0,\n      \"minutes\": 0\n    },\n    \"prospectingVerifiedViewWindow\": {\n      \"days\": 14,\n      \"hours\": 0,\n      \"minutes\": 0\n    },\n    \"conversionWindow\": {\n      \"days\": 30,\n      \"hours\": 0,\n      \"minutes\": 0\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aa1e2c0e-2a10-417a-bf84-26ab5c446e10",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "advertisers",
+                    ":advertiserId",
+                    "attribution",
+                    "windows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "advertiserId",
+                      "description": "(Required) Advertiser identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"retargetingVerifiedViewWindow\": {\n      \"days\": 124342603561689,\n      \"hours\": 11,\n      \"minutes\": 46\n    },\n    \"prospectingVerifiedViewWindow\": {\n      \"days\": 7887931348282459,\n      \"hours\": 15,\n      \"minutes\": 9\n    },\n    \"conversionWindow\": {\n      \"days\": 2034864723954650,\n      \"hours\": 5,\n      \"minutes\": 57\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e309aab1-210c-460b-a00d-b937280c2cf5",
+          "name": "Update Attribution Windows",
+          "request": {
+            "name": "Update Attribution Windows",
+            "description": {
+              "content": "Updates one or more advertiser attribution windows. Omitted windows are left unchanged.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "advertisers",
+                ":advertiserId",
+                "attribution",
+                "windows"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<number>",
+                  "key": "advertiserId",
+                  "description": "(Required) Advertiser identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"retargetingVerifiedViewWindow\": {\n    \"days\": \"<integer>\",\n    \"hours\": \"<integer>\",\n    \"minutes\": \"<integer>\"\n  },\n  \"prospectingVerifiedViewWindow\": {\n    \"days\": \"<integer>\",\n    \"hours\": \"<integer>\",\n    \"minutes\": \"<integer>\"\n  },\n  \"conversionWindow\": {\n    \"days\": \"<integer>\",\n    \"hours\": \"<integer>\",\n    \"minutes\": \"<integer>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d30481b5-ba7b-41a3-ad62-8ef21af07039",
+              "name": "Updated attribution windows payload.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "advertisers",
+                    ":advertiserId",
+                    "attribution",
+                    "windows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "advertiserId",
+                      "description": "(Required) Advertiser identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"retargetingVerifiedViewWindow\": {\n    \"days\": \"<integer>\",\n    \"hours\": \"<integer>\",\n    \"minutes\": \"<integer>\"\n  },\n  \"prospectingVerifiedViewWindow\": {\n    \"days\": \"<integer>\",\n    \"hours\": \"<integer>\",\n    \"minutes\": \"<integer>\"\n  },\n  \"conversionWindow\": {\n    \"days\": \"<integer>\",\n    \"hours\": \"<integer>\",\n    \"minutes\": \"<integer>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"retargetingVerifiedViewWindow\": {\n      \"days\": 7,\n      \"hours\": 0,\n      \"minutes\": 0\n    },\n    \"prospectingVerifiedViewWindow\": {\n      \"days\": 14,\n      \"hours\": 0,\n      \"minutes\": 0\n    },\n    \"conversionWindow\": {\n      \"days\": 30,\n      \"hours\": 0,\n      \"minutes\": 0\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5f3e5b69-59d6-4599-8f87-345ed749305e",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "advertisers",
+                    ":advertiserId",
+                    "attribution",
+                    "windows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "advertiserId",
+                      "description": "(Required) Advertiser identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"retargetingVerifiedViewWindow\": {\n    \"days\": \"<integer>\",\n    \"hours\": \"<integer>\",\n    \"minutes\": \"<integer>\"\n  },\n  \"prospectingVerifiedViewWindow\": {\n    \"days\": \"<integer>\",\n    \"hours\": \"<integer>\",\n    \"minutes\": \"<integer>\"\n  },\n  \"conversionWindow\": {\n    \"days\": \"<integer>\",\n    \"hours\": \"<integer>\",\n    \"minutes\": \"<integer>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"retargetingVerifiedViewWindow\": {\n      \"days\": 124342603561689,\n      \"hours\": 11,\n      \"minutes\": 46\n    },\n    \"prospectingVerifiedViewWindow\": {\n      \"days\": 7887931348282459,\n      \"hours\": 15,\n      \"minutes\": 9\n    },\n    \"conversionWindow\": {\n      \"days\": 2034864723954650,\n      \"hours\": 5,\n      \"minutes\": 57\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fc703781-28ae-49aa-96e0-f18c87f134e2",
+          "name": "Run Visit And Conversion Estimates",
+          "request": {
+            "name": "Run Visit And Conversion Estimates",
+            "description": {
+              "content": "Estimates visit and conversion impact for proposed attribution windows by objective.\n\n**Notes:**\n- `retargetingWindowMinutes`, `prospectingWindowMinutes`, and `conversionWindowMinutes` are all in minutes (including conversion).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "advertisers",
+                ":advertiserId",
+                "attribution",
+                "estimates"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<number>",
+                  "key": "advertiserId",
+                  "description": "(Required) Advertiser identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"retargetingWindowMinutes\": \"<integer>\",\n  \"prospectingWindowMinutes\": \"<integer>\",\n  \"conversionWindowMinutes\": \"<integer>\",\n  \"oldAllowReferralTraffic\": \"<boolean>\",\n  \"newAllowReferralTraffic\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7e682812-7be8-444f-b0e1-75c3a6b3eb6c",
+              "name": "Single visit and conversion estimates payload.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "advertisers",
+                    ":advertiserId",
+                    "attribution",
+                    "estimates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "advertiserId",
+                      "description": "(Required) Advertiser identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"retargetingWindowMinutes\": \"<integer>\",\n  \"prospectingWindowMinutes\": \"<integer>\",\n  \"conversionWindowMinutes\": \"<integer>\",\n  \"oldAllowReferralTraffic\": \"<boolean>\",\n  \"newAllowReferralTraffic\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"retargeting\": {\n      \"visits\": 1200,\n      \"estimatedVisits\": 1350,\n      \"conversions\": 40,\n      \"estimatedConversions\": 48\n    },\n    \"prospecting\": {\n      \"visits\": 3400,\n      \"estimatedVisits\": 3600,\n      \"conversions\": 90,\n      \"estimatedConversions\": 102\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5651670a-40d5-4ce8-923c-1e71b52d065c",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "advertisers",
+                    ":advertiserId",
+                    "attribution",
+                    "estimates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "advertiserId",
+                      "description": "(Required) Advertiser identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"retargetingWindowMinutes\": \"<integer>\",\n  \"prospectingWindowMinutes\": \"<integer>\",\n  \"conversionWindowMinutes\": \"<integer>\",\n  \"oldAllowReferralTraffic\": \"<boolean>\",\n  \"newAllowReferralTraffic\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"retargeting\": {\n      \"visits\": -4795266427940388,\n      \"estimatedVisits\": -6280997176468134,\n      \"conversions\": 481649723903603,\n      \"estimatedConversions\": -4118924010068622\n    },\n    \"prospecting\": {\n      \"visits\": 6699923933191351,\n      \"estimatedVisits\": 848651618252201,\n      \"conversions\": 1722340526201151,\n      \"estimatedConversions\": 8540123966186013\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "684c180e-a2da-4f56-b38d-f31800facc8b",
+          "name": "Get Current Sales Cycle",
+          "request": {
+            "name": "Get Current Sales Cycle",
+            "description": {
+              "content": "Returns the advertiser's current sales-cycle length derived from the last 30 days of activity.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "advertisers",
+                ":advertiserId",
+                "attribution",
+                "sales-cycle"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<number>",
+                  "key": "advertiserId",
+                  "description": "(Required) Advertiser identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "14804d23-3732-41a2-baaa-7d67c802e896",
+              "name": "Single sales-cycle payload.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "advertisers",
+                    ":advertiserId",
+                    "attribution",
+                    "sales-cycle"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "advertiserId",
+                      "description": "(Required) Advertiser identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"salesCycleLast30Days\": 4.61,\n    \"salesCycleLast30DaysText\": \"4 days 14 hours 45 mins\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "399ebdaf-fe79-4eca-bd14-63db4946607e",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "advertisers",
+                    ":advertiserId",
+                    "attribution",
+                    "sales-cycle"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "advertiserId",
+                      "description": "(Required) Advertiser identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"salesCycleLast30Days\": 3580.829758554801,\n    \"salesCycleLast30DaysText\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d675d253-13ca-49b1-af63-6d9ce6adb031",
+          "name": "Get Blacklist Query Params",
+          "request": {
+            "name": "Get Blacklist Query Params",
+            "description": {
+              "content": "Returns verified-visit blacklist query parameters for the advertiser.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "advertisers",
+                ":advertiserId",
+                "attribution",
+                "blacklist-query-params"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<number>",
+                  "key": "advertiserId",
+                  "description": "(Required) Advertiser identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "92277ce7-9578-436b-984b-7321b73180e4",
+              "name": "Single blacklist query params payload.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "advertisers",
+                    ":advertiserId",
+                    "attribution",
+                    "blacklist-query-params"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "advertiserId",
+                      "description": "(Required) Advertiser identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"blacklistQueryParams\": [\n      \"utm_source=partner\",\n      \"ref=affiliate\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "62df4d7f-e7c2-4667-9f84-6d7b1b294117",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "advertisers",
+                    ":advertiserId",
+                    "attribution",
+                    "blacklist-query-params"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "advertiserId",
+                      "description": "(Required) Advertiser identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"blacklistQueryParams\": [\n      \"string\",\n      \"string\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "99fc63ad-6da5-4358-bb14-9c137336df35",
+          "name": "Replace Blacklist Query Params",
+          "request": {
+            "name": "Replace Blacklist Query Params",
+            "description": {
+              "content": "Fully replaces verified-visit blacklist query parameters for the advertiser.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "advertisers",
+                ":advertiserId",
+                "attribution",
+                "blacklist-query-params"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<number>",
+                  "key": "advertiserId",
+                  "description": "(Required) Advertiser identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"blacklistQueryParams\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "534ea755-a9d8-486a-b195-2508dab52ed9",
+              "name": "Updated blacklist query params payload.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "advertisers",
+                    ":advertiserId",
+                    "attribution",
+                    "blacklist-query-params"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "advertiserId",
+                      "description": "(Required) Advertiser identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"blacklistQueryParams\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"blacklistQueryParams\": [\n      \"utm_source=partner\",\n      \"ref=affiliate\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fe9566e4-1d02-4596-95f1-db67656e507e",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "advertisers",
+                    ":advertiserId",
+                    "attribution",
+                    "blacklist-query-params"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "advertiserId",
+                      "description": "(Required) Advertiser identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"blacklistQueryParams\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"blacklistQueryParams\": [\n      \"string\",\n      \"string\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.mountain.com/ptv",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "4c7fd540-b974-461a-9895-0aa149c7e62a",
+    "name": "PTV API - attribution",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "PTV API authoritative source of truth for PTV data.\n\nContact Support:\n Name: MNTN Platform\n Email: support@mountain.com",
+      "type": "text/plain"
+    }
+  }
+}

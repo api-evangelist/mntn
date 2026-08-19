@@ -1,0 +1,715 @@
+{
+  "item": [
+    {
+      "id": "379a177e-4309-44f8-98ab-45a64a5b4635",
+      "name": "creatives",
+      "description": {
+        "content": "Creative library lookup, with normalized video processing status.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "1ca453c8-8543-4126-973a-db2eaca183db",
+          "name": "List creatives",
+          "request": {
+            "name": "List creatives",
+            "description": {
+              "content": "Returns the advertiser's creative library, newest first, with each creative's normalized processing status.\n\n**Filters:** `advertiserId` (required), `status`.\n\n**Notes:** Freshly uploaded creatives appear with `status: processing` and are unusable until it becomes `ready`; poll `GET /v1/creatives/{id}` for a single creative's status. The stored `videoUrl` is returned only at the full field scope.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "creatives"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<number>",
+                  "description": "1-based page number."
+                },
+                {
+                  "disabled": false,
+                  "key": "perPage",
+                  "value": "<number>",
+                  "description": "Results per page (maximum 100)."
+                },
+                {
+                  "disabled": false,
+                  "key": "advertiserId",
+                  "value": "<number>",
+                  "description": "(Required) Advertiser whose creative library to list. Required; the read is authorized and scoped to this advertiser."
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Filter by normalized processing status: `processing`, `ready`, `rejected`, or `in_review`."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "11a4b387-b3f6-45ba-916e-dd0e36ada6ef",
+              "name": "Paginated creative list.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "creatives"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "advertiserId",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 44823,\n      \"name\": \"Q3 Hero 15s Cutdown\",\n      \"status\": \"processing\",\n      \"videoUrl\": \"https://cdn.example/storage/video/12345/44823/hero-15.mp4\",\n      \"posterUrl\": null,\n      \"durationSeconds\": 15,\n      \"rejectionReasons\": null,\n      \"advertiserId\": 12345,\n      \"createdAt\": \"2026-06-27T00:00:00.000Z\"\n    },\n    {\n      \"id\": 44821,\n      \"name\": \"Q3 Hero 30s\",\n      \"status\": \"ready\",\n      \"videoUrl\": \"https://cdn.example/storage/video/12345/44821/hero.mp4\",\n      \"posterUrl\": \"https://cdn.example/storage/video/12345/44821/poster.jpg\",\n      \"durationSeconds\": 30,\n      \"rejectionReasons\": null,\n      \"advertiserId\": 12345,\n      \"createdAt\": \"2026-06-26T00:00:00.000Z\"\n    }\n  ],\n  \"pagination\": {\n    \"total\": 2,\n    \"perPage\": 25,\n    \"page\": 1,\n    \"previousPageUrl\": null,\n    \"nextPageUrl\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2c02ff94-943c-45f4-b295-cedb47dc5c53",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "creatives"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "advertiserId",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 5325293540517649,\n      \"name\": \"string\",\n      \"status\": \"string\",\n      \"videoUrl\": \"string\",\n      \"posterUrl\": \"string\",\n      \"durationSeconds\": 8198.920632142039,\n      \"rejectionReasons\": [\n        {\n          \"reason\": \"string\",\n          \"description\": [\n            \"string\",\n            \"string\"\n          ]\n        },\n        {\n          \"reason\": \"string\",\n          \"description\": [\n            \"string\",\n            \"string\"\n          ]\n        }\n      ],\n      \"advertiserId\": 1100307560056251,\n      \"createdAt\": \"string\"\n    },\n    {\n      \"id\": 4541260831641887,\n      \"name\": \"string\",\n      \"status\": \"string\",\n      \"videoUrl\": \"string\",\n      \"posterUrl\": \"string\",\n      \"durationSeconds\": 4250.6588311698715,\n      \"rejectionReasons\": [\n        {\n          \"reason\": \"string\",\n          \"description\": [\n            \"string\",\n            \"string\"\n          ]\n        },\n        {\n          \"reason\": \"string\",\n          \"description\": [\n            \"string\",\n            \"string\"\n          ]\n        }\n      ],\n      \"advertiserId\": -58269260209122,\n      \"createdAt\": \"string\"\n    }\n  ],\n  \"pagination\": {\n    \"total\": 3118388109796265,\n    \"perPage\": 2204124014828008,\n    \"page\": 1,\n    \"previousPageUrl\": \"string\",\n    \"nextPageUrl\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b15e6b09-d8d7-4df2-9fea-b764617c75ba",
+          "name": "Upload a creative",
+          "request": {
+            "name": "Upload a creative",
+            "description": {
+              "content": "Uploads a video into the advertiser's creative library. The request is `multipart/form-data` with the plain fields `advertiserId` (required) and `name` (optional display name), followed by `file` (the video bytes, streamed). Field parts must precede the `file` part.\n\n**Notes:** Processing is asynchronous — the response returns the created creative with `status: processing`; poll `GET /v1/creatives/{id}` with backoff until a terminal status (`ready` or `rejected`). Accepted content types are `video/mp4`, `video/quicktime`, and `video/webm`. The upload is not idempotent: a client retry after a timeout may create a duplicate library entry. The stored `videoUrl` is returned only at the full field scope.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "creatives"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "advertiserId",
+                  "value": "<integer>",
+                  "type": "text",
+                  "description": "(Required) Advertiser whose library receives the creative. Must precede the `file` part."
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "description": "(Required) The video bytes (`video/mp4`, `video/quicktime`, or `video/webm`). Must be the final part."
+                },
+                {
+                  "key": "name",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "Optional display name; defaults to the uploaded file's name. Must precede the `file` part."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ab9afc92-0689-4d61-aa50-2207d6c62cc5",
+              "name": "Created creative; analysis is still processing.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "creatives"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) Advertiser whose library receives the creative. Must precede the `file` part.",
+                        "type": "text/plain"
+                      },
+                      "key": "advertiserId",
+                      "value": "<integer>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The video bytes (`video/mp4`, `video/quicktime`, or `video/webm`). Must be the final part.",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<binary>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Optional display name; defaults to the uploaded file's name. Must precede the `file` part.",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "<string>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": 44898,\n    \"name\": \"Q3 Hero 30s\",\n    \"status\": \"processing\",\n    \"videoUrl\": \"https://cdn.example/storage/video/12345/2c0efc70-9f2e-4f6b-8a48-1f1de6a3c9d1/2c0efc70-9f2e-4f6b-8a48-1f1de6a3c9d1.mp4\",\n    \"posterUrl\": null,\n    \"durationSeconds\": null,\n    \"rejectionReasons\": null,\n    \"advertiserId\": 12345,\n    \"createdAt\": \"2026-06-26T00:00:00.000Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "419e49d1-da30-4ff5-8d73-c41e441d6176",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "creatives"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) Advertiser whose library receives the creative. Must precede the `file` part.",
+                        "type": "text/plain"
+                      },
+                      "key": "advertiserId",
+                      "value": "<integer>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The video bytes (`video/mp4`, `video/quicktime`, or `video/webm`). Must be the final part.",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<binary>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Optional display name; defaults to the uploaded file's name. Must precede the `file` part.",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "<string>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": 1651572282484493,\n    \"name\": \"string\",\n    \"status\": \"string\",\n    \"videoUrl\": \"string\",\n    \"posterUrl\": \"string\",\n    \"durationSeconds\": 950.6163960613378,\n    \"rejectionReasons\": [\n      {\n        \"reason\": \"string\",\n        \"description\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      {\n        \"reason\": \"string\",\n        \"description\": [\n          \"string\",\n          \"string\"\n        ]\n      }\n    ],\n    \"advertiserId\": -8858546727347583,\n    \"createdAt\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a334ff0c-1f0d-481a-8a3c-b2bd2b15e311",
+          "name": "Get a creative",
+          "request": {
+            "name": "Get a creative",
+            "description": {
+              "content": "Returns a creative from the advertiser's library, including its normalized processing status.\n\n**Notes:** Upload is asynchronous, so a freshly uploaded creative starts as `processing` and is unusable until `status` becomes `ready`; poll this endpoint with backoff until a terminal status (`ready` or `rejected`). The stored `videoUrl` is returned only at the full field scope.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "creatives",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "advertiserId",
+                  "value": "<number>",
+                  "description": "(Required) Advertiser that owns the creative. Required; the read is authorized and scoped to this advertiser."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<number>",
+                  "key": "id",
+                  "description": "(Required) Creative identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6b96ac12-fbcb-4c4d-a2fd-ffbd129a0522",
+              "name": "Single creative.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "creatives",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "advertiserId",
+                      "value": "<number>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "id",
+                      "description": "(Required) Creative identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": 44821,\n    \"name\": \"Q3 Hero 30s\",\n    \"status\": \"ready\",\n    \"videoUrl\": \"https://cdn.example/storage/video/12345/44821/hero.mp4\",\n    \"posterUrl\": \"https://cdn.example/storage/video/12345/44821/poster.jpg\",\n    \"durationSeconds\": 30,\n    \"rejectionReasons\": null,\n    \"advertiserId\": 12345,\n    \"createdAt\": \"2026-06-26T00:00:00.000Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6debc7d9-7703-4354-9467-b57b80004f5d",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "creatives",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "advertiserId",
+                      "value": "<number>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "id",
+                      "description": "(Required) Creative identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": 1651572282484493,\n    \"name\": \"string\",\n    \"status\": \"string\",\n    \"videoUrl\": \"string\",\n    \"posterUrl\": \"string\",\n    \"durationSeconds\": 950.6163960613378,\n    \"rejectionReasons\": [\n      {\n        \"reason\": \"string\",\n        \"description\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      {\n        \"reason\": \"string\",\n        \"description\": [\n          \"string\",\n          \"string\"\n        ]\n      }\n    ],\n    \"advertiserId\": -8858546727347583,\n    \"createdAt\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bf0a8eb9-bc28-4ce6-8f8f-a2393a857694",
+          "name": "Delete a creative",
+          "request": {
+            "name": "Delete a creative",
+            "description": {
+              "content": "Deletes a creative from the advertiser's library. This is a soft delete: the creative is archived and no longer appears in library listings, but its stored assets are not immediately purged.\n\n**Notes:** A creative that is still `processing` can be deleted; its analysis result is discarded. Deleting a creative does not affect campaigns it was previously associated with.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "creatives",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "advertiserId",
+                  "value": "<number>",
+                  "description": "(Required) Advertiser that owns the creative. Required; the delete is authorized and scoped to this advertiser."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<number>",
+                  "key": "id",
+                  "description": "(Required) Creative identifier."
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "48683416-15c0-46da-a1c0-46f8803c0f04",
+              "name": "Creative deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "creatives",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "advertiserId",
+                      "value": "<number>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "id",
+                      "description": "(Required) Creative identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.mountain.com/ptv",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "a0fa4205-c50f-428d-87d6-da5c6839ab75",
+    "name": "PTV API - creatives",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "PTV API authoritative source of truth for PTV data.\n\nContact Support:\n Name: MNTN Platform\n Email: support@mountain.com",
+      "type": "text/plain"
+    }
+  }
+}

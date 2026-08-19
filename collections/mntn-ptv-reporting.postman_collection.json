@@ -1,0 +1,1175 @@
+{
+  "item": [
+    {
+      "id": "e2f94f23-79ea-4577-8121-accc3a58872f",
+      "name": "reporting",
+      "description": {
+        "content": "Custom and metadata reporting endpoints.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "11bda23f-61eb-4ba8-b15e-74f86a4fdb06",
+          "name": "Run a custom report",
+          "request": {
+            "name": "Run a custom report",
+            "description": {
+              "content": "Runs a custom report against the reporting warehouse with caller-supplied parameters.\n\n**Notes:** Call `GET /reports/meta` first to discover available tables and columns.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "reports"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "advertiserId",
+                  "value": "<number>",
+                  "description": "(Required) Run reports against the specified advertiser."
+                },
+                {
+                  "disabled": false,
+                  "key": "campaignIds",
+                  "value": "<integer>",
+                  "description": "Optional campaign group IDs. Defaults to all campaigns owned by the advertiser. Intersected with the authenticated actor's campaign scope."
+                },
+                {
+                  "disabled": false,
+                  "key": "campaignIds",
+                  "value": "<integer>",
+                  "description": "Optional campaign group IDs. Defaults to all campaigns owned by the advertiser. Intersected with the authenticated actor's campaign scope."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"sum\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"filter\": {\n    \"key_0\": {}\n  },\n  \"begin\": \"<string>\",\n  \"end\": \"<string>\",\n  \"preset\": \"<string>\",\n  \"period\": \"<string>\",\n  \"limit\": \"<integer>\",\n  \"offset\": \"<integer>\",\n  \"sort\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"includeToday\": \"<boolean>\",\n  \"formatData\": \"<boolean>\",\n  \"fullName\": \"<boolean>\",\n  \"allowNull\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f2fc4d1d-c87d-49cc-84f1-e2cdf8eb3e6b",
+              "name": "Report rows.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "reports"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "advertiserId",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "campaignIds",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "campaignIds",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": [\n    \"Graph.Day\",\n    \"Graph.Conversions\",\n    \"Graph.OrderValue\"\n  ],\n  \"sum\": [\n    \"Graph.PostalCode\"\n  ],\n  \"preset\": \"LAST_30_DAYS\",\n  \"period\": \"DAYS\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"report-name\": \"string\",\n    \"advertiser-name\": \"string\",\n    \"begin\": \"string\",\n    \"end\": \"string\",\n    \"columns\": [\n      {\n        \"name\": \"string\",\n        \"table\": \"string\",\n        \"friendly\": \"string\",\n        \"help\": \"string\",\n        \"format\": \"string\",\n        \"alias\": \"string\"\n      },\n      {\n        \"name\": \"string\",\n        \"table\": \"string\",\n        \"friendly\": \"string\",\n        \"help\": \"string\",\n        \"format\": \"string\",\n        \"alias\": \"string\"\n      }\n    ],\n    \"rows\": [\n      {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\",\n        \"key_3\": \"string\",\n        \"key_4\": \"string\"\n      },\n      {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9e62c8a0-bc34-465d-9456-2cd8c6ba6699",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "reports"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "advertiserId",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "campaignIds",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "campaignIds",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": [\n    \"Graph.Day\",\n    \"Graph.Conversions\",\n    \"Graph.OrderValue\"\n  ],\n  \"sum\": [\n    \"Graph.PostalCode\"\n  ],\n  \"preset\": \"LAST_30_DAYS\",\n  \"period\": \"DAYS\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"report-name\": \"string\",\n    \"advertiser-name\": \"string\",\n    \"begin\": \"string\",\n    \"end\": \"string\",\n    \"columns\": [\n      {\n        \"name\": \"string\",\n        \"table\": \"string\",\n        \"friendly\": \"string\",\n        \"help\": \"string\",\n        \"format\": \"string\",\n        \"alias\": \"string\"\n      },\n      {\n        \"name\": \"string\",\n        \"table\": \"string\",\n        \"friendly\": \"string\",\n        \"help\": \"string\",\n        \"format\": \"string\",\n        \"alias\": \"string\"\n      }\n    ],\n    \"rows\": [\n      {\n        \"key_0\": \"string\"\n      },\n      {\n        \"key_0\": \"string\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "58d7887f-cae8-4da4-8a33-d90df4b9bae8",
+          "name": "Get reporting metadata",
+          "request": {
+            "name": "Get reporting metadata",
+            "description": {
+              "content": "Returns available tables, columns, and metadata for the requesting advertiser.\n\n**Filters:** `advertiserId`, `tables` (repeatable).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "reports",
+                "meta"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "advertiserId",
+                  "value": "<number>",
+                  "description": "(Required) Advertiser identifier whose reporting metadata will be returned."
+                },
+                {
+                  "disabled": false,
+                  "key": "tables",
+                  "value": "<string>",
+                  "description": "Filter to specific table names."
+                },
+                {
+                  "disabled": false,
+                  "key": "tables",
+                  "value": "<string>",
+                  "description": "Filter to specific table names."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "57b62257-10c2-4d2d-812f-207d001ebfea",
+              "name": "Reporting metadata.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "reports",
+                    "meta"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "advertiserId",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "tables",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tables",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"tables\": [\n      {\n        \"table\": \"string\",\n        \"type\": \"string\",\n        \"friendly\": \"string\",\n        \"columns\": [\n          {\n            \"name\": \"string\",\n            \"friendly\": \"string\",\n            \"format\": \"string\",\n            \"help\": \"string\",\n            \"hide\": true,\n            \"icon\": \"string\",\n            \"friendly-suffix\": \"string\",\n            \"column_filters\": [\n              \"string\",\n              \"string\"\n            ],\n            \"period\": \"string\",\n            \"target_direction_negative\": false,\n            \"compatible-dimensions\": [\n              \"string\",\n              \"string\"\n            ],\n            \"tags\": [\n              \"string\",\n              \"string\"\n            ]\n          },\n          {\n            \"name\": \"string\",\n            \"friendly\": \"string\",\n            \"format\": \"string\",\n            \"help\": \"string\",\n            \"hide\": false,\n            \"icon\": \"string\",\n            \"friendly-suffix\": \"string\",\n            \"column_filters\": [\n              \"string\",\n              \"string\"\n            ],\n            \"period\": \"string\",\n            \"target_direction_negative\": true,\n            \"compatible-dimensions\": [\n              \"string\",\n              \"string\"\n            ],\n            \"tags\": [\n              \"string\",\n              \"string\"\n            ]\n          }\n        ],\n        \"exclude-list\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      {\n        \"table\": \"string\",\n        \"type\": \"string\",\n        \"friendly\": \"string\",\n        \"columns\": [\n          {\n            \"name\": \"string\",\n            \"friendly\": \"string\",\n            \"format\": \"string\",\n            \"help\": \"string\",\n            \"hide\": true,\n            \"icon\": \"string\",\n            \"friendly-suffix\": \"string\",\n            \"column_filters\": [\n              \"string\",\n              \"string\"\n            ],\n            \"period\": \"string\",\n            \"target_direction_negative\": true,\n            \"compatible-dimensions\": [\n              \"string\",\n              \"string\"\n            ],\n            \"tags\": [\n              \"string\",\n              \"string\"\n            ]\n          },\n          {\n            \"name\": \"string\",\n            \"friendly\": \"string\",\n            \"format\": \"string\",\n            \"help\": \"string\",\n            \"hide\": false,\n            \"icon\": \"string\",\n            \"friendly-suffix\": \"string\",\n            \"column_filters\": [\n              \"string\",\n              \"string\"\n            ],\n            \"period\": \"string\",\n            \"target_direction_negative\": true,\n            \"compatible-dimensions\": [\n              \"string\",\n              \"string\"\n            ],\n            \"tags\": [\n              \"string\",\n              \"string\"\n            ]\n          }\n        ],\n        \"exclude-list\": [\n          \"string\",\n          \"string\"\n        ]\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ab5d05d7-fd36-49da-90ea-3c20abbf6c9b",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "reports",
+                    "meta"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "advertiserId",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "tables",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tables",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"tables\": [\n      {\n        \"table\": \"string\",\n        \"type\": \"string\",\n        \"friendly\": \"string\",\n        \"columns\": [\n          {\n            \"name\": \"string\",\n            \"friendly\": \"string\",\n            \"format\": \"string\",\n            \"help\": \"string\",\n            \"hide\": false,\n            \"icon\": \"string\",\n            \"friendly-suffix\": \"string\",\n            \"column_filters\": [\n              \"string\",\n              \"string\"\n            ],\n            \"period\": \"string\",\n            \"target_direction_negative\": false,\n            \"compatible-dimensions\": [\n              \"string\",\n              \"string\"\n            ],\n            \"tags\": [\n              \"string\",\n              \"string\"\n            ]\n          },\n          {\n            \"name\": \"string\",\n            \"friendly\": \"string\",\n            \"format\": \"string\",\n            \"help\": \"string\",\n            \"hide\": true,\n            \"icon\": \"string\",\n            \"friendly-suffix\": \"string\",\n            \"column_filters\": [\n              \"string\",\n              \"string\"\n            ],\n            \"period\": \"string\",\n            \"target_direction_negative\": false,\n            \"compatible-dimensions\": [\n              \"string\",\n              \"string\"\n            ],\n            \"tags\": [\n              \"string\",\n              \"string\"\n            ]\n          }\n        ],\n        \"exclude-list\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      {\n        \"table\": \"string\",\n        \"type\": \"string\",\n        \"friendly\": \"string\",\n        \"columns\": [\n          {\n            \"name\": \"string\",\n            \"friendly\": \"string\",\n            \"format\": \"string\",\n            \"help\": \"string\",\n            \"hide\": false,\n            \"icon\": \"string\",\n            \"friendly-suffix\": \"string\",\n            \"column_filters\": [\n              \"string\",\n              \"string\"\n            ],\n            \"period\": \"string\",\n            \"target_direction_negative\": false,\n            \"compatible-dimensions\": [\n              \"string\",\n              \"string\"\n            ],\n            \"tags\": [\n              \"string\",\n              \"string\"\n            ]\n          },\n          {\n            \"name\": \"string\",\n            \"friendly\": \"string\",\n            \"format\": \"string\",\n            \"help\": \"string\",\n            \"hide\": true,\n            \"icon\": \"string\",\n            \"friendly-suffix\": \"string\",\n            \"column_filters\": [\n              \"string\",\n              \"string\"\n            ],\n            \"period\": \"string\",\n            \"target_direction_negative\": false,\n            \"compatible-dimensions\": [\n              \"string\",\n              \"string\"\n            ],\n            \"tags\": [\n              \"string\",\n              \"string\"\n            ]\n          }\n        ],\n        \"exclude-list\": [\n          \"string\",\n          \"string\"\n        ]\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9d72073b-0a22-403f-9e6f-88c40d153792",
+          "name": "Submit a CSV export job",
+          "request": {
+            "name": "Submit a CSV export job",
+            "description": {
+              "content": "Queues an asynchronous CSV export for the advertiser. Returns a `batchId` immediately;\npoll `GET /reports/batch/:batchId` until `SUCCEEDED`, then use the signed `downloadUrl`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "reports",
+                "batch"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "advertiserId",
+                  "value": "<number>",
+                  "description": "(Required) Run reports against the specified advertiser."
+                },
+                {
+                  "disabled": false,
+                  "key": "campaignIds",
+                  "value": "<integer>",
+                  "description": "Optional campaign group IDs. Defaults to all campaigns owned by the advertiser. Intersected with the authenticated actor's campaign scope."
+                },
+                {
+                  "disabled": false,
+                  "key": "campaignIds",
+                  "value": "<integer>",
+                  "description": "Optional campaign group IDs. Defaults to all campaigns owned by the advertiser. Intersected with the authenticated actor's campaign scope."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"sum\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"filter\": {\n    \"key_0\": {}\n  },\n  \"begin\": \"<string>\",\n  \"end\": \"<string>\",\n  \"preset\": \"<string>\",\n  \"period\": \"<string>\",\n  \"limit\": \"<integer>\",\n  \"offset\": \"<integer>\",\n  \"sort\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"includeToday\": \"<boolean>\",\n  \"formatData\": \"<boolean>\",\n  \"fullName\": \"<boolean>\",\n  \"allowNull\": \"<boolean>\",\n  \"reportName\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d0c12393-66ce-4c24-94df-957bede3e9a4",
+              "name": "Job accepted in envelope shape `{ data }`.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "reports",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "advertiserId",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "campaignIds",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "campaignIds",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"sum\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"filter\": {\n    \"key_0\": {},\n    \"key_1\": {},\n    \"key_2\": {},\n    \"key_3\": {},\n    \"key_4\": {}\n  },\n  \"begin\": \"<string>\",\n  \"end\": \"<string>\",\n  \"preset\": \"<string>\",\n  \"period\": \"<string>\",\n  \"limit\": \"<integer>\",\n  \"offset\": \"<integer>\",\n  \"sort\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"includeToday\": \"<boolean>\",\n  \"formatData\": \"<boolean>\",\n  \"fullName\": \"<boolean>\",\n  \"allowNull\": \"<boolean>\",\n  \"reportName\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"batchId\": 1859.0006540210525,\n    \"status\": \"string\",\n    \"submittedAt\": \"string\",\n    \"reportName\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "678837ba-bd3b-4371-827f-ab907f0b2488",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "reports",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "advertiserId",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "campaignIds",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "campaignIds",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"sum\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"filter\": {\n    \"key_0\": {},\n    \"key_1\": {},\n    \"key_2\": {},\n    \"key_3\": {},\n    \"key_4\": {}\n  },\n  \"begin\": \"<string>\",\n  \"end\": \"<string>\",\n  \"preset\": \"<string>\",\n  \"period\": \"<string>\",\n  \"limit\": \"<integer>\",\n  \"offset\": \"<integer>\",\n  \"sort\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"includeToday\": \"<boolean>\",\n  \"formatData\": \"<boolean>\",\n  \"fullName\": \"<boolean>\",\n  \"allowNull\": \"<boolean>\",\n  \"reportName\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"batchId\": 780.8160411843235,\n    \"status\": \"string\",\n    \"submittedAt\": \"string\",\n    \"reportName\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "305d18dd-96e1-4f37-bfa4-b85d4f8489a8",
+          "name": "List export jobs",
+          "request": {
+            "name": "List export jobs",
+            "description": {
+              "content": "Returns a paginated list of recent batch jobs for the advertiser.\n\n**Filters:** `advertiserId`, `status` (comma-separated or repeated).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "reports",
+                "batch"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "advertiserId",
+                  "value": "<number>",
+                  "description": "(Required) List batch exports owned by the specified advertiser."
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Comma-separated or repeated status filter (QUEUED, PROCESSING, SUCCEEDED, FAILED)."
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Comma-separated or repeated status filter (QUEUED, PROCESSING, SUCCEEDED, FAILED)."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<number>",
+                  "description": "1-based page number."
+                },
+                {
+                  "disabled": false,
+                  "key": "perPage",
+                  "value": "<number>",
+                  "description": "Results per page (maximum 100)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "489a394f-9923-4f45-8aa6-80d0ef2537ac",
+              "name": "Paginated batch export list.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "reports",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "advertiserId",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "<number>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"batchId\": 9849.46566398067,\n      \"status\": \"string\",\n      \"submittedAt\": \"string\",\n      \"reportName\": \"string\",\n      \"requestParams\": {\n        \"key_0\": {},\n        \"key_1\": {}\n      },\n      \"startedAt\": \"string\",\n      \"completedAt\": \"string\",\n      \"downloadUrl\": \"string\",\n      \"downloadExpiresAt\": \"string\",\n      \"error\": {\n        \"code\": \"string\",\n        \"message\": \"string\",\n        \"retryable\": true\n      }\n    },\n    {\n      \"batchId\": 7634.149458111432,\n      \"status\": \"string\",\n      \"submittedAt\": \"string\",\n      \"reportName\": \"string\",\n      \"requestParams\": {\n        \"key_0\": {},\n        \"key_1\": {},\n        \"key_2\": {}\n      },\n      \"startedAt\": \"string\",\n      \"completedAt\": \"string\",\n      \"downloadUrl\": \"string\",\n      \"downloadExpiresAt\": \"string\",\n      \"error\": {\n        \"code\": \"string\",\n        \"message\": \"string\",\n        \"retryable\": true\n      }\n    }\n  ],\n  \"pagination\": {\n    \"total\": 4610720865971330,\n    \"perPage\": 6060265188920363,\n    \"previousPageUrl\": \"string\",\n    \"nextPageUrl\": \"string\",\n    \"page\": 1\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f5f5f3ef-13c2-4b1e-9dc4-33e43a78de49",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "reports",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "advertiserId",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "<number>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"batchId\": 4977.390030162225,\n      \"status\": \"string\",\n      \"submittedAt\": \"string\",\n      \"reportName\": \"string\",\n      \"requestParams\": {\n        \"key_0\": {},\n        \"key_1\": {},\n        \"key_2\": {}\n      },\n      \"startedAt\": \"string\",\n      \"completedAt\": \"string\",\n      \"downloadUrl\": \"string\",\n      \"downloadExpiresAt\": \"string\",\n      \"error\": {\n        \"code\": \"string\",\n        \"message\": \"string\",\n        \"retryable\": true\n      }\n    },\n    {\n      \"batchId\": 2319.6688351266625,\n      \"status\": \"string\",\n      \"submittedAt\": \"string\",\n      \"reportName\": \"string\",\n      \"requestParams\": {\n        \"key_0\": {},\n        \"key_1\": {},\n        \"key_2\": {}\n      },\n      \"startedAt\": \"string\",\n      \"completedAt\": \"string\",\n      \"downloadUrl\": \"string\",\n      \"downloadExpiresAt\": \"string\",\n      \"error\": {\n        \"code\": \"string\",\n        \"message\": \"string\",\n        \"retryable\": false\n      }\n    }\n  ],\n  \"pagination\": {\n    \"total\": 1250258901243916,\n    \"perPage\": 3539691225240203,\n    \"page\": 1,\n    \"previousPageUrl\": \"string\",\n    \"nextPageUrl\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4a3eab06-a5bd-4f7a-b23d-760a59ab4aa6",
+          "name": "Get batch status",
+          "request": {
+            "name": "Get batch status",
+            "description": {
+              "content": "Returns batch status. When `SUCCEEDED` and within retention, a freshly-signed `downloadUrl` is included; clients should not treat the URL as stable.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "reports",
+                "batch",
+                ":batchId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "advertiserId",
+                  "value": "<number>",
+                  "description": "(Required) Advertiser identifier owning the batch export."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<number>",
+                  "key": "batchId",
+                  "description": "(Required) Batch identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d4e68496-fa31-4e01-9dfb-96056ffb242f",
+              "name": "Batch status.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "reports",
+                    "batch",
+                    ":batchId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "advertiserId",
+                      "value": "<number>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "batchId",
+                      "description": "(Required) Batch identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"batchId\": 8364.239225842934,\n    \"status\": \"string\",\n    \"submittedAt\": \"string\",\n    \"reportName\": \"string\",\n    \"requestParams\": {\n      \"key_0\": {},\n      \"key_1\": {}\n    },\n    \"startedAt\": \"string\",\n    \"completedAt\": \"string\",\n    \"downloadUrl\": \"string\",\n    \"downloadExpiresAt\": \"string\",\n    \"error\": {\n      \"code\": \"string\",\n      \"message\": \"string\",\n      \"retryable\": false\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "363c86d9-9226-4abc-bc35-380f12ef8cb0",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "reports",
+                    "batch",
+                    ":batchId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "advertiserId",
+                      "value": "<number>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "batchId",
+                      "description": "(Required) Batch identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"batchId\": 9066.851892528595,\n    \"status\": \"string\",\n    \"submittedAt\": \"string\",\n    \"reportName\": \"string\",\n    \"requestParams\": {\n      \"key_0\": {}\n    },\n    \"startedAt\": \"string\",\n    \"completedAt\": \"string\",\n    \"downloadUrl\": \"string\",\n    \"downloadExpiresAt\": \"string\",\n    \"error\": {\n      \"code\": \"string\",\n      \"message\": \"string\",\n      \"retryable\": false\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "27b2a50b-1af8-44d3-ba4f-522b1a7ca776",
+          "name": "Regenerate a new signed URL",
+          "request": {
+            "name": "Regenerate a new signed URL",
+            "description": {
+              "content": "Returns a new signed URL for the result file without re-executing the query.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "reports",
+                "batch",
+                ":batchId",
+                "regenerate-url"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "advertiserId",
+                  "value": "<number>",
+                  "description": "(Required) Advertiser identifier owning the batch export."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<number>",
+                  "key": "batchId",
+                  "description": "(Required) Batch identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "61f1a07c-e200-4f22-92d4-b1886a147e82",
+              "name": "Fresh signed URL in envelope shape `{ data }`.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "reports",
+                    "batch",
+                    ":batchId",
+                    "regenerate-url"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "advertiserId",
+                      "value": "<number>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "batchId",
+                      "description": "(Required) Batch identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"downloadUrl\": \"string\",\n    \"downloadExpiresAt\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2e059f10-e997-41e5-a275-dd50fb26c2b5",
+              "name": "Unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "reports",
+                    "batch",
+                    ":batchId",
+                    "regenerate-url"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "advertiserId",
+                      "value": "<number>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<number>",
+                      "key": "batchId",
+                      "description": "(Required) Batch identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"downloadUrl\": \"string\",\n    \"downloadExpiresAt\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.mountain.com/ptv",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "52bf5b3c-111f-43e3-9a60-8c6e05c2ed1d",
+    "name": "PTV API - reporting",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "PTV API authoritative source of truth for PTV data.\n\nContact Support:\n Name: MNTN Platform\n Email: support@mountain.com",
+      "type": "text/plain"
+    }
+  }
+}

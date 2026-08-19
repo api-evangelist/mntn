@@ -1,0 +1,269 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PTV API - campaigns",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "campaigns",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List campaigns",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/campaigns",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "1-based page number."
+              },
+              {
+                "name": "perPage",
+                "value": "",
+                "type": "query",
+                "description": "Results per page (maximum 100)."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Repeatable campaign status filter."
+              },
+              {
+                "name": "objective",
+                "value": "",
+                "type": "query",
+                "description": "Campaign objective filter."
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Field to sort by: `name`, `status`, `objective`, `totalBudget`, `monthlyBudget`, `spend`, `startTime`, `endTime`, `createdAt`, `updatedAt`."
+              },
+              {
+                "name": "sortOrder",
+                "value": "",
+                "type": "query",
+                "description": "Sort order (default `asc` when `sortBy` is set)."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Case-insensitive substring match on campaign name. Numeric values also match campaign ID and advertiser ID."
+              },
+              {
+                "name": "campaignId",
+                "value": "",
+                "type": "query",
+                "description": "Repeatable campaign ID filter."
+              },
+              {
+                "name": "advertiserId",
+                "value": "",
+                "type": "query",
+                "description": "Advertiser ID to retrieve campaigns for."
+              }
+            ]
+          },
+          "docs": "Returns campaigns the caller is authorized to see, filtered by advertiser, campaign, status, objective, or search text.\n\n**Filters:** `advertiserId`, `campaignId` (repeatable), `objective`, `search`, `status` (repeatable).\n\n**Sorting:** `sortBy` (`name`, `status`, `objective`, `totalBudget`, `monthlyBudget`, `spend`, `startTime`, `endTime`, `createdAt`, `updatedAt`) with `sortOrder` (`asc`/`desc`, default `asc`).\n\n**Notes:** Each campaign carries `creativeIds` for its attached creatives; fetch a"
+        },
+        {
+          "info": {
+            "name": "Create a campaign",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mountain.com/ptv/api/v1/campaigns",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a campaign for an advertiser with the given objective, optionally linking an existing audience, opening an initial budget, and attaching library creatives in the same call.\n\n**Notes:** Creation is a multi-step operation against the campaign provider and is not idempotent, so a client retry may create a duplicate. `audienceIds` accepts at most one audience; an optional `budget` opens the campaign's first flight.\n\n**Creatives:** `creatives` attaches library creatives after the campaign is "
+        },
+        {
+          "info": {
+            "name": "Get a campaign",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/campaigns/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Campaign identifier."
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Expand relations: `currentFlight`, `audience`, `creatives`. Use `expand=value`, repeat, or `expand[]=value`."
+              }
+            ]
+          },
+          "docs": "Returns the canonical campaign representation for a given campaign ID, including its primary audience link.\n\n**Notes:** Attached creative ids are always present as `creativeIds`. Pass `expand=currentFlight` for the active flight (Gary), `expand=audience` for the full audience record, and `expand=creatives` for the full attached-creative records (click URL, weight)."
+        },
+        {
+          "info": {
+            "name": "Update a campaign",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.mountain.com/ptv/api/v1/campaigns/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Campaign (campaign group) ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing campaign's editable fields. Only the fields present in the request body are changed; omitted fields are left untouched.\n\n**Notes:** A campaign's `objective` is immutable and any attempt to change it is rejected. `audienceIds` accepts at most one audience; sending an empty array clears the assigned audience.\n\n**Creatives:** `creatives` is the campaign's desired full creative set — entries not yet attached are attached, attached creatives missing from the array are detached, an"
+        },
+        {
+          "info": {
+            "name": "Delete a campaign",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.mountain.com/ptv/api/v1/campaigns/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Campaign (campaign group) ID."
+              }
+            ]
+          },
+          "docs": "Archives a campaign so it no longer runs or appears in active listings. This is a soft delete: the campaign moves to the `archived` status rather than being permanently removed.\n\n**Notes:** Archiving a live campaign pauses it first, and the campaign's creatives are disassociated. The archived campaign is returned so the caller can confirm the new status."
+        },
+        {
+          "info": {
+            "name": "Create and link a recommended audience for a campaign",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mountain.com/ptv/api/v1/campaigns/:id/recommended-audience",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Campaign identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new audience for the campaign's advertiser whose keywords are derived server-side from the advertiser's AI-recommended keywords, and links it to the campaign. Rejects with 422 if the campaign already has an audience or if the advertiser has no recommendations available. On link failure after a successful audience-create, the error surfaces the underlying cause (e.g. 403 authz, upstream failure) and reports the orphan audience id so it can be reconciled out-of-band."
+        },
+        {
+          "info": {
+            "name": "Launch a campaign",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mountain.com/ptv/api/v1/campaigns/:id/launch",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Campaign (campaign group) ID."
+              }
+            ]
+          },
+          "docs": "Launches a campaign so it begins delivering.\n\n**Notes:** Only a campaign in a launchable state can be launched; an `incomplete` campaign is rejected with `422` before anything is sent upstream (it needs an active budget, a goal, an audience, installed pixels, and approved creatives). The launched campaign is returned so the caller can confirm the new status. If the campaign's budget schedule already started (elapsed or in-flight budget periods will not be recovered), the launch proceeds without "
+        },
+        {
+          "info": {
+            "name": "Pause a campaign",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mountain.com/ptv/api/v1/campaigns/:id/pause",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Campaign (campaign group) ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Pauses a live campaign so it stops delivering.\n\n**Notes:** Only a live campaign can be paused. An optional `pause_reason` records why the campaign was paused. The paused campaign is returned so the caller can confirm the new status."
+        },
+        {
+          "info": {
+            "name": "List campaigns linked to an audience",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mountain.com/ptv/api/v1/audiences/:id/campaigns",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Audience identifier."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "1-based page number."
+              },
+              {
+                "name": "perPage",
+                "value": "",
+                "type": "query",
+                "description": "Results per page (maximum 100)."
+              }
+            ]
+          },
+          "docs": "Returns campaigns attached to the given audience. Same response shape as GET /campaigns."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

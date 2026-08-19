@@ -1,0 +1,128 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "MNTN Async Batch Export API - Batch",
+    "version": "3.7.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "key",
+      "value": "{{key}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Batch",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List export jobs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api3.mountain.com/batch",
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated status filter (QUEUED, PROCESSING, SUCCEEDED, FAILED)"
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "query",
+                "description": "API key"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Page size"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset"
+              }
+            ]
+          },
+          "docs": "Returns a page of batch jobs for the authenticated advertiser. Optional `status` filters to comma-separated values: QUEUED, PROCESSING, SUCCEEDED, FAILED."
+        },
+        {
+          "info": {
+            "name": "Submit an async export job",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api3.mountain.com/batch",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Queues a CSV export for the authenticated advertiser. Returns **202 Accepted** with a `batchId` and initial status; poll `GET /batch/{batchId}` until `SUCCEEDED`, then use the signed `downloadUrl`."
+        },
+        {
+          "info": {
+            "name": "Issue a freshly-signed download URL for a SUCCEEDED batch",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api3.mountain.com/batch/:batchId/regenerate-url",
+            "params": [
+              {
+                "name": "batchId",
+                "value": "",
+                "type": "path",
+                "description": "Batch job identifier."
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "query",
+                "description": "Advertiser API key."
+              }
+            ]
+          },
+          "docs": "Returns a new signed URL for the result file without re-executing the query. Effect is equivalent to re-calling GET /batch/{batchId}, but the response carries only the URL fields — no other batch metadata."
+        },
+        {
+          "info": {
+            "name": "Get batch status (includes signed download URL when eligible)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api3.mountain.com/batch/:batchId",
+            "params": [
+              {
+                "name": "batchId",
+                "value": "",
+                "type": "path",
+                "description": "Batch job identifier returned from **POST /batch**."
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "query",
+                "description": "Advertiser API key (same as **GET /batch** list)."
+              }
+            ]
+          },
+          "docs": "Returns the batch status. When the batch is SUCCEEDED and within retention, a freshly-signed download URL is included in the response. The URL is generated on every call — clients should not treat it as stable."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

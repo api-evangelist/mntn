@@ -1,0 +1,84 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "MNTN Reporting API - API",
+    "version": "3.7.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "key",
+      "value": "{{key}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Run a reporting query (GET)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api3.mountain.com/apidata",
+            "params": [
+              {
+                "name": "query",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Validates the API `key`, resolves the advertiser, and executes a reporting query. Prefer **POST /apidata** when sending a large **`filter`** object."
+        },
+        {
+          "info": {
+            "name": "Run a reporting query (POST)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api3.mountain.com/apidata",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Same semantics as GET, with a JSON body for `filter`, column lists, and pagination. Recommended for non-trivial `filter` payloads."
+        },
+        {
+          "info": {
+            "name": "List reporting metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api3.mountain.com/apilist",
+            "params": [
+              {
+                "name": "key",
+                "value": "YOUR_API_KEY",
+                "type": "query",
+                "description": "Advertiser API key (required on every request)."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "defines the content type of the response"
+              }
+            ]
+          },
+          "docs": "Returns tables, columns and help text available to the advertiser (same `key` and `format` query parameters as **GET /apidata**). \n The response shape depends on `format`: `json` returns a structured JSON object, while `csv`, `excel`, and `human` return tabular text/binary representations of the same metadata. \n There is **no** `filter` query parameter on this route; call **`/apidata`** to apply **`filter`**. Use **`/apilist`** first to discover column identifiers for `data`, `sum`, and `filter`"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
