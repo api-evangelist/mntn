@@ -20,6 +20,20 @@ specificationVersion: '0.23'
 created: '2026-08-12'
 modified: '2026-08-12'
 tags:
+- Connected TV
+- ctv-advertising
+- Advertising
+- Performance Marketing
+- Streaming TV
+- Media Buying
+- Attribution
+- Audience Targeting
+- Conversion Tracking
+- Programmatic Advertising
+- private-marketplace
+- marketing-reporting
+- AdTech
+tags_raw:
 - connected-tv
 - ctv-advertising
 - advertising
@@ -46,6 +60,16 @@ apis:
   humanURL: https://api.mountain.com/docs
   baseURL: https://api.mountain.com/ptv
   tags:
+  - Connected TV
+  - ctv-advertising
+  - Performance Marketing
+  - Campaign Management
+  - Audience Targeting
+  - Attribution
+  - Conversion Tracking
+  - private-marketplace
+  - marketing-reporting
+  tags_raw:
   - connected-tv
   - ctv-advertising
   - performance-marketing
@@ -106,6 +130,11 @@ apis:
   baseURL: https://api3.mountain.com
   tags:
   - marketing-reporting
+  - Analytics
+  - Connected TV
+  - Attribution
+  tags_raw:
+  - marketing-reporting
   - analytics
   - connected-tv
   - attribution
@@ -131,6 +160,10 @@ apis:
   humanURL: https://api3.mountain.com/docs
   baseURL: https://api3.mountain.com
   tags:
+  - marketing-reporting
+  - Bulk Data
+  - Analytics
+  tags_raw:
   - marketing-reporting
   - bulk-data
   - analytics
