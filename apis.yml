@@ -48,84 +48,14 @@ tags_raw:
 - marketing-reporting
 - adtech
 apis:
-- name: MNTN Performance TV (PTV) API
-  description: >-
-    OpenAPI 3.1 platform API for MNTN Performance TV. Covers advertisers and organizations, campaign
-    and flight lifecycle (create, update, launch, pause, archive), creatives, audiences including geo
-    lists, keyword and location search and recommended audiences, conversion pixel configuration,
-    GA4 id storage, pixel health/verification tooling, attribution windows, sales cycle and estimates,
-    private marketplace partners, deals, deal groups and channels, reference vocabularies (budget
-    types and goals, campaign objectives and statuses, geo types, audience segment types), and
-    reporting including asynchronous batch exports. 85 operations across 61 paths and 15 tags.
-  humanURL: https://api.mountain.com/docs
-  baseURL: https://api.mountain.com/ptv
-  tags:
-  - Connected TV
-  - ctv-advertising
-  - Performance Marketing
-  - Campaign Management
-  - Audience Targeting
-  - Attribution
-  - Conversion Tracking
-  - private-marketplace
-  - marketing-reporting
-  tags_raw:
-  - connected-tv
-  - ctv-advertising
-  - performance-marketing
-  - campaign-management
-  - audience-targeting
-  - attribution
-  - conversion-tracking
-  - private-marketplace
-  - marketing-reporting
-  properties:
-  - type: APIReference
-    url: https://api.mountain.com/docs
-  - type: Documentation
-    url: https://api.mountain.com/docs
-  - type: OpenAPI
-    url: openapi/mntn-ptv-advertisers-openapi.yml
-  - type: OpenAPI
-    url: openapi/mntn-ptv-organizations-openapi.yml
-  - type: OpenAPI
-    url: openapi/mntn-ptv-campaigns-openapi.yml
-  - type: OpenAPI
-    url: openapi/mntn-ptv-flights-openapi.yml
-  - type: OpenAPI
-    url: openapi/mntn-ptv-creatives-openapi.yml
-  - type: OpenAPI
-    url: openapi/mntn-ptv-audiences-openapi.yml
-  - type: OpenAPI
-    url: openapi/mntn-ptv-pixel-openapi.yml
-  - type: OpenAPI
-    url: openapi/mntn-ptv-attribution-openapi.yml
-  - type: OpenAPI
-    url: openapi/mntn-ptv-reporting-openapi.yml
-  - type: OpenAPI
-    url: openapi/mntn-ptv-reference-openapi.yml
-  - type: OpenAPI
-    url: openapi/mntn-ptv-pmp-partners-openapi.yml
-  - type: OpenAPI
-    url: openapi/mntn-ptv-pmp-deals-openapi.yml
-  - type: OpenAPI
-    url: openapi/mntn-ptv-pmp-deal-groups-openapi.yml
-  - type: OpenAPI
-    url: openapi/mntn-ptv-pmp-campaign-deals-openapi.yml
-  - type: OpenAPI
-    url: openapi/mntn-ptv-pmp-channels-openapi.yml
-  - type: Overlay
-    url: overlays/mntn-ptv-overlay.yaml
-  - type: DataModel
-    url: data-model/mntn-data-model.yml
 - name: MNTN Reporting API 3.0
   description: >-
     Public partner reporting surface at api3.mountain.com. GET /apilist returns the tables and columns
     available to the authenticated advertiser; GET and POST /apidata execute multidimensional queries
     over Info (dimension) and Summary (metric) tables joined on shared keys, with JSON-encoded filter
-    syntax, fully qualified column identifiers such as campaigninfo.name and graph.impressions, and
-    json, csv, human and Excel output formats. Authenticated with the advertiser API key as a key query
-    parameter. API 3.0 defaults to First Touch attribution; API 1.0 stopped returning data 2026-04-01.
+    syntax, fully qualified column identifiers such as campaigninfo.name and graph.impressions, and json,
+    csv, human and Excel output formats. Authenticated with the advertiser API key as a key query parameter.
+    API 3.0 defaults to First Touch attribution; API 1.0 stopped returning data 2026-04-01.
   humanURL: https://api3.mountain.com/docs
   baseURL: https://api3.mountain.com
   tags:
@@ -149,37 +79,305 @@ apis:
     url: openapi/mntn-reporting-api-openapi.yml
   - type: Overlay
     url: overlays/mntn-reporting-overlay.yaml
-- name: MNTN Async Batch Export API
-  description: >-
-    Asynchronous CSV export API under /batch on api3.mountain.com, for reporting queries too large or
-    slow to run synchronously (a 413 on /apidata is the documented trigger). POST /batch enqueues a job
-    and returns 202 with a batchId; GET /batch/{batchId} polls status and returns a fresh time-limited
-    signed download URL when the job SUCCEEDED; POST /batch/{batchId}/regenerate-url reissues a signed
-    URL without re-running the query; GET /batch lists recent jobs with status, limit and offset paging.
-    Gated behind the r2ds.exports.enabled entitlement.
-  humanURL: https://api3.mountain.com/docs
-  baseURL: https://api3.mountain.com
+- aid: mntn:mntn-advertisers-api
+  name: MNTN Advertisers API
+  description: Advertiser directory.
+  humanURL: https://api.mountain.com/docs
+  baseURL: https://api.mountain.com/ptv
   tags:
-  - marketing-reporting
-  - Bulk Data
-  - Analytics
-  tags_raw:
-  - marketing-reporting
-  - bulk-data
-  - analytics
+  - advertisers
   properties:
+  - type: OpenAPI
+    url: openapi/mntn-advertisers-api-openapi.yml
+  - type: APIReference
+    url: https://api.mountain.com/docs
+  - type: Documentation
+    url: https://api.mountain.com/docs
+  - type: DataModel
+    url: data-model/mntn-data-model.yml
   - type: APIReference
     url: https://api3.mountain.com/docs
+- aid: mntn:mntn-api-api
+  name: MNTN API
+  description: Public reporting data (`/apidata`)
+  humanURL: https://api.mountain.com/docs
+  baseURL: https://api.mountain.com/ptv
+  tags:
+  - API
+  properties:
   - type: OpenAPI
-    url: openapi/mntn-batch-export-openapi.yml
-  - type: Overlay
-    url: overlays/mntn-batch-overlay.yaml
+    url: openapi/mntn-api-api-openapi.yml
+  - type: APIReference
+    url: https://api.mountain.com/docs
+  - type: Documentation
+    url: https://api.mountain.com/docs
+  - type: DataModel
+    url: data-model/mntn-data-model.yml
+  - type: APIReference
+    url: https://api3.mountain.com/docs
+- aid: mntn:mntn-attribution-api
+  name: MNTN Attribution API
+  description: >-
+    Advertiser attribution windows, estimates, sales cycle, and verified-visit blacklist settings.
+  humanURL: https://api.mountain.com/docs
+  baseURL: https://api.mountain.com/ptv
+  tags:
+  - attribution
+  properties:
+  - type: OpenAPI
+    url: openapi/mntn-attribution-api-openapi.yml
+  - type: APIReference
+    url: https://api.mountain.com/docs
+  - type: Documentation
+    url: https://api.mountain.com/docs
+  - type: DataModel
+    url: data-model/mntn-data-model.yml
+  - type: APIReference
+    url: https://api3.mountain.com/docs
+- aid: mntn:mntn-audiences-api
+  name: MNTN Audiences API
+  description: Audience and geo-list management.
+  humanURL: https://api.mountain.com/docs
+  baseURL: https://api.mountain.com/ptv
+  tags:
+  - audiences
+  properties:
+  - type: OpenAPI
+    url: openapi/mntn-audiences-api-openapi.yml
+  - type: APIReference
+    url: https://api.mountain.com/docs
+  - type: Documentation
+    url: https://api.mountain.com/docs
+  - type: DataModel
+    url: data-model/mntn-data-model.yml
+  - type: APIReference
+    url: https://api3.mountain.com/docs
+- aid: mntn:mntn-batch-api
+  name: MNTN Batch API
+  description: Async CSV exports under **`/batch`…** (submit, poll status, signed download URLs)
+  humanURL: https://api.mountain.com/docs
+  baseURL: https://api.mountain.com/ptv
+  tags:
+  - Batch
+  properties:
+  - type: OpenAPI
+    url: openapi/mntn-batch-api-openapi.yml
+  - type: APIReference
+    url: https://api.mountain.com/docs
+  - type: Documentation
+    url: https://api.mountain.com/docs
+  - type: DataModel
+    url: data-model/mntn-data-model.yml
+  - type: APIReference
+    url: https://api3.mountain.com/docs
+- aid: mntn:mntn-campaigns-api
+  name: MNTN Campaigns API
+  description: Campaign list, lookup, and lifecycle.
+  humanURL: https://api.mountain.com/docs
+  baseURL: https://api.mountain.com/ptv
+  tags:
+  - campaigns
+  properties:
+  - type: OpenAPI
+    url: openapi/mntn-campaigns-api-openapi.yml
+  - type: APIReference
+    url: https://api.mountain.com/docs
+  - type: Documentation
+    url: https://api.mountain.com/docs
+  - type: DataModel
+    url: data-model/mntn-data-model.yml
+  - type: APIReference
+    url: https://api3.mountain.com/docs
+- aid: mntn:mntn-creatives-api
+  name: MNTN Creatives API
+  description: Creative library lookup, with normalized video processing status.
+  humanURL: https://api.mountain.com/docs
+  baseURL: https://api.mountain.com/ptv
+  tags:
+  - creatives
+  properties:
+  - type: OpenAPI
+    url: openapi/mntn-creatives-api-openapi.yml
+  - type: APIReference
+    url: https://api.mountain.com/docs
+  - type: Documentation
+    url: https://api.mountain.com/docs
+  - type: DataModel
+    url: data-model/mntn-data-model.yml
+  - type: APIReference
+    url: https://api3.mountain.com/docs
+- aid: mntn:mntn-flights-api
+  name: MNTN Flights API
+  description: Flight (budget window) reads and updates within a campaign.
+  humanURL: https://api.mountain.com/docs
+  baseURL: https://api.mountain.com/ptv
+  tags:
+  - flights
+  properties:
+  - type: OpenAPI
+    url: openapi/mntn-flights-api-openapi.yml
+  - type: APIReference
+    url: https://api.mountain.com/docs
+  - type: Documentation
+    url: https://api.mountain.com/docs
+  - type: DataModel
+    url: data-model/mntn-data-model.yml
+  - type: APIReference
+    url: https://api3.mountain.com/docs
+- aid: mntn:mntn-organizations-api
+  name: MNTN Organizations API
+  description: Organization name and mode updates (proxied to advertiser-service).
+  humanURL: https://api.mountain.com/docs
+  baseURL: https://api.mountain.com/ptv
+  tags:
+  - organizations
+  properties:
+  - type: OpenAPI
+    url: openapi/mntn-organizations-api-openapi.yml
+  - type: APIReference
+    url: https://api.mountain.com/docs
+  - type: Documentation
+    url: https://api.mountain.com/docs
+  - type: DataModel
+    url: data-model/mntn-data-model.yml
+  - type: APIReference
+    url: https://api3.mountain.com/docs
+- aid: mntn:mntn-pixel-api
+  name: MNTN Pixel API
+  description: Pixel configuration, health, verification, and GA4 management.
+  humanURL: https://api.mountain.com/docs
+  baseURL: https://api.mountain.com/ptv
+  tags:
+  - pixel
+  properties:
+  - type: OpenAPI
+    url: openapi/mntn-pixel-api-openapi.yml
+  - type: APIReference
+    url: https://api.mountain.com/docs
+  - type: Documentation
+    url: https://api.mountain.com/docs
+  - type: DataModel
+    url: data-model/mntn-data-model.yml
+  - type: APIReference
+    url: https://api3.mountain.com/docs
+- aid: mntn:mntn-pmp-campaign-deals-api
+  name: MNTN Pmp Campaign Deals API
+  description: Deal-group assignment to campaigns.
+  humanURL: https://api.mountain.com/docs
+  baseURL: https://api.mountain.com/ptv
+  tags:
+  - pmp-campaign-deals
+  properties:
+  - type: OpenAPI
+    url: openapi/mntn-pmp-campaign-deals-api-openapi.yml
+  - type: APIReference
+    url: https://api.mountain.com/docs
+  - type: Documentation
+    url: https://api.mountain.com/docs
+  - type: DataModel
+    url: data-model/mntn-data-model.yml
+  - type: APIReference
+    url: https://api3.mountain.com/docs
+- aid: mntn:mntn-pmp-channels-api
+  name: MNTN Pmp Channels API
+  description: Private marketplace channel reference set.
+  humanURL: https://api.mountain.com/docs
+  baseURL: https://api.mountain.com/ptv
+  tags:
+  - pmp-channels
+  properties:
+  - type: OpenAPI
+    url: openapi/mntn-pmp-channels-api-openapi.yml
+  - type: APIReference
+    url: https://api.mountain.com/docs
+  - type: Documentation
+    url: https://api.mountain.com/docs
+  - type: DataModel
+    url: data-model/mntn-data-model.yml
+  - type: APIReference
+    url: https://api3.mountain.com/docs
+- aid: mntn:mntn-pmp-deal-groups-api
+  name: MNTN Pmp Deal Groups API
+  description: Private marketplace deal-group management and deal membership.
+  humanURL: https://api.mountain.com/docs
+  baseURL: https://api.mountain.com/ptv
+  tags:
+  - pmp-deal-groups
+  properties:
+  - type: OpenAPI
+    url: openapi/mntn-pmp-deal-groups-api-openapi.yml
+  - type: APIReference
+    url: https://api.mountain.com/docs
+  - type: Documentation
+    url: https://api.mountain.com/docs
+  - type: DataModel
+    url: data-model/mntn-data-model.yml
+  - type: APIReference
+    url: https://api3.mountain.com/docs
+- aid: mntn:mntn-pmp-deals-api
+  name: MNTN Pmp Deals API
+  description: Private marketplace deal reads and lifecycle.
+  humanURL: https://api.mountain.com/docs
+  baseURL: https://api.mountain.com/ptv
+  tags:
+  - pmp-deals
+  properties:
+  - type: OpenAPI
+    url: openapi/mntn-pmp-deals-api-openapi.yml
+  - type: APIReference
+    url: https://api.mountain.com/docs
+  - type: Documentation
+    url: https://api.mountain.com/docs
+  - type: DataModel
+    url: data-model/mntn-data-model.yml
+  - type: APIReference
+    url: https://api3.mountain.com/docs
+- aid: mntn:mntn-pmp-partners-api
+  name: MNTN Pmp Partners API
+  description: Private marketplace partner directory.
+  humanURL: https://api.mountain.com/docs
+  baseURL: https://api.mountain.com/ptv
+  tags:
+  - pmp-partners
+  properties:
+  - type: OpenAPI
+    url: openapi/mntn-pmp-partners-api-openapi.yml
+  - type: APIReference
+    url: https://api.mountain.com/docs
+  - type: Documentation
+    url: https://api.mountain.com/docs
+  - type: DataModel
+    url: data-model/mntn-data-model.yml
+  - type: APIReference
+    url: https://api3.mountain.com/docs
+- aid: mntn:mntn-reference-api
+  name: MNTN Reference API
+  description: Enumerations and lookup data shared across endpoints.
+  humanURL: https://api.mountain.com/docs
+  baseURL: https://api.mountain.com/ptv
+  tags:
+  - reference
+  properties:
+  - type: OpenAPI
+    url: openapi/mntn-reference-api-openapi.yml
+  - type: APIReference
+    url: https://api.mountain.com/docs
+  - type: Documentation
+    url: https://api.mountain.com/docs
+  - type: DataModel
+    url: data-model/mntn-data-model.yml
+  - type: APIReference
+    url: https://api3.mountain.com/docs
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/mntn-ptv-overlay.yaml
+- type: Overlay
+  url: overlays/mntn-batch-overlay.yaml
 - type: Website
   url: https://mountain.com/
 - type: Documentation
