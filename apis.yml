@@ -12,6 +12,18 @@ description: >-
   Both are documented with published OpenAPI definitions rendered through Scalar. Authentication is an
   MNTN-issued advertiser API key (X-API-Key header on the platform API, key query parameter on the
   reporting API) or a bearer JWT. Errors are RFC 9457 problem+json with traceId and errorCode.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://mountain.com/wp-content/uploads/2025/02/MNTN_Homepage_Open-Graph-1200x630-1.jpg
 url: https://raw.githubusercontent.com/api-evangelist/mntn/refs/heads/main/apis.yml
 x-type: company
