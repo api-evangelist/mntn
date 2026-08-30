@@ -32,19 +32,19 @@ specificationVersion: '0.23'
 created: '2026-08-12'
 modified: '2026-08-12'
 tags:
-- Connected TV
+- connected-tv
 - ctv-advertising
 - Advertising
-- Performance Marketing
-- Streaming TV
-- Media Buying
+- performance-marketing
+- streaming-tv
+- media-buying
 - Attribution
-- Audience Targeting
-- Conversion Tracking
-- Programmatic Advertising
+- audience-targeting
+- conversion-tracking
+- programmatic-advertising
 - private-marketplace
 - marketing-reporting
-- AdTech
+- adtech
 tags_raw:
 - connected-tv
 - ctv-advertising
@@ -73,7 +73,7 @@ apis:
   tags:
   - marketing-reporting
   - Analytics
-  - Connected TV
+  - connected-tv
   - Attribution
   tags_raw:
   - marketing-reporting
@@ -97,6 +97,8 @@ apis:
   humanURL: https://api.mountain.com/docs
   baseURL: https://api.mountain.com/ptv
   tags:
+  - Advertisers
+  tags_raw:
   - advertisers
   properties:
   - type: OpenAPI
@@ -114,7 +116,8 @@ apis:
   description: Public reporting data (`/apidata`)
   humanURL: https://api.mountain.com/docs
   baseURL: https://api.mountain.com/ptv
-  tags:
+  tags: []
+  tags_raw:
   - API
   properties:
   - type: OpenAPI
@@ -134,6 +137,8 @@ apis:
   humanURL: https://api.mountain.com/docs
   baseURL: https://api.mountain.com/ptv
   tags:
+  - Attribution
+  tags_raw:
   - attribution
   properties:
   - type: OpenAPI
@@ -152,6 +157,8 @@ apis:
   humanURL: https://api.mountain.com/docs
   baseURL: https://api.mountain.com/ptv
   tags:
+  - Audiences
+  tags_raw:
   - audiences
   properties:
   - type: OpenAPI
@@ -188,6 +195,8 @@ apis:
   humanURL: https://api.mountain.com/docs
   baseURL: https://api.mountain.com/ptv
   tags:
+  - Campaigns
+  tags_raw:
   - campaigns
   properties:
   - type: OpenAPI
@@ -206,6 +215,8 @@ apis:
   humanURL: https://api.mountain.com/docs
   baseURL: https://api.mountain.com/ptv
   tags:
+  - Creatives
+  tags_raw:
   - creatives
   properties:
   - type: OpenAPI
@@ -224,6 +235,8 @@ apis:
   humanURL: https://api.mountain.com/docs
   baseURL: https://api.mountain.com/ptv
   tags:
+  - Flights
+  tags_raw:
   - flights
   properties:
   - type: OpenAPI
@@ -242,6 +255,8 @@ apis:
   humanURL: https://api.mountain.com/docs
   baseURL: https://api.mountain.com/ptv
   tags:
+  - Organization
+  tags_raw:
   - organizations
   properties:
   - type: OpenAPI
@@ -260,6 +275,8 @@ apis:
   humanURL: https://api.mountain.com/docs
   baseURL: https://api.mountain.com/ptv
   tags:
+  - Pixel
+  tags_raw:
   - pixel
   properties:
   - type: OpenAPI
@@ -332,6 +349,8 @@ apis:
   humanURL: https://api.mountain.com/docs
   baseURL: https://api.mountain.com/ptv
   tags:
+  - PMP Deals
+  tags_raw:
   - pmp-deals
   properties:
   - type: OpenAPI
@@ -368,6 +387,8 @@ apis:
   humanURL: https://api.mountain.com/docs
   baseURL: https://api.mountain.com/ptv
   tags:
+  - Reference
+  tags_raw:
   - reference
   properties:
   - type: OpenAPI
