@@ -1,0 +1,215 @@
+openapi: 3.2.0
+info:
+  title: PTV Flights API
+  description: PTV API authoritative source of truth for PTV data.
+  version: '1.0'
+  contact:
+    name: MNTN Platform
+    url: https://api.mountain.com
+    email: support@mountain.com
+  license:
+    name: Proprietary
+servers:
+- url: https://api.mountain.com/ptv
+  description: MNTN Performance TV API gateway
+security:
+- Bearer: []
+- API Key: []
+tags:
+- name: flights
+  description: Flight (budget window) reads and updates within a campaign.
+paths:
+  /api/v1/campaigns/{id}/flight/{flight_id}:
+    get:
+      description: 'Returns a single flight (budget window) for a campaign.
+
+
+        **Notes:** Pass `current` as the flight ID to resolve the active flight.'
+      operationId: flights.get
+      parameters:
+      - name: id
+        required: true
+        in: path
+        description: Campaign identifier.
+        schema:
+          type: string
+      - name: flight_id
+        required: true
+        in: path
+        description: Flight identifier, or `current` to resolve the active flight.
+        schema:
+          oneOf:
+          - type: string
+            enum:
+            - current
+          - type: integer
+            format: int32
+      responses:
+        '200':
+          description: Single flight.
+          content:
+            application/json:
+              example:
+                data:
+                  flightId: 9001
+                  campaignId: 501
+                  startTime: '2026-01-01T00:00:00.000Z'
+                  endTime: '2026-03-31T23:59:59.000Z'
+                  budget: 5000
+                  budgetType: FLIGHTED
+                  status: ACTIVE
+                  createTime: '2025-12-15T08:00:00.000Z'
+                  updateTime: '2026-01-10T12:30:00.000Z'
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlightSingleResponseDto_Output'
+      summary: Get a flight
+      tags:
+      - flights
+    patch:
+      description: Updates the budget amount and billing cadence for a specific campaign flight.
+      operationId: flights.patch
+      parameters:
+      - name: id
+        required: true
+        in: path
+        description: Campaign identifier.
+        schema:
+          type: string
+      - name: flight_id
+        required: true
+        in: path
+        description: Flight identifier, or `current` to resolve the active flight.
+        schema:
+          oneOf:
+          - type: string
+            enum:
+            - current
+          - type: integer
+            format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchFlightDto'
+      responses:
+        '200':
+          description: Updated flight.
+          content:
+            application/json:
+              example:
+                data:
+                  flightId: 9001
+                  campaignId: 501
+                  startTime: '2026-01-01T00:00:00.000Z'
+                  endTime: '2026-03-31T23:59:59.000Z'
+                  budget: 5000
+                  budgetType: FLIGHTED
+                  status: ACTIVE
+                  createTime: '2025-12-15T08:00:00.000Z'
+                  updateTime: '2026-01-10T12:30:00.000Z'
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlightSingleResponseDto_Output'
+      summary: Patch a flight
+      tags:
+      - flights
+components:
+  schemas:
+    PatchFlightDto:
+      type: object
+      properties:
+        budget:
+          type: number
+          exclusiveMinimum: true
+          description: Updated flight budget amount in currency USD (dollars only).
+          minimum: 0
+        budgetType:
+          type: string
+          enum:
+          - FLIGHTED
+          - MONTHLY
+          description: Billing cadence for the selected flight.
+      required:
+      - budget
+      - budgetType
+      description: Requested budget amount and budget type to apply to the selected flight.
+    FlightSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            flightId:
+              type:
+              - number
+              - 'null'
+              description: Flight identifier. Null when the flight has not been persisted.
+            campaignId:
+              type: number
+              description: Campaign identifier the flight belongs to.
+            startTime:
+              type: string
+              description: Inclusive flight start timestamp (ISO-8601).
+            endTime:
+              type:
+              - string
+              - 'null'
+              description: Inclusive flight end timestamp (ISO-8601), or null when open-ended.
+            budget:
+              type: number
+              description: Flight budget amount in currency USD (dollars).
+            budgetType:
+              type: string
+              enum:
+              - FLIGHTED
+              - MONTHLY
+              description: Billing cadence applied to the flight budget.
+            status:
+              type: string
+              enum:
+              - ACTIVE
+              - SCHEDULED
+              - ENDED
+              - ARCHIVED
+              description: Lifecycle state of the flight.
+            createTime:
+              type:
+              - string
+              - 'null'
+              description: Timestamp the flight was created (ISO-8601).
+            updateTime:
+              type:
+              - string
+              - 'null'
+              description: Timestamp the flight was last updated (ISO-8601).
+          required:
+          - flightId
+          - campaignId
+          - startTime
+          - endTime
+          - budget
+          - budgetType
+          - status
+          - createTime
+          - updateTime
+          additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
+  securitySchemes:
+    Bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+    API_Key:
+      type: apiKey
+      in: header
+      name: X-API-Key

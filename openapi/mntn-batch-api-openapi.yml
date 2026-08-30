@@ -1,0 +1,662 @@
+openapi: 3.2.0
+info:
+  title: MNTN Async Export Batch API
+  description: '## Overview
+
+
+    Submit long-running **CSV** exports of reporting queries, poll **status**, then download results via
+
+    **time-limited signed URLs**. Endpoints are under **`/batch`…** (requires `r2ds.exports.enabled`).
+
+
+    ## Lifecycle
+
+
+    1. **`POST /batch`** — enqueue a job; response includes `batchId` and initial status (**202 Accepted**).
+
+    2. **`GET /batch/{batchId}`** — status; when `SUCCEEDED`, a fresh **download URL** may be included.
+
+    3. **`POST /batch/{batchId}/regenerate-url`** — issue a new signed URL without re-running the query.
+
+    4. **`GET /batch`** — list recent jobs (optional `status`, `limit`, `offset` query params).
+
+    '
+  version: 3.7.0
+servers:
+- url: https://api3.mountain.com
+  description: MNTN Reporting API 3.0
+security:
+- API Key: []
+tags:
+- name: Batch
+  description: Async CSV exports under **`/batch`…** (submit, poll status, signed download URLs)
+paths:
+  /batch:
+    get:
+      tags:
+      - Batch
+      summary: List export jobs
+      description: 'Returns a page of batch jobs for the authenticated advertiser. Optional `status` filters to comma-separated values: QUEUED, PROCESSING, SUCCEEDED, FAILED.'
+      operationId: listExports
+      parameters:
+      - name: status
+        in: query
+        description: Comma-separated status filter (QUEUED, PROCESSING, SUCCEEDED, FAILED)
+        required: false
+        schema:
+          type: string
+      - name: key
+        in: query
+        description: API key
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Page size
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: offset
+        in: query
+        description: Page offset
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '400':
+          description: Invalid query parameters (for example malformed `status`)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '504':
+          description: Gateway Timeout — the query exceeded the synchronous request time limit.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '413':
+          description: Payload Too Large — the query exceeds server memory limits. Use the asynchronous /batch endpoint for large requests.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '200':
+          description: Paged list of exports
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportListResponse'
+    post:
+      tags:
+      - Batch
+      summary: Submit an async export job
+      description: Queues a CSV export for the authenticated advertiser. Returns **202 Accepted** with a `batchId` and initial status; poll `GET /batch/{batchId}` until `SUCCEEDED`, then use the signed `downloadUrl`.
+      operationId: submitExport
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExportRequest'
+        required: true
+      responses:
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '400':
+          description: Validation or invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '504':
+          description: Gateway Timeout — the query exceeded the synchronous request time limit.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '413':
+          description: Payload Too Large — the query exceeds server memory limits. Use the asynchronous /batch endpoint for large requests.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '202':
+          description: Job accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportResponse'
+  /batch/{batchId}/regenerate-url:
+    post:
+      tags:
+      - Batch
+      summary: Issue a freshly-signed download URL for a SUCCEEDED batch
+      description: Returns a new signed URL for the result file without re-executing the query. Effect is equivalent to re-calling GET /batch/{batchId}, but the response carries only the URL fields — no other batch metadata.
+      operationId: regenerateUrl
+      parameters:
+      - name: batchId
+        in: path
+        description: Batch job identifier.
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: key
+        in: query
+        description: Advertiser API key.
+        required: true
+        schema:
+          type: string
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '400':
+          description: Batch is queued or processing
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '504':
+          description: Gateway Timeout — the query exceeded the synchronous request time limit.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '404':
+          description: Batch not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '413':
+          description: Payload Too Large — the query exceeds server memory limits. Use the asynchronous /batch endpoint for large requests.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '409':
+          description: Batch is in a terminal non-downloadable state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegenerateUrlResponse'
+        '200':
+          description: Fresh signed URL issued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegenerateUrlResponse'
+        '410':
+          description: Result is permanently unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegenerateUrlResponse'
+        '503':
+          description: Signing subsystem temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegenerateUrlResponse'
+  /batch/{batchId}:
+    get:
+      tags:
+      - Batch
+      summary: Get batch status (includes signed download URL when eligible)
+      description: Returns the batch status. When the batch is SUCCEEDED and within retention, a freshly-signed download URL is included in the response. The URL is generated on every call — clients should not treat it as stable.
+      operationId: getExportStatus
+      parameters:
+      - name: batchId
+        in: path
+        description: Batch job identifier returned from **POST /batch**.
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: key
+        in: query
+        description: Advertiser API key (same as **GET /batch** list).
+        required: true
+        schema:
+          type: string
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '504':
+          description: Gateway Timeout — the query exceeded the synchronous request time limit.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '404':
+          description: Batch not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '413':
+          description: Payload Too Large — the query exceeds server memory limits. Use the asynchronous /batch endpoint for large requests.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '503':
+          description: Signing subsystem temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportStatusResponse'
+        '200':
+          description: Batch status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportStatusResponse'
+components:
+  schemas:
+    FilteredColumn:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/DataColumn'
+      - type: object
+        properties:
+          filter:
+            type: array
+            items:
+              oneOf:
+              - $ref: '#/components/schemas/And'
+              - $ref: '#/components/schemas/Not'
+              - $ref: '#/components/schemas/Or'
+              - $ref: '#/components/schemas/Value'
+          nullReplacement:
+            type: object
+    Not:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Filter'
+    Or:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Filter'
+    DataColumn:
+      required:
+      - type
+      type: object
+      properties:
+        alias:
+          type: string
+        friendly:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+      description: List of data columns to query
+      discriminator:
+        propertyName: type
+    ExportErrorDetail:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        retryable:
+          type: boolean
+    ExportListResponse:
+      type: object
+      properties:
+        batches:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExportStatusResponse'
+        total:
+          type: integer
+          format: int32
+        limit:
+          type: integer
+          format: int32
+        offset:
+          type: integer
+          format: int32
+    SimpleColumn:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/DataColumn'
+    ExportResponse:
+      type: object
+      properties:
+        batchId:
+          type: integer
+          format: int64
+        status:
+          type: string
+        submittedAt:
+          type: string
+        reportName:
+          type: string
+    ErrorResponse:
+      description: HTTP error / validation payload (RFC 9457); same schema as ProblemDetail
+      allOf:
+      - $ref: '#/components/schemas/ProblemDetail'
+    Filter:
+      title: Filter
+      type: object
+      additionalProperties: true
+      description: 'Optional JSON **object** that restricts which rows are returned. Use the same shape for **POST** `filter` and **GET** `filter` (URL-encoded).
+
+
+        **Filter types — column predicates:** Each property key is a column identifier (`table.column`). The value can be:
+
+        - **Operator object:** keys are operator names and values are comparison values (for example `{"equals": "Live"}`, `{"in": ["a","b"]}`).
+
+        - **Scalar** (string or number): shorthand for `equals`.
+
+        - **Array:** shorthand for membership (`in`).
+
+
+        **Filter types — logical groups:** Properties named `AND`, `OR`, or `NOT` hold a nested object that follows the same rules (more column predicates and/or nested `AND` / `OR` / `NOT`).
+
+
+        **Operator keys** (allowed keys inside an operator object): `equals`, `not`, `in`, `notIn`, `lt`, `lte`, `gt`, `gte`, `contains`, `notContains`, `startsWith`, `endsWith`, `hasAny`.
+
+
+        Use **GET /apilist** to discover valid column identifiers (for `data`, `sum`, and `filter`).'
+      example: '{"campaigninfo.id":{"in":["28915"]},"OR":{"campaigninfo.status":{"equals":"Live"},"graph.impressions":{"gte":1000}}}'
+    RegenerateUrlResponse:
+      type: object
+      properties:
+        downloadUrl:
+          type: string
+        downloadExpiresAt:
+          type: string
+    Value:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Filter'
+      - type: object
+        properties:
+          field:
+            type: string
+          operator:
+            type: string
+            enum:
+            - EQUALS
+            - NOT
+            - IN
+            - NOT_IN
+            - LT
+            - LTE
+            - GT
+            - GTE
+            - CONTAINS
+            - NOT_CONTAINS
+            - STARTS_WITH
+            - ENDS_WITH
+            - HAS_ANY
+          value:
+            type: object
+    ExportStatusResponse:
+      type: object
+      properties:
+        batchId:
+          type: integer
+          format: int64
+        status:
+          type: string
+        submittedAt:
+          type: string
+        reportName:
+          type: string
+        requestParams:
+          type: string
+        startedAt:
+          type: string
+        completedAt:
+          type: string
+        downloadUrl:
+          type: string
+        downloadExpiresAt:
+          type: string
+        error:
+          $ref: '#/components/schemas/ExportErrorDetail'
+    ExportRequest:
+      title: Batch Request
+      required:
+      - begin
+      - data
+      - key
+      type: object
+      properties:
+        key:
+          type: string
+          description: API Key
+        data:
+          type: array
+          description: List of data columns to query
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/FilteredColumn'
+            - $ref: '#/components/schemas/SimpleColumn'
+        begin:
+          type: string
+          description: Start date (YYYY-MM-DD) or keyword
+        end:
+          type: string
+          description: End date (YYYY-MM-DD); required when begin is an explicit date and ignored for keyword begin
+        format:
+          type: string
+          description: Output format
+          enum:
+          - csv
+          default: csv
+        fullname:
+          type: boolean
+          description: Include table prefix in column names
+          default: false
+        includetoday:
+          type: boolean
+          description: Include current day's partial data
+          default: false
+        limit:
+          type: integer
+          description: Max rows returned; defaults to the configured export maximum when omitted
+          format: int32
+        offset:
+          type: integer
+          description: Row offset for pagination
+          format: int32
+          default: 0
+        sort:
+          type: array
+          description: Sort order (column direction)
+          items:
+            type: string
+            description: Sort order (column direction)
+        sum:
+          type: array
+          description: Group-by columns
+          items:
+            type: string
+            description: Group-by columns
+        reportName:
+          type: string
+          description: Optional report name for identification
+        filter:
+          $ref: '#/components/schemas/Filter'
+        allownull:
+          type: boolean
+        formatdata:
+          type: boolean
+        nodatatiercheck:
+          type: string
+        period:
+          type: string
+        dataColumns:
+          type: array
+          items:
+            type: string
+      description: Batch Request
+    And:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Filter'
+    ProblemDetail:
+      title: Problem Detail (RFC 9457)
+      type: object
+      properties:
+        type:
+          type: string
+          description: A URI reference that identifies the problem type
+          example: https://api3.mntn.com/problems/query-timeout
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type (stable across occurrences)
+          example: Gateway Timeout
+        status:
+          type: integer
+          description: The HTTP status code
+          format: int32
+          example: 504
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem
+          example: Gateway Timeout
+        instance:
+          type: string
+          description: A URI reference that identifies the specific occurrence of the problem (request path)
+          example: /data?aid=12345
+        timestamp:
+          type: string
+          description: ISO 8601 timestamp when the error occurred
+          example: '2026-01-08T17:21:59.445461Z'
+        errorCode:
+          type: string
+          description: Internal error code for support reference
+          example: QUERY_TIMEOUT
+        traceId:
+          type: string
+          description: OpenTelemetry trace ID for debugging and support
+          example: 64a8b3c2d1e0f9876543210abcdef123
+        errors:
+          type: array
+          description: Array of validation errors (for 400 Bad Request responses)
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                description: Field name that failed validation
+                example: aid
+              message:
+                type: string
+                description: Error message
+                example: Advertiser ID is required
+      description: 'Standard error response format following RFC 9457 (Problem Details for HTTP APIs).
+
+
+        All error responses include machine-readable problem types and human-readable details.
+
+        See: https://www.rfc-editor.org/rfc/rfc9457.html'
+      example: '{Invalid API Key (401)={type=https://api3.mntn.com/problems/authorization-error, title=Invalid API Key, status=401, detail=The provided API key ''abc123...'' is not valid, instance=/apidata, timestamp=2026-01-08T17:21:59.445461Z, errorCode=INVALID_API_KEY, traceId=64a8b3c2d1e0f9876543210abcdef123}, Validation Error (400)={type=https://api3.mntn.com/problems/general-request-error, title=Bad Request, status=400, detail=Request validation failed, instance=/apidata, timestamp=2026-01-08T17:21:59.445461Z, errorCode=GENERAL_REQUEST_ERROR, errors=[{field=aid, message=Advertiser ID is required}, {field=begin, message=Start date is required}]}, Metadata Error (400)={type=https://api3.mntn.com/problems/metadata-error, title=Metadata Error, status=400, detail=Table ''Inventory1'' does not exist, instance=/apidata?aid=12345, timestamp=2026-01-08T17:21:59.445461Z, errorCode=METADATA_ERROR, traceId=64a8b3c2d1e0f9876543210abcdef123}, Query Timeout (504)={type=https://api3.mntn.com/problems/query-timeout, title=Gateway Timeout, status=504, detail=Gateway Timeout, instance=/apidata?aid=12345&begin=2020-01-01&end=2025-12-31, timestamp=2026-01-08T17:21:59.445461Z, traceId=64a8b3c2d1e0f9876543210abcdef123}, Resource Limit Exceeded (400)={type=https://api3.mntn.com/problems/resource-limit-exceeded, title=Resource Limit Exceeded, status=400, detail=Query returned too many rows. Please narrow your date range or refine `filter`., instance=/data?aid=12345&begin=2020-01-01&end=2025-12-31, timestamp=2026-01-08T17:21:59.445461Z, errorCode=RESOURCE_LIMIT_EXCEEDED, traceId=64a8b3c2d1e0f9876543210abcdef123}, Internal Server Error (500)={type=https://api3.mntn.com/problems/internal-error, title=Internal Server Error, status=500, detail=An unexpected error occurred while processing the request, instance=/apidata, timestamp=2026-01-08T17:21:59.445461Z, errorCode=NA, traceId=64a8b3c2d1e0f9876543210abcdef123}}'
+  securitySchemes:
+    API_Key:
+      type: apiKey
+      description: MNTN-issued advertiser API key. Available in Account Settings.
+      name: key
+      in: query

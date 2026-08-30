@@ -1,0 +1,802 @@
+openapi: 3.2.0
+info:
+  title: MNTN Reporting API
+  description: '## Overview
+
+
+    Public partner reporting surface: **`GET /apilist`** (metadata) and **`GET` / `POST /apidata`**
+
+    (query execution). Authenticate with your API key on each request.
+
+
+    ## Data model
+
+
+    Same reporting schema as the broader MNTN platform: **Info** tables (dimensions) and **Summary**
+
+    tables (metrics), joinable on shared keys. Column names in requests use fully qualified identifiers
+
+    (for example `campaigninfo.name`, `graph.impressions`).
+
+
+    ## `/apilist`
+
+
+    Returns tables and columns available to the authenticated advertiser.
+
+
+    **Example**
+
+
+    ```
+
+    GET /apilist?format=json&key=YOUR_API_KEY
+
+    ```
+
+
+    ## `/apidata`
+
+
+    Returns rows for the requested columns, date range, filters, and format.
+
+
+    **Tips**
+
+
+    - Prefer **`POST /apidata`** for large filter payloads.
+
+    - Use pagination (`limit` / `offset`) where supported.
+
+    - CSV/Excel exports may be row-capped; see rate limits in platform documentation.
+
+    '
+  version: 3.7.0
+servers:
+- url: https://api3.mountain.com
+  description: MNTN Reporting API 3.0
+security:
+- API Key: []
+tags:
+- name: API
+  description: Public reporting data (`/apidata`)
+paths:
+  /apidata:
+    get:
+      tags:
+      - API
+      summary: Run a reporting query (GET)
+      description: Validates the API `key`, resolves the advertiser, and executes a reporting query. Prefer **POST /apidata** when sending a large **`filter`** object.
+      operationId: getData
+      parameters:
+      - name: query
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/GetRequest'
+      responses:
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '413':
+          description: Payload Too Large — the query exceeds server memory limits. Use the asynchronous /batch endpoint for large requests. See [Batch docs](https://api3.mountain.com/docs#batch/description/overview).
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '504':
+          description: Gateway Timeout — the query exceeded the synchronous request time limit.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '200':
+          description: Report data in the requested format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonDataResponse'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/CsvDataResponse'
+              examples:
+                CSV data:
+                  description: CSV data
+                  value: 'Day,Sold Impressions,Remaining Impressions,Sales
+
+                    2025-07-01,1500000,500000,25000.50
+
+                    2025-07-02,1750000,250000,28500.75
+
+                    2025-07-03,1600000,400000,26200.00'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/HumanDataResponse'
+              examples:
+                Human-readable data:
+                  description: Human-readable data
+                  value: '             Day Sold Impressions Remaining Impressions      Sales
+
+                    1:    2025-07-01          1500000                500000   25000.50
+
+                    2:    2025-07-02          1750000                250000   28500.75
+
+                    3:    2025-07-03          1600000                400000   26200.00'
+    post:
+      tags:
+      - API
+      summary: Run a reporting query (POST)
+      description: Same semantics as GET, with a JSON body for `filter`, column lists, and pagination. Recommended for non-trivial `filter` payloads.
+      operationId: postData
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataRequest'
+        required: true
+      responses:
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '413':
+          description: Payload Too Large — the query exceeds server memory limits. Use the asynchronous /batch endpoint for large requests. See [Batch docs](https://api3.mountain.com/docs#batch/description/overview).
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '504':
+          description: Gateway Timeout — the query exceeded the synchronous request time limit.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '200':
+          description: Report data in the requested format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonDataResponse'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/CsvDataResponse'
+              examples:
+                CSV data:
+                  description: CSV data
+                  value: 'Day,Sold Impressions,Remaining Impressions,Sales
+
+                    2025-07-01,1500000,500000,25000.50
+
+                    2025-07-02,1750000,250000,28500.75
+
+                    2025-07-03,1600000,400000,26200.00'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/HumanDataResponse'
+              examples:
+                Human-readable data:
+                  description: Human-readable data
+                  value: '             Day Sold Impressions Remaining Impressions      Sales
+
+                    1:    2025-07-01          1500000                500000   25000.50
+
+                    2:    2025-07-02          1750000                250000   28500.75
+
+                    3:    2025-07-03          1600000                400000   26200.00'
+  /apilist:
+    get:
+      tags:
+      - API
+      summary: List reporting metadata
+      description: "Returns tables, columns and help text available to the advertiser (same `key` and `format` query parameters as **GET /apidata**). \n The response shape depends on `format`: `json` returns a structured JSON object, while `csv`, `excel`, and `human` return tabular text/binary representations of the same metadata. \n There is **no** `filter` query parameter on this route; call **`/apidata`** to apply **`filter`**. Use **`/apilist`** first to discover column identifiers for `data`, `sum`, and `filter`."
+      operationId: list
+      parameters:
+      - name: key
+        in: query
+        description: Advertiser API key (required on every request).
+        required: true
+        schema:
+          type: string
+        example: YOUR_API_KEY
+      - name: format
+        in: query
+        description: defines the content type of the response
+        schema:
+          type: string
+          enum:
+          - human
+          - json
+          - csv
+          - excel
+          default: human
+      responses:
+        '500':
+          description: An unexpected error occurred while processing the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '413':
+          description: Payload Too Large — the query exceeds server memory limits. Use the asynchronous /batch endpoint for large requests.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '504':
+          description: Gateway Timeout — the query exceeded the synchronous request time limit.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '200':
+          description: Metadata payload in the requested format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListMetadataResponse'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/CsvListResponse'
+              examples:
+                CSV metadata:
+                  description: CSV metadata
+                  value: 'Inventory.Day,The date of the data,
+
+                    Inventory.SoldImpressions,Number of impressions sold,
+
+                    Inventory.RemainingImpressions,Number of impressions remaining,
+
+                    DealInfo.DealId,Unique identifier for the deal,
+
+                    DealInfo.DealName,Name of the deal,'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/HumanListResponse'
+              examples:
+                Human-readable metadata:
+                  description: Human-readable metadata
+                  value: "Inventory\n  Day                    The date of the data\n  SoldImpressions        Number of impressions sold\n  RemainingImpressions   Number of impressions remaining\n\nDealInfo\n  DealId                 Unique identifier for the deal\n  DealName               Name of the deal"
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                $ref: '#/components/schemas/ExcelListResponse'
+components:
+  schemas:
+    HumanDataResponse:
+      title: Human-Readable Data Response
+      type: string
+      description: Response format when format=human is specified (default). Returns data in a formatted text table.
+      example: '             Day Sold Impressions Remaining Impressions      Sales
+
+        1:    2025-07-01          1500000                500000   25000.50
+
+        2:    2025-07-02          1750000                250000   28500.75
+
+        3:    2025-07-03          1600000                400000   26200.00'
+    GetRequest:
+      title: Data Request (GET)
+      required:
+      - begin
+      - data
+      - key
+      type: object
+      properties:
+        key:
+          type: string
+          description: Advertiser API key (required on every request).
+          example: YOUR_API_KEY
+        data:
+          type: string
+          description: 'Column selection: comma-separated identifiers **or** a JSON array string whose elements use the same shapes as **POST /apidata** `data`. Use **GET /apilist** to discover valid column identifiers (for `data`, `sum`, and `filter`).'
+          example: graph.day,graph.impressions
+        sum:
+          type: array
+          items:
+            type: string
+            description: Optional grouping columns (same identifier style as `data`). Use **GET /apilist** to discover valid column identifiers (for `data`, `sum`, and `filter`).
+            example: campaigninfo.name
+        filter:
+          $ref: '#/components/schemas/Filter'
+        begin:
+          type: string
+          description: start date of the query
+          example: '2020-01-01'
+        end:
+          type: string
+          description: end date of the query
+          example: '2023-12-31'
+        format:
+          type: string
+          description: defines the content type of the response
+          enum:
+          - human
+          - json
+          - csv
+          - excel
+          default: human
+        formatdata:
+          type: boolean
+          description: when set to true, the values in the response data will be each be formatted
+          example: true
+          default: false
+        fullname:
+          type: boolean
+        limit:
+          type: integer
+          description: when set, the number of rows returned will be limited to this number
+          format: int32
+          example: 50
+        offset:
+          type: integer
+          description: when set, the query will skip this number of rows. Used for pagination
+          format: int32
+          example: 50
+        sort:
+          pattern: ^(\w|\d|\.)+ (asc|desc)$
+          type: array
+          description: when set, data will be returned sorted by this column and direction
+          example: impressions desc
+          items:
+            pattern: ^(\w|\d|\.)+ (asc|desc)$
+            type: string
+            description: when set, data will be returned sorted by this column and direction
+            example: impressions desc
+        accountTypes:
+          type: array
+          items:
+            type: integer
+            format: int32
+        ids:
+          type: array
+          items:
+            type: integer
+            format: int32
+      description: GET /apidata query parameters. Use **GET /apilist** to discover valid column identifiers (for `data`, `sum`, and `filter`).
+    CsvListResponse:
+      title: CSV Metadata Response
+      type: string
+      description: 'Response format when format=csv is specified. Returns one row per column with no header row. Note: this output is comma-delimited but fields are not CSV-escaped (help text and tags may contain commas); use format=json for machine parsing.'
+      example: 'Inventory.Day,The date of the data,
+
+        Inventory.SoldImpressions,Number of impressions sold,
+
+        Inventory.RemainingImpressions,Number of impressions remaining,
+
+        DealInfo.DealId,Unique identifier for the deal,
+
+        DealInfo.DealName,Name of the deal,'
+    ErrorResponse:
+      description: HTTP error / validation payload (RFC 9457); same schema as ProblemDetail
+      allOf:
+      - $ref: '#/components/schemas/ProblemDetail'
+    Filter:
+      title: Filter
+      type: object
+      additionalProperties: true
+      description: 'Optional JSON **object** that restricts which rows are returned. Use the same shape for **POST** `filter` and **GET** `filter` (URL-encoded).
+
+
+        **Filter types — column predicates:** Each property key is a column identifier (`table.column`). The value can be:
+
+        - **Operator object:** keys are operator names and values are comparison values (for example `{"equals": "Live"}`, `{"in": ["a","b"]}`).
+
+        - **Scalar** (string or number): shorthand for `equals`.
+
+        - **Array:** shorthand for membership (`in`).
+
+
+        **Filter types — logical groups:** Properties named `AND`, `OR`, or `NOT` hold a nested object that follows the same rules (more column predicates and/or nested `AND` / `OR` / `NOT`).
+
+
+        **Operator keys** (allowed keys inside an operator object): `equals`, `not`, `in`, `notIn`, `lt`, `lte`, `gt`, `gte`, `contains`, `notContains`, `startsWith`, `endsWith`, `hasAny`.
+
+
+        Use **GET /apilist** to discover valid column identifiers (for `data`, `sum`, and `filter`).'
+      example: '{"campaigninfo.id":{"in":["28915"]},"OR":{"campaigninfo.status":{"equals":"Live"},"graph.impressions":{"gte":1000}}}'
+    HumanListResponse:
+      title: Human-Readable Metadata Response
+      type: string
+      description: 'Response format when format=human is specified (default). Returns a formatted text table: each table name followed by its indented columns, column help text, and optional [tags].'
+      example: "Inventory\n  Day                    The date of the data\n  SoldImpressions        Number of impressions sold\n  RemainingImpressions   Number of impressions remaining\n\nDealInfo\n  DealId                 Unique identifier for the deal\n  DealName               Name of the deal"
+    ListMetadataResponse:
+      title: List Metadata Response
+      type: object
+      properties:
+        tables:
+          type: array
+          description: List of available tables
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Table name
+                example: Inventory
+              friendly:
+                type: string
+                description: User-friendly table name
+                example: Inventory Data
+              help:
+                type: string
+                description: Table description
+                example: Contains inventory information
+              columns:
+                type: array
+                description: List of columns in this table
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      description: Column name
+                      example: Day
+                    friendly:
+                      type: string
+                      description: User-friendly column name
+                      example: Day
+                    help:
+                      type: string
+                      description: Column description
+                      example: The date of the data
+                    format:
+                      type: string
+                      description: Data format type
+                      example: date
+                    icon:
+                      type: string
+                      description: Icon type for UI
+                      example: calendar
+                    table:
+                      type: string
+                      description: Parent table name
+                      example: Inventory
+                    fully_qualified_name:
+                      type: string
+                      description: Full column path
+                      example: Inventory.Day
+      description: Response containing available tables and columns metadata
+      example: '{tables=[{name=Inventory, friendly=Inventory Data, help=Contains inventory and impressions data, columns=[{name=Day, friendly=Day, help=The date of the data, format=date, icon=calendar, table=Inventory, fully_qualified_name=Inventory.Day}, {name=SoldImpressions, friendly=Sold Impressions, help=Number of impressions sold, format=number, icon=chart, table=Inventory, fully_qualified_name=Inventory.SoldImpressions}, {name=RemainingImpressions, friendly=Remaining Impressions, help=Number of impressions remaining, format=number, icon=chart, table=Inventory, fully_qualified_name=Inventory.RemainingImpressions}]}, {name=DealInfo, friendly=Deal Information, help=Contains deal and pricing information, columns=[{name=DealId, friendly=Deal ID, help=Unique identifier for the deal, format=text, icon=key, table=DealInfo, fully_qualified_name=DealInfo.DealId}, {name=DealName, friendly=Deal Name, help=Name of the deal, format=text, icon=text, table=DealInfo, fully_qualified_name=DealInfo.DealName}]}]}'
+    ExcelListResponse:
+      title: Excel Metadata Response
+      type: string
+      description: Response format when format=excel is specified. Returns a downloadable attachment with .xlsx filename; for `/apilist` this currently contains the same CSV rows as format=csv (not a native XLSX workbook).
+      format: binary
+    JsonDataResponse:
+      title: JSON Data Response
+      type: object
+      properties:
+        report-name:
+          type: string
+          description: Name of the report
+          example: Report
+        publisher-name:
+          type: string
+          description: Name of the advertiser or 'Grouped Advertisers'
+          example: Example Advertiser
+        begin:
+          type: string
+          description: Start date/time of the data range
+          example: '2025-07-01T00:00:00'
+        end:
+          type: string
+          description: End date/time of the data range
+          example: '2025-08-15T23:59:59'
+        columns:
+          type: array
+          description: Metadata about each column in the response
+          items:
+            type: object
+            properties:
+              table:
+                type: string
+                description: Table name in lowercase
+                example: inventory
+              name:
+                type: string
+                description: Column name in lowercase
+                example: day
+              friendly:
+                type: string
+                description: User-friendly column name
+                example: Day
+              alias:
+                type: string
+                description: Column alias (if applicable)
+                example: Day
+              help:
+                type: string
+                description: Column description
+                example: The date of the data
+              format:
+                type: string
+                description: Data format type (date, number, text, percentage, etc.)
+                example: date
+              icon:
+                type: string
+                description: Icon type for UI display
+                example: calendar
+              friendly-suffix:
+                type: string
+                description: Suffix for display (e.g., '%' for percentages)
+                example: ''
+              target_direction_negative:
+                description: Whether lower values are better
+                example: false
+        rows:
+          type: array
+          description: Array of data rows, each containing column name-value pairs
+          items:
+            type: object
+            description: Each row contains key-value pairs where keys are column names
+            example: '{Day=2025-07-01, SoldImpressions=1500000, RemainingImpressions=500000, Sales=25000.50}'
+      description: Response format when format=json is specified
+      example: '{report-name=Report, advertiser-name=Example Publisher, begin=2025-07-01T00:00:00, end=2025-08-15T23:59:59, columns=[{table=inventory, name=day, friendly=Day, alias=Day, help=The date of the data, format=date, icon=calendar, friendly-suffix=}, {table=inventory, name=soldimpressions, friendly=Sold Impressions, alias=SoldImpressions, help=Number of impressions sold, format=number, icon=chart, friendly-suffix=}, {table=inventory, name=remainingimpressions, friendly=Remaining Impressions, alias=RemainingImpressions, help=Number of impressions remaining, format=number, icon=chart, friendly-suffix=}, {table=inventory, name=sales, friendly=Sales, alias=Sales, help=Total sales amount, format=currency, icon=dollar, friendly-suffix=$}], rows=[{Day=2025-07-01, SoldImpressions=1500000, RemainingImpressions=500000, Sales=25000.50}, {Day=2025-07-02, SoldImpressions=1750000, RemainingImpressions=250000, Sales=28500.75}, {Day=2025-07-03, SoldImpressions=1600000, RemainingImpressions=400000, Sales=26200.00}]}'
+    ApidataDataColumnItem:
+      title: ApidataDataColumnItem
+      description: Either a column identifier string or a filtered column object (POST `data[]` elements and JSON-array GET `data`). Use **GET /apilist** to discover valid column identifiers (for `data`, `sum`, and `filter`).
+      oneOf:
+      - type: string
+        description: Column identifier (`table.column`). Use **GET /apilist** to discover valid column identifiers (for `data`, `sum`, and `filter`).
+        example: graph.impressions
+      - $ref: '#/components/schemas/ApidataFilteredDataColumn'
+    DataRequest:
+      title: Data Request (POST)
+      required:
+      - begin
+      - data
+      - key
+      type: object
+      properties:
+        key:
+          type: string
+          description: Advertiser API key (required on every request).
+          example: YOUR_API_KEY
+        data:
+          type: array
+          description: Columns to return. Each item is either a column identifier string or a filtered column object. Use **GET /apilist** to discover valid column identifiers (for `data`, `sum`, and `filter`).
+          items:
+            $ref: '#/components/schemas/ApidataDataColumnItem'
+        sum:
+          type: array
+          items:
+            type: string
+            description: Optional grouping columns (same identifier style as `data`). Use **GET /apilist** to discover valid column identifiers (for `data`, `sum`, and `filter`).
+            example: campaigninfo.name
+        filter:
+          $ref: '#/components/schemas/Filter'
+        begin:
+          type: string
+          description: start date of the query
+          example: '2020-01-01'
+        end:
+          type: string
+          description: end date of the query
+          example: '2023-12-31'
+        format:
+          type: string
+          description: defines the content type of the response
+          enum:
+          - human
+          - json
+          - csv
+          - excel
+          default: human
+        formatdata:
+          type: boolean
+          description: when set to true, the values in the response data will be each be formatted
+          example: true
+          default: false
+        fullname:
+          type: boolean
+        limit:
+          type: integer
+          description: when set, the number of rows returned will be limited to this number
+          format: int32
+          example: 50
+        offset:
+          type: integer
+          description: when set, the query will skip this number of rows. Used for pagination
+          format: int32
+          example: 50
+        sort:
+          pattern: ^(\w|\d|\.)+ (asc|desc)$
+          type: array
+          description: when set, data will be returned sorted by this column and direction
+          example: impressions desc
+          items:
+            pattern: ^(\w|\d|\.)+ (asc|desc)$
+            type: string
+            description: when set, data will be returned sorted by this column and direction
+            example: impressions desc
+        dataColumns:
+          type: array
+          items:
+            type: string
+      description: POST /apidata JSON body. Use **GET /apilist** to discover valid column identifiers (for `data`, `sum`, and `filter`).
+      example:
+        key: YOUR_API_KEY
+        data:
+        - graph.day
+        - graph.impressions
+        - graph.conversions
+        begin: '2025-05-01'
+        end: '2025-05-21'
+        sum:
+        - campaigninfo.name
+        filter:
+          campaigninfo.id:
+            in:
+            - '28915'
+    CsvDataResponse:
+      title: CSV Data Response
+      type: string
+      description: Response format when format=csv is specified. Returns data in CSV format with headers.
+      example: 'Day,Sold Impressions,Remaining Impressions,Sales
+
+        2025-07-01,1500000,500000,25000.50
+
+        2025-07-02,1750000,250000,28500.75
+
+        2025-07-03,1600000,400000,26200.00'
+    ApidataFilteredDataColumn:
+      title: ApidataFilteredDataColumn
+      required:
+      - filter
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: Fully qualified column identifier.
+          example: graph.impressions
+        filter:
+          $ref: '#/components/schemas/Filter'
+        alias:
+          type: string
+          description: Alternate column header in the response
+        friendly:
+          type: string
+          description: Human-friendly column label
+        nullReplacement:
+          description: Value used when the metric cell is null
+      description: Column with an embedded filter (same predicate shape as top-level `filter`). Optional response labeling.
+    ProblemDetail:
+      title: Problem Detail (RFC 9457)
+      type: object
+      properties:
+        type:
+          type: string
+          description: A URI reference that identifies the problem type
+          example: https://api3.mntn.com/problems/query-timeout
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type (stable across occurrences)
+          example: Gateway Timeout
+        status:
+          type: integer
+          description: The HTTP status code
+          format: int32
+          example: 504
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem
+          example: Gateway Timeout
+        instance:
+          type: string
+          description: A URI reference that identifies the specific occurrence of the problem (request path)
+          example: /data?aid=12345
+        timestamp:
+          type: string
+          description: ISO 8601 timestamp when the error occurred
+          example: '2026-01-08T17:21:59.445461Z'
+        errorCode:
+          type: string
+          description: Internal error code for support reference
+          example: QUERY_TIMEOUT
+        traceId:
+          type: string
+          description: OpenTelemetry trace ID for debugging and support
+          example: 64a8b3c2d1e0f9876543210abcdef123
+        errors:
+          type: array
+          description: Array of validation errors (for 400 Bad Request responses)
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                description: Field name that failed validation
+                example: aid
+              message:
+                type: string
+                description: Error message
+                example: Advertiser ID is required
+      description: 'Standard error response format following RFC 9457 (Problem Details for HTTP APIs).
+
+
+        All error responses include machine-readable problem types and human-readable details.
+
+        See: https://www.rfc-editor.org/rfc/rfc9457.html'
+      example: '{Invalid API Key (401)={type=https://api3.mntn.com/problems/authorization-error, title=Invalid API Key, status=401, detail=The provided API key ''abc123...'' is not valid, instance=/apidata, timestamp=2026-01-08T17:21:59.445461Z, errorCode=INVALID_API_KEY, traceId=64a8b3c2d1e0f9876543210abcdef123}, Validation Error (400)={type=https://api3.mntn.com/problems/general-request-error, title=Bad Request, status=400, detail=Request validation failed, instance=/apidata, timestamp=2026-01-08T17:21:59.445461Z, errorCode=GENERAL_REQUEST_ERROR, errors=[{field=aid, message=Advertiser ID is required}, {field=begin, message=Start date is required}]}, Metadata Error (400)={type=https://api3.mntn.com/problems/metadata-error, title=Metadata Error, status=400, detail=Table ''Inventory1'' does not exist, instance=/apidata?aid=12345, timestamp=2026-01-08T17:21:59.445461Z, errorCode=METADATA_ERROR, traceId=64a8b3c2d1e0f9876543210abcdef123}, Query Timeout (504)={type=https://api3.mntn.com/problems/query-timeout, title=Gateway Timeout, status=504, detail=Gateway Timeout, instance=/apidata?aid=12345&begin=2020-01-01&end=2025-12-31, timestamp=2026-01-08T17:21:59.445461Z, traceId=64a8b3c2d1e0f9876543210abcdef123}, Resource Limit Exceeded (400)={type=https://api3.mntn.com/problems/resource-limit-exceeded, title=Resource Limit Exceeded, status=400, detail=Query returned too many rows. Please narrow your date range or refine `filter`., instance=/data?aid=12345&begin=2020-01-01&end=2025-12-31, timestamp=2026-01-08T17:21:59.445461Z, errorCode=RESOURCE_LIMIT_EXCEEDED, traceId=64a8b3c2d1e0f9876543210abcdef123}, Internal Server Error (500)={type=https://api3.mntn.com/problems/internal-error, title=Internal Server Error, status=500, detail=An unexpected error occurred while processing the request, instance=/apidata, timestamp=2026-01-08T17:21:59.445461Z, errorCode=NA, traceId=64a8b3c2d1e0f9876543210abcdef123}}'
+  securitySchemes:
+    API_Key:
+      type: apiKey
+      description: MNTN-issued advertiser API key. Available in Account Settings.
+      name: key
+      in: query

@@ -1,0 +1,311 @@
+openapi: 3.2.0
+info:
+  title: PTV Advertisers API
+  description: PTV API authoritative source of truth for PTV data.
+  version: '1.0'
+  contact:
+    name: MNTN Platform
+    url: https://api.mountain.com
+    email: support@mountain.com
+  license:
+    name: Proprietary
+servers:
+- url: https://api.mountain.com/ptv
+  description: MNTN Performance TV API gateway
+security:
+- Bearer: []
+- API Key: []
+tags:
+- name: advertisers
+  description: Advertiser directory.
+paths:
+  /api/v1/advertisers:
+    get:
+      description: Returns advertisers the caller is authorized to see, sorted by company name. Optionally filter by company name, company URL, timezone, or a cross-field query. Omitting filters returns the full authorized list. Searchable fields depend on the caller's advertiser view tier.
+      operationId: advertisers.list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: 1-based page number.
+        schema:
+          minimum: 1
+          type: number
+      - name: perPage
+        required: false
+        in: query
+        description: Results per page (maximum 100).
+        schema:
+          minimum: 1
+          maximum: 100
+          type: number
+      - name: query
+        required: false
+        in: query
+        description: Cross-field search across permitted advertiser fields (OR). Numeric values also match advertiser ID.
+        schema:
+          minLength: 1
+          type: string
+      - name: companyName
+        required: false
+        in: query
+        description: Case-insensitive substring match on company name.
+        schema:
+          minLength: 1
+          type: string
+      - name: companyUrl
+        required: false
+        in: query
+        description: Case-insensitive substring match on company URL.
+        schema:
+          minLength: 1
+          type: string
+      - name: timezone
+        required: false
+        in: query
+        description: Case-insensitive substring match on IANA timezone.
+        schema:
+          minLength: 1
+          type: string
+      responses:
+        '200':
+          description: Paginated advertiser list.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdvertiserPaginatedResponseDto'
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdvertiserPaginatedResponseDto_Output'
+      summary: List/Search advertisers
+      tags:
+      - advertisers
+  /api/v1/advertisers/{id}:
+    get:
+      description: Returns a single advertiser by ID.
+      operationId: advertisers.get
+      parameters:
+      - name: id
+        required: true
+        in: path
+        description: Advertiser identifier.
+        schema:
+          type: number
+      responses:
+        '200':
+          description: Single advertiser.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdvertiserSingleResponseDto'
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdvertiserSingleResponseDto_Output'
+      summary: Get an advertiser
+      tags:
+      - advertisers
+components:
+  schemas:
+    AdvertiserSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            advertiserId:
+              type: number
+              description: Unique advertiser identifier.
+            companyName:
+              type: string
+              description: Display name of the advertiser.
+            companyUrl:
+              type:
+              - string
+              - 'null'
+              description: Primary URL for the advertiser.
+            timezone:
+              description: IANA timezone of the advertiser.
+              type: string
+          required:
+          - advertiserId
+          - companyName
+          - companyUrl
+          additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
+    AdvertiserPaginatedResponseDto:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              advertiserId:
+                type: number
+                description: Unique advertiser identifier.
+              companyName:
+                type: string
+                description: Display name of the advertiser.
+              companyUrl:
+                type:
+                - string
+                - 'null'
+                description: Primary URL for the advertiser.
+              timezone:
+                description: IANA timezone of the advertiser.
+                type: string
+            required:
+            - advertiserId
+            - companyName
+            - companyUrl
+        pagination:
+          type: object
+          properties:
+            total:
+              type: integer
+              minimum: 0
+              maximum: 9007199254740991
+              description: Total rows available for this query.
+            perPage:
+              type: integer
+              exclusiveMinimum: true
+              maximum: 9007199254740991
+              description: Maximum rows per page.
+              minimum: 0
+            page:
+              default: 1
+              description: Current 1-based page index.
+              type: integer
+              exclusiveMinimum: true
+              maximum: 9007199254740991
+              minimum: 0
+            previousPageUrl:
+              type:
+              - string
+              - 'null'
+              description: URL for the previous page, or null when none.
+            nextPageUrl:
+              type:
+              - string
+              - 'null'
+              description: URL for the next page, or null when none.
+          required:
+          - total
+          - perPage
+          - previousPageUrl
+          - nextPageUrl
+      required:
+      - data
+      - pagination
+    AdvertiserPaginatedResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              advertiserId:
+                type: number
+                description: Unique advertiser identifier.
+              companyName:
+                type: string
+                description: Display name of the advertiser.
+              companyUrl:
+                type:
+                - string
+                - 'null'
+                description: Primary URL for the advertiser.
+              timezone:
+                description: IANA timezone of the advertiser.
+                type: string
+            required:
+            - advertiserId
+            - companyName
+            - companyUrl
+            additionalProperties: false
+        pagination:
+          type: object
+          properties:
+            total:
+              type: integer
+              minimum: 0
+              maximum: 9007199254740991
+              description: Total rows available for this query.
+            perPage:
+              type: integer
+              exclusiveMinimum: true
+              maximum: 9007199254740991
+              description: Maximum rows per page.
+              minimum: 0
+            page:
+              default: 1
+              description: Current 1-based page index.
+              type: integer
+              exclusiveMinimum: true
+              maximum: 9007199254740991
+              minimum: 0
+            previousPageUrl:
+              type:
+              - string
+              - 'null'
+              description: URL for the previous page, or null when none.
+            nextPageUrl:
+              type:
+              - string
+              - 'null'
+              description: URL for the next page, or null when none.
+          required:
+          - total
+          - perPage
+          - page
+          - previousPageUrl
+          - nextPageUrl
+          additionalProperties: false
+      required:
+      - data
+      - pagination
+      additionalProperties: false
+    AdvertiserSingleResponseDto:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            advertiserId:
+              type: number
+              description: Unique advertiser identifier.
+            companyName:
+              type: string
+              description: Display name of the advertiser.
+            companyUrl:
+              type:
+              - string
+              - 'null'
+              description: Primary URL for the advertiser.
+            timezone:
+              description: IANA timezone of the advertiser.
+              type: string
+          required:
+          - advertiserId
+          - companyName
+          - companyUrl
+      required:
+      - data
+  securitySchemes:
+    Bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+    API_Key:
+      type: apiKey
+      in: header
+      name: X-API-Key

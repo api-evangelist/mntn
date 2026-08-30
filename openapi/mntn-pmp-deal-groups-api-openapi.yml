@@ -1,0 +1,601 @@
+openapi: 3.2.0
+info:
+  title: PTV Pmp Deal Groups API
+  description: PTV API authoritative source of truth for PTV data.
+  version: '1.0'
+  contact:
+    name: MNTN Platform
+    url: https://api.mountain.com
+    email: support@mountain.com
+  license:
+    name: Proprietary
+servers:
+- url: https://api.mountain.com/ptv
+  description: MNTN Performance TV API gateway
+security:
+- Bearer: []
+- API Key: []
+tags:
+- name: pmp-deal-groups
+  description: Private marketplace deal-group management and deal membership.
+paths:
+  /api/v1/deal-groups:
+    get:
+      operationId: pmp.dealGroups.list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: 1-based page number.
+        schema:
+          minimum: 1
+          type: number
+      - name: perPage
+        required: false
+        in: query
+        description: Results per page (maximum 100).
+        schema:
+          minimum: 1
+          maximum: 100
+          type: number
+      - name: sortBy
+        required: false
+        in: query
+        description: Field to sort by. Defaults to dealGroupId.
+        schema:
+          type: string
+          enum:
+          - dealGroupId
+          - name
+          - partnershipDealType
+          - createTime
+          - updateTime
+          - startTime
+          - endTime
+      - name: sortOrder
+        required: false
+        in: query
+        description: Sort order. Defaults to asc.
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+      - name: search
+        required: false
+        in: query
+        description: Case-insensitive name substring (≤ 200 chars).
+        schema:
+          maxLength: 200
+          type: string
+      - name: partnershipDealType
+        required: false
+        in: query
+        description: Filter groups by partnership deal type.
+        schema:
+          type: string
+          enum:
+          - EXCLUSIVE
+          - SSP
+          - PUB_DIRECT
+      responses:
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDealGroupsResponseDto_Output'
+      summary: List PMP deal groups
+      tags:
+      - pmp-deal-groups
+      x-hide-from-docs: true
+    post:
+      operationId: pmp.dealGroups.create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDealGroupBodyDto'
+      responses:
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DealGroupResponseDto_Output'
+      summary: Create a PMP deal group
+      tags:
+      - pmp-deal-groups
+      x-hide-from-docs: true
+  /api/v1/deal-groups/bulk-delete:
+    post:
+      operationId: pmp.dealGroups.bulkDelete
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DealGroupBulkDeleteBodyDto'
+      responses:
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DealGroupBulkDeleteResultResponseDto_Output'
+      summary: Bulk-delete PMP deal groups
+      tags:
+      - pmp-deal-groups
+      x-hide-from-docs: true
+  /api/v1/deal-groups/{dealGroupId}:
+    get:
+      operationId: pmp.dealGroups.get
+      parameters:
+      - name: dealGroupId
+        required: true
+        in: path
+        schema:
+          type: number
+      responses:
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DealGroupResponseDto_Output'
+      summary: Get a PMP deal group
+      tags:
+      - pmp-deal-groups
+      x-hide-from-docs: true
+    patch:
+      operationId: pmp.dealGroups.update
+      parameters:
+      - name: dealGroupId
+        required: true
+        in: path
+        schema:
+          type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDealGroupBodyDto'
+      responses:
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DealGroupResponseDto_Output'
+      summary: Update a PMP deal group
+      tags:
+      - pmp-deal-groups
+      x-hide-from-docs: true
+    delete:
+      operationId: pmp.dealGroups.delete
+      parameters:
+      - name: dealGroupId
+        required: true
+        in: path
+        schema:
+          type: number
+      responses:
+        '204':
+          description: ''
+      summary: Delete a PMP deal group
+      tags:
+      - pmp-deal-groups
+      x-hide-from-docs: true
+  /api/v1/deal-groups/{dealGroupId}/deals/{pmpDealId}:
+    put:
+      operationId: pmp.dealGroups.addDeal
+      parameters:
+      - name: dealGroupId
+        required: true
+        in: path
+        schema:
+          type: number
+      - name: pmpDealId
+        required: true
+        in: path
+        schema:
+          type: number
+      responses:
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DealGroupLinkResponseDto_Output'
+      summary: Add a deal to a deal group
+      tags:
+      - pmp-deal-groups
+      x-hide-from-docs: true
+    delete:
+      operationId: pmp.dealGroups.removeDeal
+      parameters:
+      - name: dealGroupId
+        required: true
+        in: path
+        schema:
+          type: number
+      - name: pmpDealId
+        required: true
+        in: path
+        schema:
+          type: number
+      responses:
+        '204':
+          description: ''
+      summary: Remove a deal from a deal group
+      tags:
+      - pmp-deal-groups
+      x-hide-from-docs: true
+components:
+  schemas:
+    DealGroupBulkDeleteResultResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            groupsDeleted:
+              type: integer
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: Number of groups deleted.
+          required:
+          - groupsDeleted
+          additionalProperties: false
+          description: Bulk delete result.
+      required:
+      - data
+      additionalProperties: false
+    PaginatedDealGroupsResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              dealGroupId:
+                type: integer
+                minimum: -9007199254740991
+                maximum: 9007199254740991
+                description: Deal group ID.
+              name:
+                type: string
+                description: Group name.
+              startTime:
+                type:
+                - string
+                - 'null'
+                description: Start time (ISO8601); null when unset.
+              endTime:
+                type:
+                - string
+                - 'null'
+                description: End time (ISO8601); null when unset.
+              createTime:
+                type: string
+                description: Creation timestamp (ISO8601).
+              updateTime:
+                type: string
+                description: Last update timestamp (ISO8601).
+              createdBy:
+                type: integer
+                minimum: -9007199254740991
+                maximum: 9007199254740991
+                description: User who created the group.
+              channelId:
+                type: integer
+                minimum: -9007199254740991
+                maximum: 9007199254740991
+                description: Channel ID.
+              channelName:
+                type: string
+                description: Resolved channel name.
+              partnershipDealType:
+                type:
+                - string
+                - 'null'
+                enum:
+                - EXCLUSIVE
+                - SSP
+                - PUB_DIRECT
+                - null
+                description: Pinned by the first deal added to the group; null until a deal is added.
+              pmpDeals:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    pmpDealId:
+                      type: integer
+                      minimum: -9007199254740991
+                      maximum: 9007199254740991
+                      description: PMP deal ID.
+                    name:
+                      type: string
+                      description: Deal name.
+                  required:
+                  - pmpDealId
+                  - name
+                  additionalProperties: false
+                description: Deals currently in this group; empty without deal read permission.
+            required:
+            - dealGroupId
+            - name
+            - startTime
+            - endTime
+            - createTime
+            - updateTime
+            - createdBy
+            - channelId
+            - channelName
+            - partnershipDealType
+            - pmpDeals
+            additionalProperties: false
+            description: A PMP deal group.
+        pagination:
+          type: object
+          properties:
+            total:
+              type: integer
+              minimum: 0
+              maximum: 9007199254740991
+              description: Total rows available for this query.
+            perPage:
+              type: integer
+              exclusiveMinimum: true
+              maximum: 9007199254740991
+              description: Maximum rows per page.
+              minimum: 0
+            page:
+              default: 1
+              description: Current 1-based page index.
+              type: integer
+              exclusiveMinimum: true
+              maximum: 9007199254740991
+              minimum: 0
+            previousPageUrl:
+              type:
+              - string
+              - 'null'
+              description: URL for the previous page, or null when none.
+            nextPageUrl:
+              type:
+              - string
+              - 'null'
+              description: URL for the next page, or null when none.
+          required:
+          - total
+          - perPage
+          - page
+          - previousPageUrl
+          - nextPageUrl
+          additionalProperties: false
+      required:
+      - data
+      - pagination
+      additionalProperties: false
+    CreateDealGroupBodyDto:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Group name.
+        startTime:
+          description: Group start time.
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+        endTime:
+          description: Group end time.
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+        channelId:
+          type: integer
+          exclusiveMinimum: true
+          maximum: 9007199254740991
+          description: Channel ID.
+          minimum: 0
+        partnershipDealType:
+          description: Optional. When omitted, the group's type is pinned by the first deal added.
+          type: string
+          enum:
+          - EXCLUSIVE
+          - SSP
+          - PUB_DIRECT
+      required:
+      - name
+      - channelId
+    DealGroupLinkResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            pmpDealId:
+              type: integer
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: PMP deal ID.
+            dealGroupId:
+              type: integer
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: Deal group ID.
+            createTime:
+              type: string
+              description: Link creation timestamp (ISO8601).
+            updateTime:
+              type: string
+              description: Link last update timestamp (ISO8601).
+            createdBy:
+              type:
+              - integer
+              - 'null'
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: User who created the link.
+          required:
+          - pmpDealId
+          - dealGroupId
+          - createTime
+          - updateTime
+          - createdBy
+          additionalProperties: false
+          description: A deal <-> deal-group membership link.
+      required:
+      - data
+      additionalProperties: false
+    DealGroupBulkDeleteBodyDto:
+      type: object
+      properties:
+        dealGroupIds:
+          minItems: 1
+          maxItems: 1000
+          type: array
+          items:
+            type: integer
+            exclusiveMinimum: true
+            maximum: 9007199254740991
+            minimum: 0
+          description: Deal group IDs to hard-delete (1–1000 per request).
+      required:
+      - dealGroupIds
+    UpdateDealGroupBodyDto:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Group name.
+        startTime:
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+          description: Group start time.
+        endTime:
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+          description: Group end time.
+        channelId:
+          type: integer
+          exclusiveMinimum: true
+          maximum: 9007199254740991
+          description: Channel ID.
+          minimum: 0
+        partnershipDealType:
+          type: string
+          enum:
+          - EXCLUSIVE
+          - SSP
+          - PUB_DIRECT
+          description: Accepted only when the group has no deals, or all deals already share this type.
+    DealGroupResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            dealGroupId:
+              type: integer
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: Deal group ID.
+            name:
+              type: string
+              description: Group name.
+            startTime:
+              type:
+              - string
+              - 'null'
+              description: Start time (ISO8601); null when unset.
+            endTime:
+              type:
+              - string
+              - 'null'
+              description: End time (ISO8601); null when unset.
+            createTime:
+              type: string
+              description: Creation timestamp (ISO8601).
+            updateTime:
+              type: string
+              description: Last update timestamp (ISO8601).
+            createdBy:
+              type: integer
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: User who created the group.
+            channelId:
+              type: integer
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: Channel ID.
+            channelName:
+              type: string
+              description: Resolved channel name.
+            partnershipDealType:
+              type:
+              - string
+              - 'null'
+              enum:
+              - EXCLUSIVE
+              - SSP
+              - PUB_DIRECT
+              - null
+              description: Pinned by the first deal added to the group; null until a deal is added.
+            pmpDeals:
+              type: array
+              items:
+                type: object
+                properties:
+                  pmpDealId:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                    description: PMP deal ID.
+                  name:
+                    type: string
+                    description: Deal name.
+                required:
+                - pmpDealId
+                - name
+                additionalProperties: false
+              description: Deals currently in this group; empty without deal read permission.
+          required:
+          - dealGroupId
+          - name
+          - startTime
+          - endTime
+          - createTime
+          - updateTime
+          - createdBy
+          - channelId
+          - channelName
+          - partnershipDealType
+          - pmpDeals
+          additionalProperties: false
+          description: A PMP deal group.
+      required:
+      - data
+      additionalProperties: false
+  securitySchemes:
+    Bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+    API_Key:
+      type: apiKey
+      in: header
+      name: X-API-Key

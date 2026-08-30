@@ -1,0 +1,221 @@
+openapi: 3.2.0
+info:
+  title: PTV Organizations API
+  description: PTV API authoritative source of truth for PTV data.
+  version: '1.0'
+  contact:
+    name: MNTN Platform
+    url: https://api.mountain.com
+    email: support@mountain.com
+  license:
+    name: Proprietary
+servers:
+- url: https://api.mountain.com/ptv
+  description: MNTN Performance TV API gateway
+security:
+- Bearer: []
+- API Key: []
+tags:
+- name: organizations
+  description: Organization name and mode updates (proxied to advertiser-service).
+paths:
+  /api/v1/orgs/{publicOrgId}/mode:
+    put:
+      description: Sets organization mode (multi or single). Proxies to advertiser PATCH /orgs/:id with a mode-only body.
+      operationId: organizations.updateMode
+      parameters:
+      - name: publicOrgId
+        required: true
+        in: path
+        description: Public organization identifier.
+        schema:
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrganizationModeBodyDto'
+      responses:
+        '200':
+          description: Updated organization.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationSingleResponseDto'
+        '400':
+          description: Invalid request payload.
+        '401':
+          description: Authentication required.
+        '404':
+          description: Organization not found.
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationSingleResponseDto_Output'
+      summary: Update organization mode
+      tags:
+      - organizations
+  /api/v1/orgs/{publicOrgId}:
+    patch:
+      description: Updates the organization display name. Proxies to advertiser PATCH /orgs/:id with a name-only body.
+      operationId: organizations.patch
+      parameters:
+      - name: publicOrgId
+        required: true
+        in: path
+        description: Public organization identifier.
+        schema:
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchOrganizationNameBodyDto'
+      responses:
+        '200':
+          description: Updated organization.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationSingleResponseDto'
+        '400':
+          description: Invalid request payload.
+        '401':
+          description: Authentication required.
+        '404':
+          description: Organization not found.
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationSingleResponseDto_Output'
+      summary: Update organization name
+      tags:
+      - organizations
+components:
+  schemas:
+    PatchOrganizationNameBodyDto:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Display name of the organization.
+      required:
+      - name
+      additionalProperties: false
+    OrganizationSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            publicId:
+              type: string
+              format: uuid
+              pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+            name:
+              type: string
+            mode:
+              type: string
+              enum:
+              - multi
+              - single
+            status:
+              type: string
+              enum:
+              - active
+              - suspended
+            setupStatus:
+              type: string
+              enum:
+              - complete
+              - incomplete
+            createdAt:
+              type: string
+            updatedAt:
+              type: string
+          required:
+          - publicId
+          - name
+          - mode
+          - status
+          - setupStatus
+          - createdAt
+          - updatedAt
+          additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
+    UpdateOrganizationModeBodyDto:
+      type: object
+      properties:
+        mode:
+          type: string
+          enum:
+          - multi
+          - single
+          description: 'Organization mode: multi (multi-advertiser) or single (single-advertiser).'
+      required:
+      - mode
+      additionalProperties: false
+    OrganizationSingleResponseDto:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            publicId:
+              type: string
+              format: uuid
+              pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+            name:
+              type: string
+            mode:
+              type: string
+              enum:
+              - multi
+              - single
+            status:
+              type: string
+              enum:
+              - active
+              - suspended
+            setupStatus:
+              type: string
+              enum:
+              - complete
+              - incomplete
+            createdAt:
+              type: string
+            updatedAt:
+              type: string
+          required:
+          - publicId
+          - name
+          - mode
+          - status
+          - setupStatus
+          - createdAt
+          - updatedAt
+      required:
+      - data
+  securitySchemes:
+    Bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+    API_Key:
+      type: apiKey
+      in: header
+      name: X-API-Key

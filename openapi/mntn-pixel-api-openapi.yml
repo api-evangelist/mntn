@@ -1,0 +1,769 @@
+openapi: 3.2.0
+info:
+  title: PTV Pixel API
+  description: PTV API authoritative source of truth for PTV data.
+  version: '1.0'
+  contact:
+    name: MNTN Platform
+    url: https://api.mountain.com
+    email: support@mountain.com
+  license:
+    name: Proprietary
+servers:
+- url: https://api.mountain.com/ptv
+  description: MNTN Performance TV API gateway
+security:
+- Bearer: []
+- API Key: []
+tags:
+- name: pixel
+  description: Pixel configuration, health, verification, and GA4 management.
+paths:
+  /api/v1/advertisers/{advertiserId}/pixel/signal-strategies:
+    get:
+      description: Returns smart pixel configuration signal strategies for install recommendations.
+      operationId: pixel.getSignalStrategies
+      parameters:
+      - name: advertiserId
+        required: true
+        in: path
+        description: Advertiser identifier.
+        schema:
+          type: number
+      responses:
+        '200':
+          description: Signal strategies for the advertiser.
+          content:
+            application/json:
+              example:
+                data:
+                - signal: autoconfig_recommendation
+                  strategy: gtm
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PixelSignalStrategiesListResponseDto_Output'
+      summary: Get recommended pixel signal strategies
+      tags:
+      - pixel
+      x-hide-from-docs: true
+  /api/v1/advertisers/{advertiserId}/pixel/health-overview:
+    post:
+      description: Returns pixel health overview data for the advertiser and site URL.
+      operationId: pixel.getHealthOverview
+      parameters:
+      - name: advertiserId
+        required: true
+        in: path
+        description: Advertiser identifier.
+        schema:
+          type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PixelHealthOverviewBodyDto'
+      responses:
+        '200':
+          description: Pixel health overview.
+          content:
+            application/json:
+              example:
+                data:
+                  conv_pixel_opt_out: false
+                  health:
+                    pageviews: 120
+                    conversions: 4
+                    health_score: good
+                    days_since_last_event: 0
+                  pixel_status:
+                    tracking_pixel:
+                      status: GOOD
+                      count: 120
+                    conversion_pixel:
+                      status: FAIR
+                      count: 4
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PixelPassthroughSingleResponseDto_Output'
+      summary: Get pixel health overview
+      tags:
+      - pixel
+      x-hide-from-docs: true
+  /api/v1/advertisers/{advertiserId}/pixel/warnings/check:
+    post:
+      description: Evaluates entered URLs for pixel warnings and persists the results.
+      operationId: pixel.checkWarnings
+      parameters:
+      - name: advertiserId
+        required: true
+        in: path
+        description: Advertiser identifier.
+        schema:
+          type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PixelWarningsCheckBodyDto'
+      responses:
+        '200':
+          description: Ranked pixel warnings.
+          content:
+            application/json:
+              example:
+                data:
+                  ranked_warnings:
+                    count: 0
+                    warnings: []
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PixelPassthroughSingleResponseDto_Output'
+      summary: Check and save pixel warnings
+      tags:
+      - pixel
+      x-hide-from-docs: true
+  /api/v1/advertisers/{advertiserId}/pixel/verification/check-redis-events:
+    post:
+      deprecated: true
+      description: Checks whether recent tracking and conversion pixel events exist in Redis.
+      operationId: pixel.checkRedisEvents
+      parameters:
+      - name: advertiserId
+        required: true
+        in: path
+        description: Advertiser identifier.
+        schema:
+          type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PixelCheckRedisEventsBodyDto'
+      responses:
+        '200':
+          description: Redis verification status.
+          content:
+            application/json:
+              example:
+                data:
+                  events: null
+                  query_window_start: '2026-07-01T14:51:22.714756206Z'
+                  query_window_end: '2026-07-01T14:56:22.714756206Z'
+                  tracking_verified: false
+                  conversion_verified: false
+                  ga4_measurement_ids: []
+                  flag_duplicate_tracking: false
+                  flag_duplicate_conversions: false
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PixelVerificationEventsSingleResponseDto_Output'
+      summary: Check recent Redis pixel events
+      tags:
+      - pixel
+      x-hide-from-docs: true
+  /api/v1/advertisers/{advertiserId}/pixel/verification/events:
+    get:
+      description: Gets recent tracking and conversion pixel events.
+      operationId: pixel.events
+      parameters:
+      - name: advertiserId
+        required: true
+        in: path
+        description: Advertiser identifier.
+        schema:
+          type: number
+      - name: lookbackSeconds
+        required: false
+        in: query
+        description: Lookback window in seconds.
+        schema:
+          enum:
+          - 120
+          - 300
+          - 600
+          type: number
+      responses:
+        '200':
+          description: Pixel verification status.
+          content:
+            application/json:
+              example:
+                data:
+                  events: null
+                  queryWindowStart: '2026-07-01T14:51:22.714756206Z'
+                  queryWindowEnd: '2026-07-01T14:56:22.714756206Z'
+                  trackingVerified: false
+                  conversionVerified: false
+                  ga4MeasurementIds: []
+                  flagDuplicateTracking: false
+                  flagDuplicateConversions: false
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PixelVerificationEventsApiSingleResponseDto_Output'
+      summary: Get recent pixel events
+      tags:
+      - pixel
+      x-hide-from-docs: true
+  /api/v1/advertisers/{advertiserId}/pixel/verification/listen-pageviews:
+    post:
+      description: Blocks until tracking pixel pageview events are observed or the timeout elapses.
+      operationId: pixel.listenPageviews
+      parameters:
+      - name: advertiserId
+        required: true
+        in: path
+        description: Advertiser identifier.
+        schema:
+          type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PixelListenPageviewsBodyDto'
+      responses:
+        '200':
+          description: Pageview listener result.
+          content:
+            application/json:
+              example:
+                data:
+                  tracking_verified: true
+                  conversion_verified: false
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PixelPassthroughSingleResponseDto_Output'
+      summary: Listen for tracking pixel pageview events
+      tags:
+      - pixel
+      x-hide-from-docs: true
+  /api/v1/advertisers/{advertiserId}/pixel/verification/listen-conversions:
+    post:
+      description: Blocks until conversion pixel events are observed or the timeout elapses.
+      operationId: pixel.listenConversions
+      parameters:
+      - name: advertiserId
+        required: true
+        in: path
+        description: Advertiser identifier.
+        schema:
+          type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PixelListenConversionsBodyDto'
+      responses:
+        '200':
+          description: Conversion listener result.
+          content:
+            application/json:
+              example:
+                data:
+                  tracking_verified: true
+                  conversion_verified: false
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PixelPassthroughSingleResponseDto_Output'
+      summary: Listen for conversion pixel events
+      tags:
+      - pixel
+      x-hide-from-docs: true
+  /api/v1/advertisers/{advertiserId}/pixel/verification/scrape-page:
+    post:
+      description: Scrapes the advertiser site to detect pixel installation details.
+      operationId: pixel.scrapePage
+      parameters:
+      - name: advertiserId
+        required: true
+        in: path
+        description: Advertiser identifier.
+        schema:
+          type: number
+      responses:
+        '200':
+          description: Page scrape result.
+          content:
+            application/json:
+              example:
+                data:
+                  tracking_verified: true
+                  conversion_verified: false
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PixelPassthroughSingleResponseDto_Output'
+      summary: Scrape advertiser site for pixel setup
+      tags:
+      - pixel
+      x-hide-from-docs: true
+  /api/v1/advertisers/{advertiserId}/pixel/verification/handle-order-ids:
+    post:
+      description: Analyzes order ID configuration and applies recommended pixel settings.
+      operationId: pixel.handleOrderIds
+      parameters:
+      - name: advertiserId
+        required: true
+        in: path
+        description: Advertiser identifier.
+        schema:
+          type: number
+      responses:
+        '200':
+          description: Order ID handling result.
+          content:
+            application/json:
+              example:
+                data:
+                  tracking_verified: true
+                  conversion_verified: false
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PixelPassthroughSingleResponseDto_Output'
+      summary: Analyze and configure pixel order IDs
+      tags:
+      - pixel
+      x-hide-from-docs: true
+  /api/v1/advertisers/{advertiserId}/pixel/ga4-ids:
+    get:
+      description: Returns stored GA4 measurement IDs for the advertiser.
+      operationId: pixel.getGa4Ids
+      parameters:
+      - name: advertiserId
+        required: true
+        in: path
+        description: Advertiser identifier.
+        schema:
+          type: number
+      responses:
+        '200':
+          description: Stored GA4 measurement IDs.
+          content:
+            application/json:
+              example:
+                data:
+                  ga_measurement_ids:
+                  - G-ABCDEF1234
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PixelGa4IdsSingleResponseDto_Output'
+      summary: Get GA4 measurement IDs
+      tags:
+      - pixel
+      x-hide-from-docs: true
+    put:
+      description: Persists GA4 measurement IDs for the advertiser.
+      operationId: pixel.storeGa4Ids
+      parameters:
+      - name: advertiserId
+        required: true
+        in: path
+        description: Advertiser identifier.
+        schema:
+          type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PixelStoreGa4IdsBodyDto'
+      responses:
+        '200':
+          description: Stored GA4 measurement IDs.
+          content:
+            application/json:
+              example:
+                data:
+                  tracking_verified: true
+                  conversion_verified: false
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PixelPassthroughSingleResponseDto_Output'
+      summary: Store GA4 measurement IDs
+      tags:
+      - pixel
+      x-hide-from-docs: true
+  /api/v1/advertisers/{advertiserId}/pixel/conversion-opt-out:
+    put:
+      description: Enables or disables conversion pixel opt-out for the advertiser.
+      operationId: pixel.updateConversionOptOut
+      parameters:
+      - name: advertiserId
+        required: true
+        in: path
+        description: Advertiser identifier.
+        schema:
+          type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PixelConversionOptOutBodyDto'
+      responses:
+        '200':
+          description: Updated conversion pixel opt-out status.
+          content:
+            application/json:
+              example:
+                data:
+                  tracking_verified: true
+                  conversion_verified: false
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PixelPassthroughSingleResponseDto_Output'
+      summary: Update conversion pixel opt-out status
+      tags:
+      - pixel
+      x-hide-from-docs: true
+components:
+  schemas:
+    PixelListenPageviewsBodyDto:
+      type: object
+      properties:
+        timeoutSeconds:
+          description: Listener timeout in seconds. Defaults to 100.
+          type: integer
+          exclusiveMinimum: true
+          maximum: 9007199254740991
+          minimum: 0
+        count:
+          description: Number of events to wait for. Defaults to 1.
+          type: integer
+          exclusiveMinimum: true
+          maximum: 9007199254740991
+          minimum: 0
+      description: Pixel verification listener request body.
+    PixelCheckRedisEventsBodyDto:
+      type: object
+      properties:
+        lookbackSeconds:
+          description: Redis lookback window in seconds. Defaults to 300.
+          type: integer
+          exclusiveMinimum: true
+          maximum: 9007199254740991
+          minimum: 0
+      description: Check recent Redis pixel events request body.
+    PixelStoreGa4IdsBodyDto:
+      type: object
+      properties:
+        ga4Ids:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          description: GA4 measurement IDs to store for the advertiser.
+      required:
+      - ga4Ids
+      description: Store GA4 measurement IDs request body.
+    PixelSignalStrategiesListResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              signal:
+                type:
+                - string
+                - 'null'
+              strategy:
+                type:
+                - string
+                - 'null'
+            additionalProperties: false
+            description: Recommended pixel signal strategy.
+      required:
+      - data
+      additionalProperties: false
+    PixelConversionOptOutBodyDto:
+      type: object
+      properties:
+        optOut:
+          type: boolean
+          description: Whether conversion pixel opt-out is enabled.
+      required:
+      - optOut
+      description: Conversion pixel opt-out request body.
+    PixelPassthroughSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          additionalProperties: {}
+          description: Passthrough pixel verification payload.
+      required:
+      - data
+      additionalProperties: false
+    PixelWarningsCheckBodyDto:
+      type: object
+      properties:
+        urls:
+          minItems: 1
+          type: array
+          items:
+            type: string
+            minLength: 1
+          description: Site URLs to evaluate for pixel warnings.
+      required:
+      - urls
+      description: Pixel warnings check request body.
+    PixelGa4IdsSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            ga_measurement_ids:
+              type:
+              - array
+              - 'null'
+              items:
+                type: string
+          additionalProperties: false
+          description: Stored GA4 measurement IDs.
+      required:
+      - data
+      additionalProperties: false
+    PixelVerificationEventsSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            events:
+              type:
+              - array
+              - 'null'
+              items:
+                type: object
+                properties:
+                  AID:
+                    type: string
+                    description: Tracking pixel AID associated with the event.
+                  advertiserId:
+                    anyOf:
+                    - type: string
+                    - type: number
+                    description: Advertiser identifier on the event.
+                  url:
+                    type: string
+                    description: Page URL where the event fired.
+                  event_type:
+                    type: string
+                    description: Event classification from the pixel stream.
+                  topic:
+                    type: string
+                    description: Source topic for the event.
+                  timestamp:
+                    type: string
+                    description: Event timestamp.
+                  raw_message:
+                    type: string
+                    description: Sanitized raw event payload.
+                required:
+                - AID
+                - advertiserId
+                - url
+                - event_type
+                - topic
+                - timestamp
+                - raw_message
+                additionalProperties: false
+              description: Recent pixel events in the query window, or null when none were found.
+            query_window_start:
+              type: string
+              description: Start of the lookback window (ISO-8601).
+            query_window_end:
+              type: string
+              description: End of the lookback window (ISO-8601).
+            tracking_verified:
+              type: boolean
+              description: Whether tracking pixel events were observed.
+            conversion_verified:
+              type: boolean
+              description: Whether conversion pixel events were observed.
+            ga4_measurement_ids:
+              type: array
+              items:
+                type: string
+              description: GA4 measurement IDs observed for the advertiser.
+            flag_duplicate_tracking:
+              type: boolean
+              description: Whether duplicate tracking events were detected.
+            flag_duplicate_conversions:
+              type: boolean
+              description: Whether duplicate conversion events were detected.
+          required:
+          - events
+          - query_window_start
+          - query_window_end
+          - tracking_verified
+          - conversion_verified
+          - ga4_measurement_ids
+          - flag_duplicate_tracking
+          - flag_duplicate_conversions
+          additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
+    PixelListenConversionsBodyDto:
+      type: object
+      properties:
+        timeoutSeconds:
+          description: Listener timeout in seconds. Defaults to 100.
+          type: integer
+          exclusiveMinimum: true
+          maximum: 9007199254740991
+          minimum: 0
+        count:
+          description: Number of events to wait for. Defaults to 1.
+          type: integer
+          exclusiveMinimum: true
+          maximum: 9007199254740991
+          minimum: 0
+      description: Pixel verification listener request body.
+    PixelHealthOverviewBodyDto:
+      type: object
+      properties:
+        url:
+          type: string
+          minLength: 1
+          description: Advertiser site URL to evaluate.
+        fresh:
+          description: When true, bypass cached health data (`mode=fresh`).
+          type: boolean
+      required:
+      - url
+      description: Pixel health overview request body.
+    PixelVerificationEventsApiSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            events:
+              type:
+              - array
+              - 'null'
+              items:
+                type: object
+                properties:
+                  aid:
+                    type: string
+                    description: Tracking pixel AID associated with the event.
+                  advertiserId:
+                    anyOf:
+                    - type: string
+                    - type: number
+                    description: Advertiser identifier on the event.
+                  url:
+                    type: string
+                    description: Page URL where the event fired.
+                  eventType:
+                    type: string
+                    description: Event classification from the pixel stream.
+                  topic:
+                    type: string
+                    description: Source topic for the event.
+                  timestamp:
+                    type: string
+                    description: Event timestamp.
+                  rawMessage:
+                    type: string
+                    description: Sanitized raw event payload.
+                required:
+                - aid
+                - advertiserId
+                - url
+                - eventType
+                - topic
+                - timestamp
+                - rawMessage
+                additionalProperties: false
+              description: Recent pixel events in the query window, or null when none were found.
+            queryWindowStart:
+              type: string
+              description: Start of the lookback window (ISO-8601).
+            queryWindowEnd:
+              type: string
+              description: End of the lookback window (ISO-8601).
+            trackingVerified:
+              type: boolean
+              description: Whether tracking pixel events were observed.
+            conversionVerified:
+              type: boolean
+              description: Whether conversion pixel events were observed.
+            ga4MeasurementIds:
+              type: array
+              items:
+                type: string
+              description: GA4 measurement IDs observed for the advertiser.
+            flagDuplicateTracking:
+              type: boolean
+              description: Whether duplicate tracking events were detected.
+            flagDuplicateConversions:
+              type: boolean
+              description: Whether duplicate conversion events were detected.
+          required:
+          - events
+          - queryWindowStart
+          - queryWindowEnd
+          - trackingVerified
+          - conversionVerified
+          - ga4MeasurementIds
+          - flagDuplicateTracking
+          - flagDuplicateConversions
+          additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
+  securitySchemes:
+    Bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+    API_Key:
+      type: apiKey
+      in: header
+      name: X-API-Key

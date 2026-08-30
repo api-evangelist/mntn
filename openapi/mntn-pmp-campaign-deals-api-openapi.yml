@@ -1,0 +1,164 @@
+openapi: 3.2.0
+info:
+  title: PTV Pmp Campaign Deals API
+  description: PTV API authoritative source of truth for PTV data.
+  version: '1.0'
+  contact:
+    name: MNTN Platform
+    url: https://api.mountain.com
+    email: support@mountain.com
+  license:
+    name: Proprietary
+servers:
+- url: https://api.mountain.com/ptv
+  description: MNTN Performance TV API gateway
+security:
+- Bearer: []
+- API Key: []
+tags:
+- name: pmp-campaign-deals
+  description: Deal-group assignment to campaigns.
+paths:
+  /api/v1/campaigns/{campaignId}/deal-groups:
+    get:
+      operationId: pmp.campaigns.listDealGroups
+      parameters:
+      - name: campaignId
+        required: true
+        in: path
+        schema:
+          type: number
+      responses:
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignDealGroupLinksResponseDto_Output'
+      summary: List deal groups linked to a campaign
+      tags:
+      - pmp-campaign-deals
+  /api/v1/campaigns/{campaignId}/deal-groups/{dealGroupId}:
+    put:
+      operationId: pmp.campaigns.linkDealGroup
+      parameters:
+      - name: campaignId
+        required: true
+        in: path
+        schema:
+          type: number
+      - name: dealGroupId
+        required: true
+        in: path
+        schema:
+          type: number
+      responses:
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignDealGroupLinkResponseDto_Output'
+      summary: Link a campaign to a deal group
+      tags:
+      - pmp-campaign-deals
+    delete:
+      operationId: pmp.campaigns.unlinkDealGroup
+      parameters:
+      - name: campaignId
+        required: true
+        in: path
+        schema:
+          type: number
+      - name: dealGroupId
+        required: true
+        in: path
+        schema:
+          type: number
+      responses:
+        '204':
+          description: ''
+      summary: Unlink a campaign from a deal group
+      tags:
+      - pmp-campaign-deals
+components:
+  schemas:
+    CampaignDealGroupLinksResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              campaignId:
+                type: integer
+                minimum: -9007199254740991
+                maximum: 9007199254740991
+                description: Campaign ID.
+              dealGroupId:
+                type:
+                - integer
+                - 'null'
+                minimum: -9007199254740991
+                maximum: 9007199254740991
+                description: Deal group ID; null when unset.
+              createTime:
+                type: string
+                description: Link creation timestamp (ISO8601).
+              updateTime:
+                type: string
+                description: Link last update timestamp (ISO8601).
+            required:
+            - campaignId
+            - dealGroupId
+            - createTime
+            - updateTime
+            additionalProperties: false
+            description: A campaign <-> deal-group link.
+      required:
+      - data
+      additionalProperties: false
+    CampaignDealGroupLinkResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            campaignId:
+              type: integer
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: Campaign ID.
+            dealGroupId:
+              type:
+              - integer
+              - 'null'
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: Deal group ID; null when unset.
+            createTime:
+              type: string
+              description: Link creation timestamp (ISO8601).
+            updateTime:
+              type: string
+              description: Link last update timestamp (ISO8601).
+          required:
+          - campaignId
+          - dealGroupId
+          - createTime
+          - updateTime
+          additionalProperties: false
+          description: A campaign <-> deal-group link.
+      required:
+      - data
+      additionalProperties: false
+  securitySchemes:
+    Bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+    API_Key:
+      type: apiKey
+      in: header
+      name: X-API-Key

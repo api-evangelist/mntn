@@ -1,0 +1,412 @@
+openapi: 3.2.0
+info:
+  title: PTV Reference API
+  description: PTV API authoritative source of truth for PTV data.
+  version: '1.0'
+  contact:
+    name: MNTN Platform
+    url: https://api.mountain.com
+    email: support@mountain.com
+  license:
+    name: Proprietary
+servers:
+- url: https://api.mountain.com/ptv
+  description: MNTN Performance TV API gateway
+security:
+- Bearer: []
+- API Key: []
+tags:
+- name: reference
+  description: Enumerations and lookup data shared across endpoints.
+paths:
+  /api/v1/reference/budget/goals:
+    get:
+      description: Returns canonical goal types accepted by campaign and budget APIs.
+      operationId: reference.listGoalTypes
+      parameters: []
+      responses:
+        '200':
+          description: Reference list.
+          content:
+            application/json:
+              example:
+                data:
+                - id: 1
+                  name: ROAS
+                  description: Return on Ad Spend
+                - id: 16
+                  name: CPA
+                  description: Cost per Acquisition
+                - id: 3
+                  name: ECPA
+                  description: Effective Cost per Acquisition
+                - id: 14
+                  name: COST_PER_COMPLETED_VIEW
+                  description: Cost per Completed View
+                - id: 13
+                  name: COST_PER_VISIT
+                  description: Cost per Visit
+                - id: 9
+                  name: REACH
+                  description: Reach
+                - id: 10
+                  name: CLICKS
+                  description: Clicks
+                - id: 12
+                  name: VISITS
+                  description: Visits
+                - id: 15
+                  name: VISIT_RATE
+                  description: Visit Rate
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReferenceGoalsListResponseDto_Output'
+      summary: List allowed goal types
+      tags:
+      - reference
+  /api/v1/reference/budget/types:
+    get:
+      description: Returns canonical budget type values accepted by budget mutation APIs.
+      operationId: reference.listBudgetTypes
+      parameters: []
+      responses:
+        '200':
+          description: Reference list.
+          content:
+            application/json:
+              example:
+                data:
+                - id: 1
+                  name: MONTHLY
+                  description: Monthly recurring budget
+                - id: 3
+                  name: FLIGHTED
+                  description: Flighted budget with start/end dates
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReferenceBudgetTypesListResponseDto_Output'
+      summary: List allowed budget types
+      tags:
+      - reference
+  /api/v1/reference/geo/types:
+    get:
+      description: Returns supported geo selector types sourced from `geo.location_types` (cached for 1 week). Use the `name` value as the `geoTypeName` filter on `GET /api/v1/audiences/locations`.
+      operationId: reference.listGeoTypes
+      parameters: []
+      responses:
+        '200':
+          description: Reference list.
+          content:
+            application/json:
+              example:
+                data:
+                - id: 5
+                  name: STATE
+                - id: 6
+                  name: CITY
+                - id: 4
+                  name: Media Market
+                - id: 7
+                  name: ZIP_CODE
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReferenceGeoTypesListResponseDto_Output'
+      summary: List allowed geo targeting types
+      tags:
+      - reference
+  /api/v1/reference/campaign/statuses:
+    get:
+      description: Returns supported campaign statuses.
+      operationId: reference.listCampaignStatuses
+      parameters: []
+      responses:
+        '200':
+          description: Reference list.
+          content:
+            application/json:
+              example:
+                data:
+                - id: incomplete
+                  name: incomplete
+                  description: Incomplete
+                - id: ready
+                  name: ready
+                  description: Ready
+                - id: live
+                  name: live
+                  description: Live
+                - id: scheduled
+                  name: scheduled
+                  description: Scheduled
+                - id: paused
+                  name: paused
+                  description: Paused
+                - id: ended
+                  name: ended
+                  description: Ended
+                - id: archived
+                  name: archived
+                  description: Archived
+                - id: build
+                  name: build
+                  description: Build
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReferenceCampaignStatusesListResponseDto_Output'
+      summary: List allowed campaign statuses
+      tags:
+      - reference
+  /api/v1/reference/campaign/objectives:
+    get:
+      description: Returns supported campaign objective types.
+      operationId: reference.listCampaignObjectives
+      parameters: []
+      responses:
+        '200':
+          description: Reference list.
+          content:
+            application/json:
+              example:
+                data:
+                - id: PROSPECTING
+                  name: PROSPECTING
+                  description: Prospecting
+                - id: RETARGETING
+                  name: RETARGETING
+                  description: Retargeting
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReferenceCampaignObjectivesListResponseDto_Output'
+      summary: List allowed campaign objectives
+      tags:
+      - reference
+  /api/v1/reference/audience/segment-types:
+    get:
+      description: Returns supported audience segment types.
+      operationId: reference.listAudienceSegmentTypes
+      parameters: []
+      responses:
+        '200':
+          description: Reference list.
+          content:
+            application/json:
+              example:
+                data:
+                - id: 1
+                  name: OPM
+                  description: OPM
+                - id: 2
+                  name: FPA
+                  description: FPA
+                - id: 3
+                  name: AUTO DEFAULT
+                  description: Auto Default
+                - id: 4
+                  name: 5 PLUS PV
+                  description: 5+ PV
+                - id: 5
+                  name: CART
+                  description: Cart
+                - id: 6
+                  name: HIGH INTENT C
+                  description: High Intent C
+                - id: 7
+                  name: EGO
+                  description: Ego
+                - id: 8
+                  name: EXT
+                  description: EXT
+                - id: 9
+                  name: HIGH INTENT B
+                  description: High Intent B
+                - id: 10
+                  name: 1_PLUS_PV
+                  description: 1+ PV
+                - id: 11
+                  name: 1 PLUS CONVERSION
+                  description: 1+ Conversion
+                - id: 12
+                  name: CONTROL GROUP AUDIENCE
+                  description: Control Group Audience
+                - id: 13
+                  name: EGO CAMPAIGN AUDIENCE
+                  description: Ego Campaign Audience
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReferenceAudienceSegmentTypesListResponseDto_Output'
+      summary: List allowed audience segment types
+      tags:
+      - reference
+components:
+  schemas:
+    ReferenceCampaignStatusesListResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: String identifier for the reference value.
+              name:
+                type: string
+                description: Stable machine-friendly name of the reference value.
+              description:
+                description: Human-readable description of the reference value. May be omitted on lists sourced from upstream catalogs.
+                type: string
+            required:
+            - id
+            - name
+            additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
+    ReferenceCampaignObjectivesListResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: String identifier for the reference value.
+              name:
+                type: string
+                description: Stable machine-friendly name of the reference value.
+              description:
+                description: Human-readable description of the reference value. May be omitted on lists sourced from upstream catalogs.
+                type: string
+            required:
+            - id
+            - name
+            additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
+    ReferenceGeoTypesListResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+                description: Numeric identifier for the reference value.
+              name:
+                type: string
+                description: Stable machine-friendly name of the reference value.
+              description:
+                description: Human-readable description of the reference value. Omitted on lists sourced directly from upstream catalogs (e.g. `geo/types`).
+                type: string
+            required:
+            - id
+            - name
+            additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
+    ReferenceGoalsListResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+                description: Numeric identifier for the reference value.
+              name:
+                type: string
+                description: Stable machine-friendly name of the reference value.
+              description:
+                description: Human-readable description of the reference value. Omitted on lists sourced directly from upstream catalogs (e.g. `geo/types`).
+                type: string
+            required:
+            - id
+            - name
+            additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
+    ReferenceBudgetTypesListResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+                description: Numeric identifier for the reference value.
+              name:
+                type: string
+                description: Stable machine-friendly name of the reference value.
+              description:
+                description: Human-readable description of the reference value. Omitted on lists sourced directly from upstream catalogs (e.g. `geo/types`).
+                type: string
+            required:
+            - id
+            - name
+            additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
+    ReferenceAudienceSegmentTypesListResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+                description: Numeric identifier for the reference value.
+              name:
+                type: string
+                description: Stable machine-friendly name of the reference value.
+              description:
+                description: Human-readable description of the reference value. Omitted on lists sourced directly from upstream catalogs (e.g. `geo/types`).
+                type: string
+            required:
+            - id
+            - name
+            additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
+  securitySchemes:
+    Bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+    API_Key:
+      type: apiKey
+      in: header
+      name: X-API-Key

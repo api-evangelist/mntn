@@ -1,0 +1,360 @@
+openapi: 3.2.0
+info:
+  title: PTV Pmp Partners API
+  description: PTV API authoritative source of truth for PTV data.
+  version: '1.0'
+  contact:
+    name: MNTN Platform
+    url: https://api.mountain.com
+    email: support@mountain.com
+  license:
+    name: Proprietary
+servers:
+- url: https://api.mountain.com/ptv
+  description: MNTN Performance TV API gateway
+security:
+- Bearer: []
+- API Key: []
+tags:
+- name: pmp-partners
+  description: Private marketplace partner directory.
+paths:
+  /api/v1/partners:
+    get:
+      operationId: pmp.partners.list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: 1-based page number.
+        schema:
+          minimum: 1
+          type: number
+      - name: perPage
+        required: false
+        in: query
+        description: Results per page (maximum 100).
+        schema:
+          minimum: 1
+          maximum: 100
+          type: number
+      - name: sortBy
+        required: false
+        in: query
+        description: Field to sort by. Defaults to partnerId.
+        schema:
+          type: string
+          enum:
+          - partnerId
+          - name
+          - description
+          - partnerType
+          - createTime
+          - updateTime
+      - name: sortOrder
+        required: false
+        in: query
+        description: Sort order. Defaults to asc.
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+      - name: partnerType
+        required: false
+        in: query
+        description: Filter partners by type.
+        schema:
+          type: string
+          enum:
+          - DSP
+          - SSP
+          - MOBILE_ATTRIBUTION
+      responses:
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPartnersResponseDto_Output'
+      summary: List PMP partners
+      tags:
+      - pmp-partners
+      x-hide-from-docs: true
+    post:
+      operationId: pmp.partners.create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePartnerBodyDto'
+      responses:
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerResponseDto_Output'
+      summary: Create a PMP partner
+      tags:
+      - pmp-partners
+      x-hide-from-docs: true
+  /api/v1/partners/{partnerId}:
+    get:
+      operationId: pmp.partners.get
+      parameters:
+      - name: partnerId
+        required: true
+        in: path
+        schema:
+          type: number
+      responses:
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerResponseDto_Output'
+      summary: Get a PMP partner
+      tags:
+      - pmp-partners
+      x-hide-from-docs: true
+    patch:
+      operationId: pmp.partners.update
+      parameters:
+      - name: partnerId
+        required: true
+        in: path
+        schema:
+          type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePartnerBodyDto'
+      responses:
+        default:
+          description: Unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerResponseDto_Output'
+      summary: Update a PMP partner
+      tags:
+      - pmp-partners
+      x-hide-from-docs: true
+    delete:
+      operationId: pmp.partners.delete
+      parameters:
+      - name: partnerId
+        required: true
+        in: path
+        schema:
+          type: number
+      responses:
+        '204':
+          description: ''
+      summary: Delete a PMP partner
+      tags:
+      - pmp-partners
+      x-hide-from-docs: true
+components:
+  schemas:
+    PaginatedPartnersResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              partnerId:
+                type: integer
+                minimum: -9007199254740991
+                maximum: 9007199254740991
+                description: Partner ID.
+              name:
+                type: string
+                description: Partner name.
+              description:
+                type: string
+                description: Partner description; empty when unset.
+              createTime:
+                type: string
+                description: Creation timestamp (ISO8601).
+              updateTime:
+                type: string
+                description: Last update timestamp (ISO8601).
+              partnerType:
+                type: string
+                enum:
+                - DSP
+                - SSP
+                - MOBILE_ATTRIBUTION
+                description: Partner type.
+              beeswaxDealPrefix:
+                type:
+                - string
+                - 'null'
+                description: Beeswax deal-sync identifier; null when not BW-synced.
+            required:
+            - partnerId
+            - name
+            - description
+            - createTime
+            - updateTime
+            - partnerType
+            - beeswaxDealPrefix
+            additionalProperties: false
+            description: A PMP partner.
+        pagination:
+          type: object
+          properties:
+            total:
+              type: integer
+              minimum: 0
+              maximum: 9007199254740991
+              description: Total rows available for this query.
+            perPage:
+              type: integer
+              exclusiveMinimum: true
+              maximum: 9007199254740991
+              description: Maximum rows per page.
+              minimum: 0
+            page:
+              default: 1
+              description: Current 1-based page index.
+              type: integer
+              exclusiveMinimum: true
+              maximum: 9007199254740991
+              minimum: 0
+            previousPageUrl:
+              type:
+              - string
+              - 'null'
+              description: URL for the previous page, or null when none.
+            nextPageUrl:
+              type:
+              - string
+              - 'null'
+              description: URL for the next page, or null when none.
+          required:
+          - total
+          - perPage
+          - page
+          - previousPageUrl
+          - nextPageUrl
+          additionalProperties: false
+      required:
+      - data
+      - pagination
+      additionalProperties: false
+    UpdatePartnerBodyDto:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Partner name.
+        description:
+          type: string
+          description: Partner description.
+        partnerType:
+          type: string
+          enum:
+          - DSP
+          - SSP
+          - MOBILE_ATTRIBUTION
+          description: Partner type.
+        beeswaxDealPrefix:
+          type:
+          - string
+          - 'null'
+          minLength: 2
+          maxLength: 3
+          description: Beeswax deal-sync identifier (2-3 characters). Omit to leave unchanged; send `null` to clear it.
+    PartnerResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            partnerId:
+              type: integer
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: Partner ID.
+            name:
+              type: string
+              description: Partner name.
+            description:
+              type: string
+              description: Partner description; empty when unset.
+            createTime:
+              type: string
+              description: Creation timestamp (ISO8601).
+            updateTime:
+              type: string
+              description: Last update timestamp (ISO8601).
+            partnerType:
+              type: string
+              enum:
+              - DSP
+              - SSP
+              - MOBILE_ATTRIBUTION
+              description: Partner type.
+            beeswaxDealPrefix:
+              type:
+              - string
+              - 'null'
+              description: Beeswax deal-sync identifier; null when not BW-synced.
+          required:
+          - partnerId
+          - name
+          - description
+          - createTime
+          - updateTime
+          - partnerType
+          - beeswaxDealPrefix
+          additionalProperties: false
+          description: A PMP partner.
+      required:
+      - data
+      additionalProperties: false
+    CreatePartnerBodyDto:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Partner name.
+        description:
+          description: Partner description.
+          type: string
+        partnerType:
+          type: string
+          enum:
+          - DSP
+          - SSP
+          - MOBILE_ATTRIBUTION
+          description: Partner type.
+        beeswaxDealPrefix:
+          description: Beeswax deal-sync identifier (2-3 characters); omit when not BW-synced.
+          type: string
+          minLength: 2
+          maxLength: 3
+      required:
+      - name
+      - partnerType
+  securitySchemes:
+    Bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+    API_Key:
+      type: apiKey
+      in: header
+      name: X-API-Key
