@@ -32,19 +32,19 @@ specificationVersion: '0.23'
 created: '2026-08-12'
 modified: '2026-08-12'
 tags:
-- connected-tv
+- Connected TV
 - ctv-advertising
 - Advertising
-- performance-marketing
-- streaming-tv
-- media-buying
+- Performance Marketing
+- Streaming TV
+- Media Buying
 - Attribution
-- audience-targeting
-- conversion-tracking
-- programmatic-advertising
+- Audience Targeting
+- Conversion Tracking
+- Programmatic Advertising
 - private-marketplace
 - marketing-reporting
-- adtech
+- AdTech
 tags_raw:
 - connected-tv
 - ctv-advertising
@@ -73,7 +73,7 @@ apis:
   tags:
   - marketing-reporting
   - Analytics
-  - connected-tv
+  - Connected TV
   - Attribution
   tags_raw:
   - marketing-reporting
