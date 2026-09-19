@@ -229,7 +229,7 @@ apis:
   humanURL: https://api.mountain.com/docs
   baseURL: https://api.mountain.com/ptv
   tags:
-  - Creatives
+  - Creative
   tags_raw:
   - creatives
   properties:
