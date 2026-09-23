@@ -11,7 +11,7 @@ info:
     name: Proprietary
 servers:
 - url: https://api.mountain.com/ptv
-  description: MNTN Performance TV API gateway
+  description: API gateway
 security:
 - Bearer: []
 - API Key: []
@@ -70,3 +70,21 @@ components:
       type: apiKey
       in: header
       name: X-API-Key
+x-tagGroups:
+- name: v1
+  tags:
+  - advertisers
+  - attribution
+  - audiences
+  - campaigns
+  - creatives
+  - flights
+  - reporting
+  - pixel
+  - organizations
+  - reference
+  - pmp-deals
+  - pmp-deal-groups
+  - pmp-partners
+  - pmp-campaign-deals
+  - pmp-channels

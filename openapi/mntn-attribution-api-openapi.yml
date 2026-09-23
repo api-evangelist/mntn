@@ -11,12 +11,12 @@ info:
     name: Proprietary
 servers:
 - url: https://api.mountain.com/ptv
-  description: MNTN Performance TV API gateway
+  description: API gateway
 security:
 - Bearer: []
 - API Key: []
 tags:
-- name: attribution
+- name: Attribution
   description: Advertiser attribution windows, estimates, sales cycle, and verified-visit blacklist settings.
 paths:
   /api/v1/advertisers/{advertiserId}/attribution/windows:
@@ -57,7 +57,7 @@ paths:
                 $ref: '#/components/schemas/AttributionWindowsSingleResponseDto_Output'
       summary: Get Attribution Windows
       tags:
-      - attribution
+      - Attribution
     patch:
       description: Updates one or more advertiser attribution windows. Omitted windows are left unchanged.
       operationId: attribution.windows.update
@@ -101,7 +101,7 @@ paths:
                 $ref: '#/components/schemas/AttributionWindowsSingleResponseDto_Output'
       summary: Update Attribution Windows
       tags:
-      - attribution
+      - Attribution
   /api/v1/advertisers/{advertiserId}/attribution/estimates:
     post:
       description: 'Estimates visit and conversion impact for proposed attribution windows by objective.
@@ -149,7 +149,7 @@ paths:
                 $ref: '#/components/schemas/VisitConversionEstimatesSingleResponseDto_Output'
       summary: Run Visit And Conversion Estimates
       tags:
-      - attribution
+      - Attribution
   /api/v1/advertisers/{advertiserId}/attribution/sales-cycle:
     get:
       description: Returns the advertiser's current sales-cycle length derived from the last 30 days of activity.
@@ -178,7 +178,7 @@ paths:
                 $ref: '#/components/schemas/SalesCycleSingleResponseDto_Output'
       summary: Get Current Sales Cycle
       tags:
-      - attribution
+      - Attribution
   /api/v1/advertisers/{advertiserId}/attribution/blacklist-query-params:
     get:
       description: Returns verified-visit blacklist query parameters for the advertiser.
@@ -208,7 +208,7 @@ paths:
                 $ref: '#/components/schemas/BlacklistQueryParamsSingleResponseDto_Output'
       summary: Get Blacklist Query Params
       tags:
-      - attribution
+      - Attribution
     put:
       description: Fully replaces verified-visit blacklist query parameters for the advertiser.
       operationId: attribution.blacklistQueryParams.update
@@ -243,38 +243,9 @@ paths:
                 $ref: '#/components/schemas/BlacklistQueryParamsSingleResponseDto_Output'
       summary: Replace Blacklist Query Params
       tags:
-      - attribution
+      - Attribution
 components:
   schemas:
-    PutBlacklistQueryParamsBodyDto:
-      type: object
-      properties:
-        blacklistQueryParams:
-          type: array
-          items:
-            type: string
-          description: Full replacement list of verified-visit blacklist query parameters.
-      required:
-      - blacklistQueryParams
-      description: Replace verified-visit blacklist query parameters.
-    BlacklistQueryParamsSingleResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            blacklistQueryParams:
-              type: array
-              items:
-                type: string
-              description: Verified-visit blacklist query parameters.
-          required:
-          - blacklistQueryParams
-          additionalProperties: false
-          description: Verified-visit blacklist query parameters for the advertiser.
-      required:
-      - data
-      additionalProperties: false
     VisitConversionEstimatesSingleResponseDto_Output:
       type: object
       properties:
@@ -349,6 +320,35 @@ components:
       required:
       - data
       additionalProperties: false
+    RunAttributionEstimatesBodyDto:
+      type: object
+      properties:
+        retargetingWindowMinutes:
+          type: integer
+          minimum: 0
+          maximum: 9007199254740991
+          description: Proposed retargeting verified-view window in minutes.
+        prospectingWindowMinutes:
+          type: integer
+          minimum: 0
+          maximum: 9007199254740991
+          description: Proposed prospecting verified-view window in minutes.
+        conversionWindowMinutes:
+          type: integer
+          minimum: 0
+          maximum: 9007199254740991
+          description: Proposed conversion window in minutes (not days). Matches the estimation join grain.
+        oldAllowReferralTraffic:
+          description: Whether the current (old) estimate baseline allows referral traffic.
+          type: boolean
+        newAllowReferralTraffic:
+          description: Whether the proposed (new) estimate scenario allows referral traffic.
+          type: boolean
+      required:
+      - retargetingWindowMinutes
+      - prospectingWindowMinutes
+      - conversionWindowMinutes
+      description: Filter for visit and conversion estimates by objective. All window fields are minutes.
     AttributionWindowsSingleResponseDto_Output:
       type: object
       properties:
@@ -436,35 +436,6 @@ components:
       required:
       - data
       additionalProperties: false
-    RunAttributionEstimatesBodyDto:
-      type: object
-      properties:
-        retargetingWindowMinutes:
-          type: integer
-          minimum: 0
-          maximum: 9007199254740991
-          description: Proposed retargeting verified-view window in minutes.
-        prospectingWindowMinutes:
-          type: integer
-          minimum: 0
-          maximum: 9007199254740991
-          description: Proposed prospecting verified-view window in minutes.
-        conversionWindowMinutes:
-          type: integer
-          minimum: 0
-          maximum: 9007199254740991
-          description: Proposed conversion window in minutes (not days). Matches the estimation join grain.
-        oldAllowReferralTraffic:
-          description: Whether the current (old) estimate baseline allows referral traffic.
-          type: boolean
-        newAllowReferralTraffic:
-          description: Whether the proposed (new) estimate scenario allows referral traffic.
-          type: boolean
-      required:
-      - retargetingWindowMinutes
-      - prospectingWindowMinutes
-      - conversionWindowMinutes
-      description: Filter for visit and conversion estimates by objective. All window fields are minutes.
     SalesCycleSingleResponseDto_Output:
       type: object
       properties:
@@ -486,6 +457,24 @@ components:
           - salesCycleLast30DaysText
           additionalProperties: false
           description: Current sales-cycle metric for the advertiser.
+      required:
+      - data
+      additionalProperties: false
+    BlacklistQueryParamsSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            blacklistQueryParams:
+              type: array
+              items:
+                type: string
+              description: Verified-visit blacklist query parameters.
+          required:
+          - blacklistQueryParams
+          additionalProperties: false
+          description: Verified-visit blacklist query parameters for the advertiser.
       required:
       - data
       additionalProperties: false
@@ -562,6 +551,17 @@ components:
           - minutes
           description: Attribution time window expressed as days, hours, and minutes.
       description: Partial update for advertiser attribution windows.
+    PutBlacklistQueryParamsBodyDto:
+      type: object
+      properties:
+        blacklistQueryParams:
+          type: array
+          items:
+            type: string
+          description: Full replacement list of verified-visit blacklist query parameters.
+      required:
+      - blacklistQueryParams
+      description: Replace verified-visit blacklist query parameters.
   securitySchemes:
     Bearer:
       scheme: bearer
@@ -571,3 +571,21 @@ components:
       type: apiKey
       in: header
       name: X-API-Key
+x-tagGroups:
+- name: v1
+  tags:
+  - advertisers
+  - attribution
+  - audiences
+  - campaigns
+  - creatives
+  - flights
+  - reporting
+  - pixel
+  - organizations
+  - reference
+  - pmp-deals
+  - pmp-deal-groups
+  - pmp-partners
+  - pmp-campaign-deals
+  - pmp-channels

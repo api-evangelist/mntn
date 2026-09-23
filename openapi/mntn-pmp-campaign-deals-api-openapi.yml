@@ -11,7 +11,7 @@ info:
     name: Proprietary
 servers:
 - url: https://api.mountain.com/ptv
-  description: MNTN Performance TV API gateway
+  description: API gateway
 security:
 - Bearer: []
 - API Key: []
@@ -83,6 +83,40 @@ paths:
       - pmp-campaign-deals
 components:
   schemas:
+    CampaignDealGroupLinkResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            campaignId:
+              type: integer
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: Campaign ID.
+            dealGroupId:
+              type:
+              - integer
+              - 'null'
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: Deal group ID; null when unset.
+            createTime:
+              type: string
+              description: Link creation timestamp (ISO8601).
+            updateTime:
+              type: string
+              description: Link last update timestamp (ISO8601).
+          required:
+          - campaignId
+          - dealGroupId
+          - createTime
+          - updateTime
+          additionalProperties: false
+          description: A campaign <-> deal-group link.
+      required:
+      - data
+      additionalProperties: false
     CampaignDealGroupLinksResponseDto_Output:
       type: object
       properties:
@@ -119,40 +153,6 @@ components:
       required:
       - data
       additionalProperties: false
-    CampaignDealGroupLinkResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            campaignId:
-              type: integer
-              minimum: -9007199254740991
-              maximum: 9007199254740991
-              description: Campaign ID.
-            dealGroupId:
-              type:
-              - integer
-              - 'null'
-              minimum: -9007199254740991
-              maximum: 9007199254740991
-              description: Deal group ID; null when unset.
-            createTime:
-              type: string
-              description: Link creation timestamp (ISO8601).
-            updateTime:
-              type: string
-              description: Link last update timestamp (ISO8601).
-          required:
-          - campaignId
-          - dealGroupId
-          - createTime
-          - updateTime
-          additionalProperties: false
-          description: A campaign <-> deal-group link.
-      required:
-      - data
-      additionalProperties: false
   securitySchemes:
     Bearer:
       scheme: bearer
@@ -162,3 +162,21 @@ components:
       type: apiKey
       in: header
       name: X-API-Key
+x-tagGroups:
+- name: v1
+  tags:
+  - advertisers
+  - attribution
+  - audiences
+  - campaigns
+  - creatives
+  - flights
+  - reporting
+  - pixel
+  - organizations
+  - reference
+  - pmp-deals
+  - pmp-deal-groups
+  - pmp-partners
+  - pmp-campaign-deals
+  - pmp-channels

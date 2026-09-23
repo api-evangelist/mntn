@@ -11,7 +11,7 @@ info:
     name: Proprietary
 servers:
 - url: https://api.mountain.com/ptv
-  description: MNTN Performance TV API gateway
+  description: API gateway
 security:
 - Bearer: []
 - API Key: []
@@ -163,6 +163,103 @@ paths:
       x-hide-from-docs: true
 components:
   schemas:
+    UpdatePartnerBodyDto:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Partner name.
+        description:
+          type: string
+          description: Partner description.
+        partnerType:
+          type: string
+          enum:
+          - DSP
+          - SSP
+          - MOBILE_ATTRIBUTION
+          description: Partner type.
+        beeswaxDealPrefix:
+          type:
+          - string
+          - 'null'
+          minLength: 2
+          maxLength: 3
+          description: Beeswax deal-sync identifier (2-3 characters). Omit to leave unchanged; send `null` to clear it.
+    CreatePartnerBodyDto:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Partner name.
+        description:
+          description: Partner description.
+          type: string
+        partnerType:
+          type: string
+          enum:
+          - DSP
+          - SSP
+          - MOBILE_ATTRIBUTION
+          description: Partner type.
+        beeswaxDealPrefix:
+          description: Beeswax deal-sync identifier (2-3 characters); omit when not BW-synced.
+          type: string
+          minLength: 2
+          maxLength: 3
+      required:
+      - name
+      - partnerType
+    PartnerResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            partnerId:
+              type: integer
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: Partner ID.
+            name:
+              type: string
+              description: Partner name.
+            description:
+              type: string
+              description: Partner description; empty when unset.
+            createTime:
+              type: string
+              description: Creation timestamp (ISO8601).
+            updateTime:
+              type: string
+              description: Last update timestamp (ISO8601).
+            partnerType:
+              type: string
+              enum:
+              - DSP
+              - SSP
+              - MOBILE_ATTRIBUTION
+              description: Partner type.
+            beeswaxDealPrefix:
+              type:
+              - string
+              - 'null'
+              description: Beeswax deal-sync identifier; null when not BW-synced.
+          required:
+          - partnerId
+          - name
+          - description
+          - createTime
+          - updateTime
+          - partnerType
+          - beeswaxDealPrefix
+          additionalProperties: false
+          description: A PMP partner.
+      required:
+      - data
+      additionalProperties: false
     PaginatedPartnersResponseDto_Output:
       type: object
       properties:
@@ -252,103 +349,6 @@ components:
       - data
       - pagination
       additionalProperties: false
-    UpdatePartnerBodyDto:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: Partner name.
-        description:
-          type: string
-          description: Partner description.
-        partnerType:
-          type: string
-          enum:
-          - DSP
-          - SSP
-          - MOBILE_ATTRIBUTION
-          description: Partner type.
-        beeswaxDealPrefix:
-          type:
-          - string
-          - 'null'
-          minLength: 2
-          maxLength: 3
-          description: Beeswax deal-sync identifier (2-3 characters). Omit to leave unchanged; send `null` to clear it.
-    PartnerResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            partnerId:
-              type: integer
-              minimum: -9007199254740991
-              maximum: 9007199254740991
-              description: Partner ID.
-            name:
-              type: string
-              description: Partner name.
-            description:
-              type: string
-              description: Partner description; empty when unset.
-            createTime:
-              type: string
-              description: Creation timestamp (ISO8601).
-            updateTime:
-              type: string
-              description: Last update timestamp (ISO8601).
-            partnerType:
-              type: string
-              enum:
-              - DSP
-              - SSP
-              - MOBILE_ATTRIBUTION
-              description: Partner type.
-            beeswaxDealPrefix:
-              type:
-              - string
-              - 'null'
-              description: Beeswax deal-sync identifier; null when not BW-synced.
-          required:
-          - partnerId
-          - name
-          - description
-          - createTime
-          - updateTime
-          - partnerType
-          - beeswaxDealPrefix
-          additionalProperties: false
-          description: A PMP partner.
-      required:
-      - data
-      additionalProperties: false
-    CreatePartnerBodyDto:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: Partner name.
-        description:
-          description: Partner description.
-          type: string
-        partnerType:
-          type: string
-          enum:
-          - DSP
-          - SSP
-          - MOBILE_ATTRIBUTION
-          description: Partner type.
-        beeswaxDealPrefix:
-          description: Beeswax deal-sync identifier (2-3 characters); omit when not BW-synced.
-          type: string
-          minLength: 2
-          maxLength: 3
-      required:
-      - name
-      - partnerType
   securitySchemes:
     Bearer:
       scheme: bearer
@@ -358,3 +358,21 @@ components:
       type: apiKey
       in: header
       name: X-API-Key
+x-tagGroups:
+- name: v1
+  tags:
+  - advertisers
+  - attribution
+  - audiences
+  - campaigns
+  - creatives
+  - flights
+  - reporting
+  - pixel
+  - organizations
+  - reference
+  - pmp-deals
+  - pmp-deal-groups
+  - pmp-partners
+  - pmp-campaign-deals
+  - pmp-channels

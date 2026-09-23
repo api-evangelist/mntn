@@ -11,12 +11,12 @@ info:
     name: Proprietary
 servers:
 - url: https://api.mountain.com/ptv
-  description: MNTN Performance TV API gateway
+  description: API gateway
 security:
 - Bearer: []
 - API Key: []
 tags:
-- name: campaigns
+- name: Campaigns
   description: Campaign list, lookup, and lifecycle.
 paths:
   /api/v1/campaigns:
@@ -156,7 +156,7 @@ paths:
                 $ref: '#/components/schemas/PaginatedCampaignsResponseDto_Output'
       summary: List campaigns
       tags:
-      - campaigns
+      - Campaigns
     post:
       description: 'Creates a campaign for an advertiser with the given objective, optionally linking an existing audience, opening an initial budget, and attaching library creatives in the same call.
 
@@ -237,7 +237,7 @@ paths:
                 $ref: '#/components/schemas/CampaignSingleResponseDto_Output'
       summary: Create a campaign
       tags:
-      - campaigns
+      - Campaigns
   /api/v1/campaigns/{id}:
     get:
       description: 'Returns the canonical campaign representation for a given campaign ID, including its primary audience link.
@@ -330,7 +330,7 @@ paths:
                 $ref: '#/components/schemas/CampaignSingleResponseDto_Output'
       summary: Get a campaign
       tags:
-      - campaigns
+      - Campaigns
     patch:
       description: 'Updates an existing campaign''s editable fields. Only the fields present in the request body are changed; omitted fields are left untouched.
 
@@ -417,7 +417,7 @@ paths:
                 $ref: '#/components/schemas/CampaignSingleResponseDto_Output'
       summary: Update a campaign
       tags:
-      - campaigns
+      - Campaigns
     delete:
       description: 'Archives a campaign so it no longer runs or appears in active listings. This is a soft delete: the campaign moves to the `archived` status rather than being permanently removed.
 
@@ -495,7 +495,7 @@ paths:
                 $ref: '#/components/schemas/CampaignSingleResponseDto_Output'
       summary: Delete a campaign
       tags:
-      - campaigns
+      - Campaigns
   /api/v1/campaigns/{id}/recommended-audience:
     post:
       description: Creates a new audience for the campaign's advertiser whose keywords are derived server-side from the advertiser's AI-recommended keywords, and links it to the campaign. Rejects with 422 if the campaign already has an audience or if the advertiser has no recommendations available. On link failure after a successful audience-create, the error surfaces the underlying cause (e.g. 403 authz, upstream failure) and reports the orphan audience id so it can be reconciled out-of-band.
@@ -550,7 +550,7 @@ paths:
                 $ref: '#/components/schemas/AudienceSingleResponseDto_Output'
       summary: Create and link a recommended audience for a campaign
       tags:
-      - campaigns
+      - Campaigns
   /api/v1/campaigns/{id}/launch:
     post:
       description: 'Launches a campaign so it begins delivering.
@@ -629,7 +629,7 @@ paths:
                 $ref: '#/components/schemas/CampaignSingleResponseDto_Output'
       summary: Launch a campaign
       tags:
-      - campaigns
+      - Campaigns
   /api/v1/campaigns/{id}/pause:
     post:
       description: 'Pauses a live campaign so it stops delivering.
@@ -714,7 +714,7 @@ paths:
                 $ref: '#/components/schemas/CampaignSingleResponseDto_Output'
       summary: Pause a campaign
       tags:
-      - campaigns
+      - Campaigns
   /api/v1/audiences/{id}/campaigns:
     get:
       description: Returns campaigns attached to the given audience. Same response shape as GET /campaigns.
@@ -787,9 +787,677 @@ paths:
                 $ref: '#/components/schemas/PaginatedCampaignsResponseDto_Output'
       summary: List campaigns linked to an audience
       tags:
-      - campaigns
+      - Campaigns
 components:
   schemas:
+    AudienceSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: number
+              description: Audience identifier.
+            name:
+              type: string
+              description: Display name of the audience.
+            totalUsers:
+              type:
+              - number
+              - 'null'
+              description: Estimated audience size, or null when unavailable.
+            createdAt:
+              type: string
+              description: Timestamp the audience was created (ISO-8601).
+            geoLists:
+              type:
+              - object
+              - 'null'
+              properties:
+                include:
+                  type: array
+                  items:
+                    type: integer
+                    exclusiveMinimum: true
+                    maximum: 9007199254740991
+                    minimum: 0
+                  description: Geo-list identifiers to include in audience targeting.
+                exclude:
+                  type: array
+                  items:
+                    type: integer
+                    exclusiveMinimum: true
+                    maximum: 9007199254740991
+                    minimum: 0
+                  description: Geo-list identifiers to exclude from audience targeting.
+              required:
+              - include
+              - exclude
+              additionalProperties: false
+              description: Geo-list associations. Null when the audience has no geo-list expression.
+            geo:
+              type:
+              - object
+              - 'null'
+              properties:
+                include:
+                  type: array
+                  items:
+                    type: integer
+                    exclusiveMinimum: true
+                    maximum: 9007199254740991
+                    minimum: 0
+                  description: Geo-list identifiers to include in audience targeting.
+                exclude:
+                  type: array
+                  items:
+                    type: integer
+                    exclusiveMinimum: true
+                    maximum: 9007199254740991
+                    minimum: 0
+                  description: Geo-list identifiers to exclude from audience targeting.
+              required:
+              - include
+              - exclude
+              additionalProperties: false
+              description: Geo selector expression (resolved location IDs). Null when the audience has no geo expression.
+            updatedTime:
+              type:
+              - string
+              - 'null'
+              description: Timestamp the audience was last updated (ISO-8601).
+            isTest:
+              type: boolean
+              description: True when the audience is flagged as a test.
+            keywords:
+              type: object
+              properties:
+                include:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      keyword:
+                        type: string
+                      selected:
+                        type: boolean
+                      isCustom:
+                        type: boolean
+                    required:
+                    - keyword
+                    - selected
+                    - isCustom
+                    additionalProperties: false
+              required:
+              - include
+              additionalProperties: false
+            geoLocations:
+              description: Resolved geo locations from the audience's `geo` expression. Present only when the request includes `?expand[]=geoLocations`.
+              type: object
+              properties:
+                include:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        minimum: -9007199254740991
+                        maximum: 9007199254740991
+                        description: Location identifier.
+                      name:
+                        type: string
+                        description: Display name of the location.
+                      geoType:
+                        type:
+                        - object
+                        - 'null'
+                        properties:
+                          id:
+                            type: integer
+                            minimum: -9007199254740991
+                            maximum: 9007199254740991
+                            description: Location type identifier.
+                          name:
+                            type: string
+                            description: Location type name (e.g. State / Region, City, Media Market).
+                        required:
+                        - id
+                        - name
+                        additionalProperties: false
+                        description: Location type reference. Present only when the request includes `?expand=geoType`. Null when the location has no resolvable type.
+                    required:
+                    - id
+                    - name
+                    additionalProperties: false
+                  description: Resolved location objects for `geo.include` IDs.
+                exclude:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        minimum: -9007199254740991
+                        maximum: 9007199254740991
+                        description: Location identifier.
+                      name:
+                        type: string
+                        description: Display name of the location.
+                      geoType:
+                        type:
+                        - object
+                        - 'null'
+                        properties:
+                          id:
+                            type: integer
+                            minimum: -9007199254740991
+                            maximum: 9007199254740991
+                            description: Location type identifier.
+                          name:
+                            type: string
+                            description: Location type name (e.g. State / Region, City, Media Market).
+                        required:
+                        - id
+                        - name
+                        additionalProperties: false
+                        description: Location type reference. Present only when the request includes `?expand=geoType`. Null when the location has no resolvable type.
+                    required:
+                    - id
+                    - name
+                    additionalProperties: false
+                  description: Resolved location objects for `geo.exclude` IDs.
+              required:
+              - include
+              - exclude
+              additionalProperties: false
+          required:
+          - id
+          - name
+          - totalUsers
+          - createdAt
+          - geoLists
+          - geo
+          - updatedTime
+          - isTest
+          additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
+    PauseCampaignBodyDto:
+      type: object
+      properties:
+        pause_reason:
+          description: Optional operator-provided reason for pausing the campaign.
+          type: string
+    CreateRecommendedAudienceDto:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Display name for the audience.
+        isTest:
+          description: When true, the audience is created as a test audience. Defaults to false.
+          type: boolean
+      required:
+      - name
+      description: Inputs for creating a recommended audience.
+      additionalProperties: false
+    UpdateCampaignDto:
+      type: object
+      properties:
+        name:
+          description: Updated campaign display name.
+          type: string
+        audienceIds:
+          description: Updated audience assignment. At most one audience is supported.
+          maxItems: 1
+          type: array
+          items:
+            type: number
+            exclusiveMinimum: true
+            description: Positive integer entity identifier.
+            minimum: 0
+        goalType:
+          description: Updated optimization goal type.
+          type: string
+        goalValue:
+          description: Updated numeric target value for goalType.
+          type: number
+        objective:
+          type: object
+          properties:
+            type:
+              type: string
+              description: Immutable objective type field. Included for compatibility.
+          required:
+          - type
+          description: Objective payload. Objective updates are currently rejected.
+        creatives:
+          description: 'Declarative full set of the campaign''s creatives: entries not yet attached are attached, currently-attached creatives missing from the array are detached, and weights are applied to the survivors (explicit weights verbatim, omitted ones splitting the remainder of 100 equally). Unlike `audienceIds`, an empty array is rejected — omit the field to leave creatives unchanged.'
+          minItems: 1
+          maxItems: 20
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                exclusiveMinimum: true
+                maximum: 9007199254740991
+                description: Creative identifier from the creative library (the `id` returned by `GET /v1/creatives`). A numeric string is also accepted.
+                minimum: 0
+              clickUrl:
+                description: Click-through (landing page) URL applied to this creative on this campaign. Optional at attach time, but a creative without a click URL cannot be approved or launched until one is set.
+                type: string
+                format: uri
+              weight:
+                description: Serving weight, 1–100. Explicit weights are used verbatim; creatives without one split the remaining share of 100 equally. If every creative carries a weight they must sum to exactly 100; otherwise the explicit weights must leave at least 1 for each unweighted creative. The applied weights are echoed in the response.
+                type: integer
+                minimum: 1
+                maximum: 100
+            required:
+            - id
+    CampaignSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              description: Campaign identifier.
+            name:
+              type: string
+              description: Display name of the campaign.
+            status:
+              description: Status of the campaign.
+              type: string
+            objective:
+              type:
+              - string
+              - 'null'
+              description: Strategy type of the campaign (PROSPECTING / RETARGETING).
+            totalBudget:
+              type:
+              - number
+              - 'null'
+              description: Total budget of the campaign.
+            monthlyBudget:
+              type:
+              - number
+              - 'null'
+              description: Recurring monthly budget for the campaign.
+            spend:
+              type:
+              - number
+              - 'null'
+              description: Spend of the campaign.
+            startTime:
+              type:
+              - string
+              - 'null'
+              description: Start time of the campaign.
+            endTime:
+              type:
+              - string
+              - 'null'
+              description: End time of the campaign.
+            goalType:
+              type:
+              - string
+              - 'null'
+              description: Goal type of the campaign.
+            goalValue:
+              type:
+              - number
+              - 'null'
+              description: Goal value of the campaign.
+            advertiserId:
+              description: Advertiser identifier of the campaign.
+              type: integer
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+            audienceId:
+              type:
+              - integer
+              - 'null'
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: Primary audience id for this campaign group.
+            createdAt:
+              description: Created time of the campaign.
+              type: string
+            updatedAt:
+              type:
+              - string
+              - 'null'
+              description: Last-edited timestamp of the campaign.
+            snapshotUrl:
+              type:
+              - string
+              - 'null'
+              description: Full CDN URL of the campaign preview snapshot.
+            videoPreview:
+              type:
+              - object
+              - 'null'
+              properties:
+                name:
+                  type:
+                  - string
+                  - 'null'
+                  description: Display name of the preview creative, when available.
+                videoUrl:
+                  type:
+                  - string
+                  - 'null'
+                  description: Full CDN URL of the preview video, when available.
+                posterUrl:
+                  type:
+                  - string
+                  - 'null'
+                  description: Full CDN URL of the preview poster, when available.
+              required:
+              - name
+              - videoUrl
+              - posterUrl
+              additionalProperties: false
+              description: Active campaign creative selected for preview, or null when unavailable.
+            campaignGoal:
+              type:
+              - string
+              - 'null'
+              description: Marketing campaign goal display name, e.g. Traffic & Sales.
+            currentFlightId:
+              type:
+              - integer
+              - 'null'
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: Current active flight id for the campaign; null when none.
+            audience:
+              type:
+              - object
+              - 'null'
+              properties:
+                id:
+                  type: number
+                  description: Audience identifier.
+                name:
+                  type: string
+                  description: Display name of the audience.
+                totalUsers:
+                  type:
+                  - number
+                  - 'null'
+                  description: Estimated audience size, or null when unavailable.
+                createdAt:
+                  type: string
+                  description: Timestamp the audience was created (ISO-8601).
+                geoLists:
+                  type:
+                  - object
+                  - 'null'
+                  properties:
+                    include:
+                      type: array
+                      items:
+                        type: integer
+                        exclusiveMinimum: true
+                        maximum: 9007199254740991
+                        minimum: 0
+                      description: Geo-list identifiers to include in audience targeting.
+                    exclude:
+                      type: array
+                      items:
+                        type: integer
+                        exclusiveMinimum: true
+                        maximum: 9007199254740991
+                        minimum: 0
+                      description: Geo-list identifiers to exclude from audience targeting.
+                  required:
+                  - include
+                  - exclude
+                  additionalProperties: false
+                  description: Geo-list associations. Null when the audience has no geo-list expression.
+                geo:
+                  type:
+                  - object
+                  - 'null'
+                  properties:
+                    include:
+                      type: array
+                      items:
+                        type: integer
+                        exclusiveMinimum: true
+                        maximum: 9007199254740991
+                        minimum: 0
+                      description: Geo-list identifiers to include in audience targeting.
+                    exclude:
+                      type: array
+                      items:
+                        type: integer
+                        exclusiveMinimum: true
+                        maximum: 9007199254740991
+                        minimum: 0
+                      description: Geo-list identifiers to exclude from audience targeting.
+                  required:
+                  - include
+                  - exclude
+                  additionalProperties: false
+                  description: Geo selector expression (resolved location IDs). Null when the audience has no geo expression.
+                updatedTime:
+                  type:
+                  - string
+                  - 'null'
+                  description: Timestamp the audience was last updated (ISO-8601).
+                isTest:
+                  type: boolean
+                  description: True when the audience is flagged as a test.
+                keywords:
+                  type: object
+                  properties:
+                    include:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          keyword:
+                            type: string
+                          selected:
+                            type: boolean
+                          isCustom:
+                            type: boolean
+                        required:
+                        - keyword
+                        - selected
+                        - isCustom
+                        additionalProperties: false
+                  required:
+                  - include
+                  additionalProperties: false
+                geoLocations:
+                  description: Resolved geo locations from the audience's `geo` expression. Present only when the request includes `?expand[]=geoLocations`.
+                  type: object
+                  properties:
+                    include:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            minimum: -9007199254740991
+                            maximum: 9007199254740991
+                            description: Location identifier.
+                          name:
+                            type: string
+                            description: Display name of the location.
+                          geoType:
+                            type:
+                            - object
+                            - 'null'
+                            properties:
+                              id:
+                                type: integer
+                                minimum: -9007199254740991
+                                maximum: 9007199254740991
+                                description: Location type identifier.
+                              name:
+                                type: string
+                                description: Location type name (e.g. State / Region, City, Media Market).
+                            required:
+                            - id
+                            - name
+                            additionalProperties: false
+                            description: Location type reference. Present only when the request includes `?expand=geoType`. Null when the location has no resolvable type.
+                        required:
+                        - id
+                        - name
+                        additionalProperties: false
+                      description: Resolved location objects for `geo.include` IDs.
+                    exclude:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            minimum: -9007199254740991
+                            maximum: 9007199254740991
+                            description: Location identifier.
+                          name:
+                            type: string
+                            description: Display name of the location.
+                          geoType:
+                            type:
+                            - object
+                            - 'null'
+                            properties:
+                              id:
+                                type: integer
+                                minimum: -9007199254740991
+                                maximum: 9007199254740991
+                                description: Location type identifier.
+                              name:
+                                type: string
+                                description: Location type name (e.g. State / Region, City, Media Market).
+                            required:
+                            - id
+                            - name
+                            additionalProperties: false
+                            description: Location type reference. Present only when the request includes `?expand=geoType`. Null when the location has no resolvable type.
+                        required:
+                        - id
+                        - name
+                        additionalProperties: false
+                      description: Resolved location objects for `geo.exclude` IDs.
+                  required:
+                  - include
+                  - exclude
+                  additionalProperties: false
+              required:
+              - id
+              - name
+              - totalUsers
+              - createdAt
+              - geoLists
+              - geo
+              - updatedTime
+              - isTest
+              additionalProperties: false
+              description: Present when `expand=audience` on GET campaign; full audience record for `audienceId`. Null if no primary audience id.
+            currentFlight:
+              type:
+              - object
+              - 'null'
+              properties:
+                id:
+                  type: integer
+                  minimum: -9007199254740991
+                  maximum: 9007199254740991
+                  description: Budget row id.
+                campaignGroupId:
+                  type: integer
+                  minimum: -9007199254740991
+                  maximum: 9007199254740991
+                  description: Campaign group identifier the flight belongs to.
+                budget:
+                  type: number
+                  description: Flight budget amount in currency USD (dollars).
+                startTime:
+                  type: string
+                  description: Inclusive flight start timestamp (ISO-8601).
+                endTime:
+                  type:
+                  - string
+                  - 'null'
+                  description: Inclusive flight end timestamp (ISO-8601), or null when open-ended.
+                status:
+                  type:
+                  - string
+                  - 'null'
+                  description: Flight status, or null when unavailable.
+                budgetTypeId:
+                  type:
+                  - integer
+                  - 'null'
+                  minimum: -9007199254740991
+                  maximum: 9007199254740991
+                  description: Budget type identifier.
+              required:
+              - id
+              - campaignGroupId
+              - budget
+              - startTime
+              - endTime
+              - status
+              - budgetTypeId
+              additionalProperties: false
+              description: Present when `expand=currentFlight` on GET campaign; current active flight (Budget). Null if no active flight.
+            creativeIds:
+              description: IDs of the creatives attached to this campaign (creative library ids — the `id` used by `GET /v1/creatives/{id}`). Present by default on list/get/create/update responses; omitted when the attachment lookup fails.
+              type: array
+              items:
+                type: integer
+                minimum: -9007199254740991
+                maximum: 9007199254740991
+            creatives:
+              description: Full attached-creative records (click URL, weight). Present when `expand=creatives` on GET campaign, and always on create/update responses; omitted on list responses.
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                    description: Creative identifier (creative library) — the `id` used by `GET /v1/creatives/{id}`.
+                  clickUrl:
+                    type:
+                    - string
+                    - 'null'
+                    description: Click-through URL applied to this creative on this campaign.
+                  weight:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                    description: Serving weight; 0 when the creative is unweighted.
+                required:
+                - id
+                - clickUrl
+                - weight
+                additionalProperties: false
+          required:
+          - id
+          - name
+          additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
     CreateCampaignDto:
       type: object
       properties:
@@ -882,75 +1550,6 @@ components:
       required:
       - objective
       - advertiserId
-    CreateRecommendedAudienceDto:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: Display name for the audience.
-        isTest:
-          description: When true, the audience is created as a test audience. Defaults to false.
-          type: boolean
-      required:
-      - name
-      description: Inputs for creating a recommended audience.
-      additionalProperties: false
-    UpdateCampaignDto:
-      type: object
-      properties:
-        name:
-          description: Updated campaign display name.
-          type: string
-        audienceIds:
-          description: Updated audience assignment. At most one audience is supported.
-          maxItems: 1
-          type: array
-          items:
-            type: number
-            exclusiveMinimum: true
-            description: Positive integer entity identifier.
-            minimum: 0
-        goalType:
-          description: Updated optimization goal type.
-          type: string
-        goalValue:
-          description: Updated numeric target value for goalType.
-          type: number
-        objective:
-          type: object
-          properties:
-            type:
-              type: string
-              description: Immutable objective type field. Included for compatibility.
-          required:
-          - type
-          description: Objective payload. Objective updates are currently rejected.
-        creatives:
-          description: 'Declarative full set of the campaign''s creatives: entries not yet attached are attached, currently-attached creatives missing from the array are detached, and weights are applied to the survivors (explicit weights verbatim, omitted ones splitting the remainder of 100 equally). Unlike `audienceIds`, an empty array is rejected — omit the field to leave creatives unchanged.'
-          minItems: 1
-          maxItems: 20
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: integer
-                exclusiveMinimum: true
-                maximum: 9007199254740991
-                description: Creative identifier from the creative library (the `id` returned by `GET /v1/creatives`). A numeric string is also accepted.
-                minimum: 0
-              clickUrl:
-                description: Click-through (landing page) URL applied to this creative on this campaign. Optional at attach time, but a creative without a click URL cannot be approved or launched until one is set.
-                type: string
-                format: uri
-              weight:
-                description: Serving weight, 1–100. Explicit weights are used verbatim; creatives without one split the remaining share of 100 equally. If every creative carries a weight they must sum to exactly 100; otherwise the explicit weights must leave at least 1 for each unweighted creative. The applied weights are echoed in the response.
-                type: integer
-                minimum: 1
-                maximum: 100
-            required:
-            - id
     PaginatedCampaignsResponseDto_Output:
       type: object
       properties:
@@ -1390,605 +1989,6 @@ components:
       - data
       - pagination
       additionalProperties: false
-    PauseCampaignBodyDto:
-      type: object
-      properties:
-        pause_reason:
-          description: Optional operator-provided reason for pausing the campaign.
-          type: string
-    CampaignSingleResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            id:
-              type: string
-              description: Campaign identifier.
-            name:
-              type: string
-              description: Display name of the campaign.
-            status:
-              description: Status of the campaign.
-              type: string
-            objective:
-              type:
-              - string
-              - 'null'
-              description: Strategy type of the campaign (PROSPECTING / RETARGETING).
-            totalBudget:
-              type:
-              - number
-              - 'null'
-              description: Total budget of the campaign.
-            monthlyBudget:
-              type:
-              - number
-              - 'null'
-              description: Recurring monthly budget for the campaign.
-            spend:
-              type:
-              - number
-              - 'null'
-              description: Spend of the campaign.
-            startTime:
-              type:
-              - string
-              - 'null'
-              description: Start time of the campaign.
-            endTime:
-              type:
-              - string
-              - 'null'
-              description: End time of the campaign.
-            goalType:
-              type:
-              - string
-              - 'null'
-              description: Goal type of the campaign.
-            goalValue:
-              type:
-              - number
-              - 'null'
-              description: Goal value of the campaign.
-            advertiserId:
-              description: Advertiser identifier of the campaign.
-              type: integer
-              minimum: -9007199254740991
-              maximum: 9007199254740991
-            audienceId:
-              type:
-              - integer
-              - 'null'
-              minimum: -9007199254740991
-              maximum: 9007199254740991
-              description: Primary audience id for this campaign group.
-            createdAt:
-              description: Created time of the campaign.
-              type: string
-            updatedAt:
-              type:
-              - string
-              - 'null'
-              description: Last-edited timestamp of the campaign.
-            snapshotUrl:
-              type:
-              - string
-              - 'null'
-              description: Full CDN URL of the campaign preview snapshot.
-            videoPreview:
-              type:
-              - object
-              - 'null'
-              properties:
-                name:
-                  type:
-                  - string
-                  - 'null'
-                  description: Display name of the preview creative, when available.
-                videoUrl:
-                  type:
-                  - string
-                  - 'null'
-                  description: Full CDN URL of the preview video, when available.
-                posterUrl:
-                  type:
-                  - string
-                  - 'null'
-                  description: Full CDN URL of the preview poster, when available.
-              required:
-              - name
-              - videoUrl
-              - posterUrl
-              additionalProperties: false
-              description: Active campaign creative selected for preview, or null when unavailable.
-            campaignGoal:
-              type:
-              - string
-              - 'null'
-              description: Marketing campaign goal display name, e.g. Traffic & Sales.
-            currentFlightId:
-              type:
-              - integer
-              - 'null'
-              minimum: -9007199254740991
-              maximum: 9007199254740991
-              description: Current active flight id for the campaign; null when none.
-            audience:
-              type:
-              - object
-              - 'null'
-              properties:
-                id:
-                  type: number
-                  description: Audience identifier.
-                name:
-                  type: string
-                  description: Display name of the audience.
-                totalUsers:
-                  type:
-                  - number
-                  - 'null'
-                  description: Estimated audience size, or null when unavailable.
-                createdAt:
-                  type: string
-                  description: Timestamp the audience was created (ISO-8601).
-                geoLists:
-                  type:
-                  - object
-                  - 'null'
-                  properties:
-                    include:
-                      type: array
-                      items:
-                        type: integer
-                        exclusiveMinimum: true
-                        maximum: 9007199254740991
-                        minimum: 0
-                      description: Geo-list identifiers to include in audience targeting.
-                    exclude:
-                      type: array
-                      items:
-                        type: integer
-                        exclusiveMinimum: true
-                        maximum: 9007199254740991
-                        minimum: 0
-                      description: Geo-list identifiers to exclude from audience targeting.
-                  required:
-                  - include
-                  - exclude
-                  additionalProperties: false
-                  description: Geo-list associations. Null when the audience has no geo-list expression.
-                geo:
-                  type:
-                  - object
-                  - 'null'
-                  properties:
-                    include:
-                      type: array
-                      items:
-                        type: integer
-                        exclusiveMinimum: true
-                        maximum: 9007199254740991
-                        minimum: 0
-                      description: Geo-list identifiers to include in audience targeting.
-                    exclude:
-                      type: array
-                      items:
-                        type: integer
-                        exclusiveMinimum: true
-                        maximum: 9007199254740991
-                        minimum: 0
-                      description: Geo-list identifiers to exclude from audience targeting.
-                  required:
-                  - include
-                  - exclude
-                  additionalProperties: false
-                  description: Geo selector expression (resolved location IDs). Null when the audience has no geo expression.
-                updatedTime:
-                  type:
-                  - string
-                  - 'null'
-                  description: Timestamp the audience was last updated (ISO-8601).
-                isTest:
-                  type: boolean
-                  description: True when the audience is flagged as a test.
-                keywords:
-                  type: object
-                  properties:
-                    include:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          keyword:
-                            type: string
-                          selected:
-                            type: boolean
-                          isCustom:
-                            type: boolean
-                        required:
-                        - keyword
-                        - selected
-                        - isCustom
-                        additionalProperties: false
-                  required:
-                  - include
-                  additionalProperties: false
-                geoLocations:
-                  description: Resolved geo locations from the audience's `geo` expression. Present only when the request includes `?expand[]=geoLocations`.
-                  type: object
-                  properties:
-                    include:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          id:
-                            type: integer
-                            minimum: -9007199254740991
-                            maximum: 9007199254740991
-                            description: Location identifier.
-                          name:
-                            type: string
-                            description: Display name of the location.
-                          geoType:
-                            type:
-                            - object
-                            - 'null'
-                            properties:
-                              id:
-                                type: integer
-                                minimum: -9007199254740991
-                                maximum: 9007199254740991
-                                description: Location type identifier.
-                              name:
-                                type: string
-                                description: Location type name (e.g. State / Region, City, Media Market).
-                            required:
-                            - id
-                            - name
-                            additionalProperties: false
-                            description: Location type reference. Present only when the request includes `?expand=geoType`. Null when the location has no resolvable type.
-                        required:
-                        - id
-                        - name
-                        additionalProperties: false
-                      description: Resolved location objects for `geo.include` IDs.
-                    exclude:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          id:
-                            type: integer
-                            minimum: -9007199254740991
-                            maximum: 9007199254740991
-                            description: Location identifier.
-                          name:
-                            type: string
-                            description: Display name of the location.
-                          geoType:
-                            type:
-                            - object
-                            - 'null'
-                            properties:
-                              id:
-                                type: integer
-                                minimum: -9007199254740991
-                                maximum: 9007199254740991
-                                description: Location type identifier.
-                              name:
-                                type: string
-                                description: Location type name (e.g. State / Region, City, Media Market).
-                            required:
-                            - id
-                            - name
-                            additionalProperties: false
-                            description: Location type reference. Present only when the request includes `?expand=geoType`. Null when the location has no resolvable type.
-                        required:
-                        - id
-                        - name
-                        additionalProperties: false
-                      description: Resolved location objects for `geo.exclude` IDs.
-                  required:
-                  - include
-                  - exclude
-                  additionalProperties: false
-              required:
-              - id
-              - name
-              - totalUsers
-              - createdAt
-              - geoLists
-              - geo
-              - updatedTime
-              - isTest
-              additionalProperties: false
-              description: Present when `expand=audience` on GET campaign; full audience record for `audienceId`. Null if no primary audience id.
-            currentFlight:
-              type:
-              - object
-              - 'null'
-              properties:
-                id:
-                  type: integer
-                  minimum: -9007199254740991
-                  maximum: 9007199254740991
-                  description: Budget row id.
-                campaignGroupId:
-                  type: integer
-                  minimum: -9007199254740991
-                  maximum: 9007199254740991
-                  description: Campaign group identifier the flight belongs to.
-                budget:
-                  type: number
-                  description: Flight budget amount in currency USD (dollars).
-                startTime:
-                  type: string
-                  description: Inclusive flight start timestamp (ISO-8601).
-                endTime:
-                  type:
-                  - string
-                  - 'null'
-                  description: Inclusive flight end timestamp (ISO-8601), or null when open-ended.
-                status:
-                  type:
-                  - string
-                  - 'null'
-                  description: Flight status, or null when unavailable.
-                budgetTypeId:
-                  type:
-                  - integer
-                  - 'null'
-                  minimum: -9007199254740991
-                  maximum: 9007199254740991
-                  description: Budget type identifier.
-              required:
-              - id
-              - campaignGroupId
-              - budget
-              - startTime
-              - endTime
-              - status
-              - budgetTypeId
-              additionalProperties: false
-              description: Present when `expand=currentFlight` on GET campaign; current active flight (Budget). Null if no active flight.
-            creativeIds:
-              description: IDs of the creatives attached to this campaign (creative library ids — the `id` used by `GET /v1/creatives/{id}`). Present by default on list/get/create/update responses; omitted when the attachment lookup fails.
-              type: array
-              items:
-                type: integer
-                minimum: -9007199254740991
-                maximum: 9007199254740991
-            creatives:
-              description: Full attached-creative records (click URL, weight). Present when `expand=creatives` on GET campaign, and always on create/update responses; omitted on list responses.
-              type: array
-              items:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                    minimum: -9007199254740991
-                    maximum: 9007199254740991
-                    description: Creative identifier (creative library) — the `id` used by `GET /v1/creatives/{id}`.
-                  clickUrl:
-                    type:
-                    - string
-                    - 'null'
-                    description: Click-through URL applied to this creative on this campaign.
-                  weight:
-                    type: integer
-                    minimum: -9007199254740991
-                    maximum: 9007199254740991
-                    description: Serving weight; 0 when the creative is unweighted.
-                required:
-                - id
-                - clickUrl
-                - weight
-                additionalProperties: false
-          required:
-          - id
-          - name
-          additionalProperties: false
-      required:
-      - data
-      additionalProperties: false
-    AudienceSingleResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            id:
-              type: number
-              description: Audience identifier.
-            name:
-              type: string
-              description: Display name of the audience.
-            totalUsers:
-              type:
-              - number
-              - 'null'
-              description: Estimated audience size, or null when unavailable.
-            createdAt:
-              type: string
-              description: Timestamp the audience was created (ISO-8601).
-            geoLists:
-              type:
-              - object
-              - 'null'
-              properties:
-                include:
-                  type: array
-                  items:
-                    type: integer
-                    exclusiveMinimum: true
-                    maximum: 9007199254740991
-                    minimum: 0
-                  description: Geo-list identifiers to include in audience targeting.
-                exclude:
-                  type: array
-                  items:
-                    type: integer
-                    exclusiveMinimum: true
-                    maximum: 9007199254740991
-                    minimum: 0
-                  description: Geo-list identifiers to exclude from audience targeting.
-              required:
-              - include
-              - exclude
-              additionalProperties: false
-              description: Geo-list associations. Null when the audience has no geo-list expression.
-            geo:
-              type:
-              - object
-              - 'null'
-              properties:
-                include:
-                  type: array
-                  items:
-                    type: integer
-                    exclusiveMinimum: true
-                    maximum: 9007199254740991
-                    minimum: 0
-                  description: Geo-list identifiers to include in audience targeting.
-                exclude:
-                  type: array
-                  items:
-                    type: integer
-                    exclusiveMinimum: true
-                    maximum: 9007199254740991
-                    minimum: 0
-                  description: Geo-list identifiers to exclude from audience targeting.
-              required:
-              - include
-              - exclude
-              additionalProperties: false
-              description: Geo selector expression (resolved location IDs). Null when the audience has no geo expression.
-            updatedTime:
-              type:
-              - string
-              - 'null'
-              description: Timestamp the audience was last updated (ISO-8601).
-            isTest:
-              type: boolean
-              description: True when the audience is flagged as a test.
-            keywords:
-              type: object
-              properties:
-                include:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      keyword:
-                        type: string
-                      selected:
-                        type: boolean
-                      isCustom:
-                        type: boolean
-                    required:
-                    - keyword
-                    - selected
-                    - isCustom
-                    additionalProperties: false
-              required:
-              - include
-              additionalProperties: false
-            geoLocations:
-              description: Resolved geo locations from the audience's `geo` expression. Present only when the request includes `?expand[]=geoLocations`.
-              type: object
-              properties:
-                include:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                        minimum: -9007199254740991
-                        maximum: 9007199254740991
-                        description: Location identifier.
-                      name:
-                        type: string
-                        description: Display name of the location.
-                      geoType:
-                        type:
-                        - object
-                        - 'null'
-                        properties:
-                          id:
-                            type: integer
-                            minimum: -9007199254740991
-                            maximum: 9007199254740991
-                            description: Location type identifier.
-                          name:
-                            type: string
-                            description: Location type name (e.g. State / Region, City, Media Market).
-                        required:
-                        - id
-                        - name
-                        additionalProperties: false
-                        description: Location type reference. Present only when the request includes `?expand=geoType`. Null when the location has no resolvable type.
-                    required:
-                    - id
-                    - name
-                    additionalProperties: false
-                  description: Resolved location objects for `geo.include` IDs.
-                exclude:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                        minimum: -9007199254740991
-                        maximum: 9007199254740991
-                        description: Location identifier.
-                      name:
-                        type: string
-                        description: Display name of the location.
-                      geoType:
-                        type:
-                        - object
-                        - 'null'
-                        properties:
-                          id:
-                            type: integer
-                            minimum: -9007199254740991
-                            maximum: 9007199254740991
-                            description: Location type identifier.
-                          name:
-                            type: string
-                            description: Location type name (e.g. State / Region, City, Media Market).
-                        required:
-                        - id
-                        - name
-                        additionalProperties: false
-                        description: Location type reference. Present only when the request includes `?expand=geoType`. Null when the location has no resolvable type.
-                    required:
-                    - id
-                    - name
-                    additionalProperties: false
-                  description: Resolved location objects for `geo.exclude` IDs.
-              required:
-              - include
-              - exclude
-              additionalProperties: false
-          required:
-          - id
-          - name
-          - totalUsers
-          - createdAt
-          - geoLists
-          - geo
-          - updatedTime
-          - isTest
-          additionalProperties: false
-      required:
-      - data
-      additionalProperties: false
   securitySchemes:
     Bearer:
       scheme: bearer
@@ -1998,3 +1998,21 @@ components:
       type: apiKey
       in: header
       name: X-API-Key
+x-tagGroups:
+- name: v1
+  tags:
+  - advertisers
+  - attribution
+  - audiences
+  - campaigns
+  - creatives
+  - flights
+  - reporting
+  - pixel
+  - organizations
+  - reference
+  - pmp-deals
+  - pmp-deal-groups
+  - pmp-partners
+  - pmp-campaign-deals
+  - pmp-channels

@@ -11,7 +11,7 @@ info:
     name: Proprietary
 servers:
 - url: https://api.mountain.com/ptv
-  description: MNTN Performance TV API gateway
+  description: API gateway
 security:
 - Bearer: []
 - API Key: []
@@ -291,6 +291,21 @@ components:
           maximum: 9007199254740991
           description: Publisher ID.
           minimum: 0
+    DealBulkDeactivateBodyDto:
+      type: object
+      properties:
+        pmpDealIds:
+          minItems: 1
+          maxItems: 1000
+          type: array
+          items:
+            type: integer
+            exclusiveMinimum: true
+            maximum: 9007199254740991
+            minimum: 0
+          description: PMP deal IDs to deactivate (1–1000 per request).
+      required:
+      - pmpDealIds
     PaginatedDealsResponseDto_Output:
       type: object
       properties:
@@ -477,150 +492,6 @@ components:
       - data
       - pagination
       additionalProperties: false
-    DealBulkDeactivateResultResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            dealsUpdated:
-              type: integer
-              minimum: -9007199254740991
-              maximum: 9007199254740991
-              description: Rows matched by the update.
-          required:
-          - dealsUpdated
-          additionalProperties: false
-          description: Bulk deactivate result.
-      required:
-      - data
-      additionalProperties: false
-    DealGroupLinksListResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              pmpDealId:
-                type: integer
-                minimum: -9007199254740991
-                maximum: 9007199254740991
-                description: PMP deal ID.
-              dealGroupId:
-                type: integer
-                minimum: -9007199254740991
-                maximum: 9007199254740991
-                description: Deal group ID.
-              createTime:
-                type: string
-                description: Link creation timestamp (ISO8601).
-              updateTime:
-                type: string
-                description: Link last update timestamp (ISO8601).
-              createdBy:
-                type:
-                - integer
-                - 'null'
-                minimum: -9007199254740991
-                maximum: 9007199254740991
-                description: User who created the link.
-            required:
-            - pmpDealId
-            - dealGroupId
-            - createTime
-            - updateTime
-            - createdBy
-            additionalProperties: false
-            description: A deal <-> deal-group membership link.
-      required:
-      - data
-      additionalProperties: false
-    DealBulkDeactivateBodyDto:
-      type: object
-      properties:
-        pmpDealIds:
-          minItems: 1
-          maxItems: 1000
-          type: array
-          items:
-            type: integer
-            exclusiveMinimum: true
-            maximum: 9007199254740991
-            minimum: 0
-          description: PMP deal IDs to deactivate (1–1000 per request).
-      required:
-      - pmpDealIds
-    CreateDealBodyDto:
-      type: object
-      properties:
-        partnerDealId:
-          type: string
-          minLength: 1
-          description: Partner-assigned deal ID.
-        floorPrice:
-          description: Floor price in USD (≥ 0).
-          type: number
-          minimum: 0
-        name:
-          description: Deal name.
-          type: string
-          minLength: 1
-        partnerId:
-          type: integer
-          exclusiveMinimum: true
-          maximum: 9007199254740991
-          description: Partner ID.
-          minimum: 0
-        startTime:
-          description: Deal start time.
-          type: string
-          format: date-time
-          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
-        endTime:
-          description: Deal end time.
-          type: string
-          format: date-time
-          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
-        active:
-          type: boolean
-          description: Whether the deal is active on create.
-        dspPartnerId:
-          type: integer
-          exclusiveMinimum: true
-          maximum: 9007199254740991
-          description: DSP partner ID.
-          minimum: 0
-        pricingModel:
-          type: string
-          enum:
-          - BIDDABLE
-          - FIXED
-          description: Pricing model.
-        partnershipDealType:
-          type: string
-          enum:
-          - EXCLUSIVE
-          - SSP
-          - PUB_DIRECT
-          description: Partnership deal type.
-        publisherId:
-          description: Publisher ID; required for EXCLUSIVE deals.
-          type: integer
-          exclusiveMinimum: true
-          maximum: 9007199254740991
-          minimum: 0
-        generateDealGroup:
-          description: When true, PAPI also creates a matching deal group and links this deal to it.
-          type: boolean
-      required:
-      - partnerDealId
-      - partnerId
-      - active
-      - dspPartnerId
-      - pricingModel
-      - partnershipDealType
     DealResponseDto_Output:
       type: object
       properties:
@@ -766,6 +637,135 @@ components:
       required:
       - data
       additionalProperties: false
+    DealGroupLinksListResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              pmpDealId:
+                type: integer
+                minimum: -9007199254740991
+                maximum: 9007199254740991
+                description: PMP deal ID.
+              dealGroupId:
+                type: integer
+                minimum: -9007199254740991
+                maximum: 9007199254740991
+                description: Deal group ID.
+              createTime:
+                type: string
+                description: Link creation timestamp (ISO8601).
+              updateTime:
+                type: string
+                description: Link last update timestamp (ISO8601).
+              createdBy:
+                type:
+                - integer
+                - 'null'
+                minimum: -9007199254740991
+                maximum: 9007199254740991
+                description: User who created the link.
+            required:
+            - pmpDealId
+            - dealGroupId
+            - createTime
+            - updateTime
+            - createdBy
+            additionalProperties: false
+            description: A deal <-> deal-group membership link.
+      required:
+      - data
+      additionalProperties: false
+    CreateDealBodyDto:
+      type: object
+      properties:
+        partnerDealId:
+          type: string
+          minLength: 1
+          description: Partner-assigned deal ID.
+        floorPrice:
+          description: Floor price in USD (≥ 0).
+          type: number
+          minimum: 0
+        name:
+          description: Deal name.
+          type: string
+          minLength: 1
+        partnerId:
+          type: integer
+          exclusiveMinimum: true
+          maximum: 9007199254740991
+          description: Partner ID.
+          minimum: 0
+        startTime:
+          description: Deal start time.
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+        endTime:
+          description: Deal end time.
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+        active:
+          type: boolean
+          description: Whether the deal is active on create.
+        dspPartnerId:
+          type: integer
+          exclusiveMinimum: true
+          maximum: 9007199254740991
+          description: DSP partner ID.
+          minimum: 0
+        pricingModel:
+          type: string
+          enum:
+          - BIDDABLE
+          - FIXED
+          description: Pricing model.
+        partnershipDealType:
+          type: string
+          enum:
+          - EXCLUSIVE
+          - SSP
+          - PUB_DIRECT
+          description: Partnership deal type.
+        publisherId:
+          description: Publisher ID; required for EXCLUSIVE deals.
+          type: integer
+          exclusiveMinimum: true
+          maximum: 9007199254740991
+          minimum: 0
+        generateDealGroup:
+          description: When true, PAPI also creates a matching deal group and links this deal to it.
+          type: boolean
+      required:
+      - partnerDealId
+      - partnerId
+      - active
+      - dspPartnerId
+      - pricingModel
+      - partnershipDealType
+    DealBulkDeactivateResultResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            dealsUpdated:
+              type: integer
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: Rows matched by the update.
+          required:
+          - dealsUpdated
+          additionalProperties: false
+          description: Bulk deactivate result.
+      required:
+      - data
+      additionalProperties: false
   securitySchemes:
     Bearer:
       scheme: bearer
@@ -775,3 +775,21 @@ components:
       type: apiKey
       in: header
       name: X-API-Key
+x-tagGroups:
+- name: v1
+  tags:
+  - advertisers
+  - attribution
+  - audiences
+  - campaigns
+  - creatives
+  - flights
+  - reporting
+  - pixel
+  - organizations
+  - reference
+  - pmp-deals
+  - pmp-deal-groups
+  - pmp-partners
+  - pmp-campaign-deals
+  - pmp-channels

@@ -11,12 +11,12 @@ info:
     name: Proprietary
 servers:
 - url: https://api.mountain.com/ptv
-  description: MNTN Performance TV API gateway
+  description: API gateway
 security:
 - Bearer: []
 - API Key: []
 tags:
-- name: reference
+- name: Reference
   description: Enumerations and lookup data shared across endpoints.
 paths:
   /api/v1/reference/budget/goals:
@@ -66,7 +66,7 @@ paths:
                 $ref: '#/components/schemas/ReferenceGoalsListResponseDto_Output'
       summary: List allowed goal types
       tags:
-      - reference
+      - Reference
   /api/v1/reference/budget/types:
     get:
       description: Returns canonical budget type values accepted by budget mutation APIs.
@@ -93,7 +93,7 @@ paths:
                 $ref: '#/components/schemas/ReferenceBudgetTypesListResponseDto_Output'
       summary: List allowed budget types
       tags:
-      - reference
+      - Reference
   /api/v1/reference/geo/types:
     get:
       description: Returns supported geo selector types sourced from `geo.location_types` (cached for 1 week). Use the `name` value as the `geoTypeName` filter on `GET /api/v1/audiences/locations`.
@@ -122,7 +122,7 @@ paths:
                 $ref: '#/components/schemas/ReferenceGeoTypesListResponseDto_Output'
       summary: List allowed geo targeting types
       tags:
-      - reference
+      - Reference
   /api/v1/reference/campaign/statuses:
     get:
       description: Returns supported campaign statuses.
@@ -167,7 +167,7 @@ paths:
                 $ref: '#/components/schemas/ReferenceCampaignStatusesListResponseDto_Output'
       summary: List allowed campaign statuses
       tags:
-      - reference
+      - Reference
   /api/v1/reference/campaign/objectives:
     get:
       description: Returns supported campaign objective types.
@@ -194,7 +194,7 @@ paths:
                 $ref: '#/components/schemas/ReferenceCampaignObjectivesListResponseDto_Output'
       summary: List allowed campaign objectives
       tags:
-      - reference
+      - Reference
   /api/v1/reference/audience/segment-types:
     get:
       description: Returns supported audience segment types.
@@ -254,10 +254,10 @@ paths:
                 $ref: '#/components/schemas/ReferenceAudienceSegmentTypesListResponseDto_Output'
       summary: List allowed audience segment types
       tags:
-      - reference
+      - Reference
 components:
   schemas:
-    ReferenceCampaignStatusesListResponseDto_Output:
+    ReferenceAudienceSegmentTypesListResponseDto_Output:
       type: object
       properties:
         data:
@@ -266,13 +266,13 @@ components:
             type: object
             properties:
               id:
-                type: string
-                description: String identifier for the reference value.
+                type: number
+                description: Numeric identifier for the reference value.
               name:
                 type: string
                 description: Stable machine-friendly name of the reference value.
               description:
-                description: Human-readable description of the reference value. May be omitted on lists sourced from upstream catalogs.
+                description: Human-readable description of the reference value. Omitted on lists sourced directly from upstream catalogs (e.g. `geo/types`).
                 type: string
             required:
             - id
@@ -329,30 +329,6 @@ components:
       required:
       - data
       additionalProperties: false
-    ReferenceGoalsListResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: number
-                description: Numeric identifier for the reference value.
-              name:
-                type: string
-                description: Stable machine-friendly name of the reference value.
-              description:
-                description: Human-readable description of the reference value. Omitted on lists sourced directly from upstream catalogs (e.g. `geo/types`).
-                type: string
-            required:
-            - id
-            - name
-            additionalProperties: false
-      required:
-      - data
-      additionalProperties: false
     ReferenceBudgetTypesListResponseDto_Output:
       type: object
       properties:
@@ -377,7 +353,31 @@ components:
       required:
       - data
       additionalProperties: false
-    ReferenceAudienceSegmentTypesListResponseDto_Output:
+    ReferenceCampaignStatusesListResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: String identifier for the reference value.
+              name:
+                type: string
+                description: Stable machine-friendly name of the reference value.
+              description:
+                description: Human-readable description of the reference value. May be omitted on lists sourced from upstream catalogs.
+                type: string
+            required:
+            - id
+            - name
+            additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
+    ReferenceGoalsListResponseDto_Output:
       type: object
       properties:
         data:
@@ -410,3 +410,21 @@ components:
       type: apiKey
       in: header
       name: X-API-Key
+x-tagGroups:
+- name: v1
+  tags:
+  - advertisers
+  - attribution
+  - audiences
+  - campaigns
+  - creatives
+  - flights
+  - reporting
+  - pixel
+  - organizations
+  - reference
+  - pmp-deals
+  - pmp-deal-groups
+  - pmp-partners
+  - pmp-campaign-deals
+  - pmp-channels

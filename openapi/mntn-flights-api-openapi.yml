@@ -11,12 +11,12 @@ info:
     name: Proprietary
 servers:
 - url: https://api.mountain.com/ptv
-  description: MNTN Performance TV API gateway
+  description: API gateway
 security:
 - Bearer: []
 - API Key: []
 tags:
-- name: flights
+- name: Flights
   description: Flight (budget window) reads and updates within a campaign.
 paths:
   /api/v1/campaigns/{id}/flight/{flight_id}:
@@ -68,7 +68,7 @@ paths:
                 $ref: '#/components/schemas/FlightSingleResponseDto_Output'
       summary: Get a flight
       tags:
-      - flights
+      - Flights
     patch:
       description: Updates the budget amount and billing cadence for a specific campaign flight.
       operationId: flights.patch
@@ -120,27 +120,9 @@ paths:
                 $ref: '#/components/schemas/FlightSingleResponseDto_Output'
       summary: Patch a flight
       tags:
-      - flights
+      - Flights
 components:
   schemas:
-    PatchFlightDto:
-      type: object
-      properties:
-        budget:
-          type: number
-          exclusiveMinimum: true
-          description: Updated flight budget amount in currency USD (dollars only).
-          minimum: 0
-        budgetType:
-          type: string
-          enum:
-          - FLIGHTED
-          - MONTHLY
-          description: Billing cadence for the selected flight.
-      required:
-      - budget
-      - budgetType
-      description: Requested budget amount and budget type to apply to the selected flight.
     FlightSingleResponseDto_Output:
       type: object
       properties:
@@ -204,6 +186,24 @@ components:
       required:
       - data
       additionalProperties: false
+    PatchFlightDto:
+      type: object
+      properties:
+        budget:
+          type: number
+          exclusiveMinimum: true
+          description: Updated flight budget amount in currency USD (dollars only).
+          minimum: 0
+        budgetType:
+          type: string
+          enum:
+          - FLIGHTED
+          - MONTHLY
+          description: Billing cadence for the selected flight.
+      required:
+      - budget
+      - budgetType
+      description: Requested budget amount and budget type to apply to the selected flight.
   securitySchemes:
     Bearer:
       scheme: bearer
@@ -213,3 +213,21 @@ components:
       type: apiKey
       in: header
       name: X-API-Key
+x-tagGroups:
+- name: v1
+  tags:
+  - advertisers
+  - attribution
+  - audiences
+  - campaigns
+  - creatives
+  - flights
+  - reporting
+  - pixel
+  - organizations
+  - reference
+  - pmp-deals
+  - pmp-deal-groups
+  - pmp-partners
+  - pmp-campaign-deals
+  - pmp-channels

@@ -11,7 +11,7 @@ info:
     name: Proprietary
 servers:
 - url: https://api.mountain.com/ptv
-  description: MNTN Performance TV API gateway
+  description: API gateway
 security:
 - Bearer: []
 - API Key: []
@@ -483,39 +483,22 @@ components:
           maximum: 9007199254740991
           minimum: 0
       description: Check recent Redis pixel events request body.
-    PixelStoreGa4IdsBodyDto:
+    PixelListenConversionsBodyDto:
       type: object
       properties:
-        ga4Ids:
-          type: array
-          items:
-            type: string
-            minLength: 1
-          description: GA4 measurement IDs to store for the advertiser.
-      required:
-      - ga4Ids
-      description: Store GA4 measurement IDs request body.
-    PixelSignalStrategiesListResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              signal:
-                type:
-                - string
-                - 'null'
-              strategy:
-                type:
-                - string
-                - 'null'
-            additionalProperties: false
-            description: Recommended pixel signal strategy.
-      required:
-      - data
-      additionalProperties: false
+        timeoutSeconds:
+          description: Listener timeout in seconds. Defaults to 100.
+          type: integer
+          exclusiveMinimum: true
+          maximum: 9007199254740991
+          minimum: 0
+        count:
+          description: Number of events to wait for. Defaults to 1.
+          type: integer
+          exclusiveMinimum: true
+          maximum: 9007199254740991
+          minimum: 0
+      description: Pixel verification listener request body.
     PixelConversionOptOutBodyDto:
       type: object
       properties:
@@ -532,6 +515,88 @@ components:
           type: object
           additionalProperties: {}
           description: Passthrough pixel verification payload.
+      required:
+      - data
+      additionalProperties: false
+    PixelVerificationEventsApiSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            events:
+              type:
+              - array
+              - 'null'
+              items:
+                type: object
+                properties:
+                  aid:
+                    type: string
+                    description: Tracking pixel AID associated with the event.
+                  advertiserId:
+                    anyOf:
+                    - type: string
+                    - type: number
+                    description: Advertiser identifier on the event.
+                  url:
+                    type: string
+                    description: Page URL where the event fired.
+                  eventType:
+                    type: string
+                    description: Event classification from the pixel stream.
+                  topic:
+                    type: string
+                    description: Source topic for the event.
+                  timestamp:
+                    type: string
+                    description: Event timestamp.
+                  rawMessage:
+                    type: string
+                    description: Sanitized raw event payload.
+                required:
+                - aid
+                - advertiserId
+                - url
+                - eventType
+                - topic
+                - timestamp
+                - rawMessage
+                additionalProperties: false
+              description: Recent pixel events in the query window, or null when none were found.
+            queryWindowStart:
+              type: string
+              description: Start of the lookback window (ISO-8601).
+            queryWindowEnd:
+              type: string
+              description: End of the lookback window (ISO-8601).
+            trackingVerified:
+              type: boolean
+              description: Whether tracking pixel events were observed.
+            conversionVerified:
+              type: boolean
+              description: Whether conversion pixel events were observed.
+            ga4MeasurementIds:
+              type: array
+              items:
+                type: string
+              description: GA4 measurement IDs observed for the advertiser.
+            flagDuplicateTracking:
+              type: boolean
+              description: Whether duplicate tracking events were detected.
+            flagDuplicateConversions:
+              type: boolean
+              description: Whether duplicate conversion events were detected.
+          required:
+          - events
+          - queryWindowStart
+          - queryWindowEnd
+          - trackingVerified
+          - conversionVerified
+          - ga4MeasurementIds
+          - flagDuplicateTracking
+          - flagDuplicateConversions
+          additionalProperties: false
       required:
       - data
       additionalProperties: false
@@ -562,6 +627,27 @@ components:
                 type: string
           additionalProperties: false
           description: Stored GA4 measurement IDs.
+      required:
+      - data
+      additionalProperties: false
+    PixelSignalStrategiesListResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              signal:
+                type:
+                - string
+                - 'null'
+              strategy:
+                type:
+                - string
+                - 'null'
+            additionalProperties: false
+            description: Recommended pixel signal strategy.
       required:
       - data
       additionalProperties: false
@@ -647,22 +733,18 @@ components:
       required:
       - data
       additionalProperties: false
-    PixelListenConversionsBodyDto:
+    PixelStoreGa4IdsBodyDto:
       type: object
       properties:
-        timeoutSeconds:
-          description: Listener timeout in seconds. Defaults to 100.
-          type: integer
-          exclusiveMinimum: true
-          maximum: 9007199254740991
-          minimum: 0
-        count:
-          description: Number of events to wait for. Defaults to 1.
-          type: integer
-          exclusiveMinimum: true
-          maximum: 9007199254740991
-          minimum: 0
-      description: Pixel verification listener request body.
+        ga4Ids:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          description: GA4 measurement IDs to store for the advertiser.
+      required:
+      - ga4Ids
+      description: Store GA4 measurement IDs request body.
     PixelHealthOverviewBodyDto:
       type: object
       properties:
@@ -676,88 +758,6 @@ components:
       required:
       - url
       description: Pixel health overview request body.
-    PixelVerificationEventsApiSingleResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            events:
-              type:
-              - array
-              - 'null'
-              items:
-                type: object
-                properties:
-                  aid:
-                    type: string
-                    description: Tracking pixel AID associated with the event.
-                  advertiserId:
-                    anyOf:
-                    - type: string
-                    - type: number
-                    description: Advertiser identifier on the event.
-                  url:
-                    type: string
-                    description: Page URL where the event fired.
-                  eventType:
-                    type: string
-                    description: Event classification from the pixel stream.
-                  topic:
-                    type: string
-                    description: Source topic for the event.
-                  timestamp:
-                    type: string
-                    description: Event timestamp.
-                  rawMessage:
-                    type: string
-                    description: Sanitized raw event payload.
-                required:
-                - aid
-                - advertiserId
-                - url
-                - eventType
-                - topic
-                - timestamp
-                - rawMessage
-                additionalProperties: false
-              description: Recent pixel events in the query window, or null when none were found.
-            queryWindowStart:
-              type: string
-              description: Start of the lookback window (ISO-8601).
-            queryWindowEnd:
-              type: string
-              description: End of the lookback window (ISO-8601).
-            trackingVerified:
-              type: boolean
-              description: Whether tracking pixel events were observed.
-            conversionVerified:
-              type: boolean
-              description: Whether conversion pixel events were observed.
-            ga4MeasurementIds:
-              type: array
-              items:
-                type: string
-              description: GA4 measurement IDs observed for the advertiser.
-            flagDuplicateTracking:
-              type: boolean
-              description: Whether duplicate tracking events were detected.
-            flagDuplicateConversions:
-              type: boolean
-              description: Whether duplicate conversion events were detected.
-          required:
-          - events
-          - queryWindowStart
-          - queryWindowEnd
-          - trackingVerified
-          - conversionVerified
-          - ga4MeasurementIds
-          - flagDuplicateTracking
-          - flagDuplicateConversions
-          additionalProperties: false
-      required:
-      - data
-      additionalProperties: false
   securitySchemes:
     Bearer:
       scheme: bearer
@@ -767,3 +767,21 @@ components:
       type: apiKey
       in: header
       name: X-API-Key
+x-tagGroups:
+- name: v1
+  tags:
+  - advertisers
+  - attribution
+  - audiences
+  - campaigns
+  - creatives
+  - flights
+  - reporting
+  - pixel
+  - organizations
+  - reference
+  - pmp-deals
+  - pmp-deal-groups
+  - pmp-partners
+  - pmp-campaign-deals
+  - pmp-channels

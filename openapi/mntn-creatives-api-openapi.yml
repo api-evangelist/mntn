@@ -11,12 +11,12 @@ info:
     name: Proprietary
 servers:
 - url: https://api.mountain.com/ptv
-  description: MNTN Performance TV API gateway
+  description: API gateway
 security:
 - Bearer: []
 - API Key: []
 tags:
-- name: creatives
+- name: Creatives
   description: Creative library lookup, with normalized video processing status.
 paths:
   /api/v1/creatives:
@@ -103,7 +103,7 @@ paths:
                 $ref: '#/components/schemas/PaginatedCreativesResponseDto_Output'
       summary: List creatives
       tags:
-      - creatives
+      - Creatives
     post:
       description: 'Uploads a video into the advertiser''s creative library. The request is `multipart/form-data` with the plain fields `advertiserId` (required) and `name` (optional display name), followed by `file` (the video bytes, streamed). Field parts must precede the `file` part.
 
@@ -156,7 +156,7 @@ paths:
                 $ref: '#/components/schemas/CreativeSingleResponseDto_Output'
       summary: Upload a creative
       tags:
-      - creatives
+      - Creatives
   /api/v1/creatives/{id}:
     get:
       description: 'Returns a creative from the advertiser''s library, including its normalized processing status.
@@ -203,7 +203,7 @@ paths:
                 $ref: '#/components/schemas/CreativeSingleResponseDto_Output'
       summary: Get a creative
       tags:
-      - creatives
+      - Creatives
     delete:
       description: 'Deletes a creative from the advertiser''s library. This is a soft delete: the creative is archived and no longer appears in library listings, but its stored assets are not immediately purged.
 
@@ -230,7 +230,7 @@ paths:
           description: Creative deleted.
       summary: Delete a creative
       tags:
-      - creatives
+      - Creatives
 components:
   schemas:
     PaginatedCreativesResponseDto_Output:
@@ -427,3 +427,21 @@ components:
       type: apiKey
       in: header
       name: X-API-Key
+x-tagGroups:
+- name: v1
+  tags:
+  - advertisers
+  - attribution
+  - audiences
+  - campaigns
+  - creatives
+  - flights
+  - reporting
+  - pixel
+  - organizations
+  - reference
+  - pmp-deals
+  - pmp-deal-groups
+  - pmp-partners
+  - pmp-campaign-deals
+  - pmp-channels

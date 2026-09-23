@@ -11,12 +11,12 @@ info:
     name: Proprietary
 servers:
 - url: https://api.mountain.com/ptv
-  description: MNTN Performance TV API gateway
+  description: API gateway
 security:
 - Bearer: []
 - API Key: []
 tags:
-- name: audiences
+- name: Audiences
   description: Audience and geo-list management.
 paths:
   /api/v1/audiences:
@@ -118,7 +118,7 @@ paths:
                 $ref: '#/components/schemas/PaginatedAudiencesResponseDto_Output'
       summary: List audiences
       tags:
-      - audiences
+      - Audiences
     post:
       description: Creates a new audience for the advertiser. Keywords are resolved into an expression server-side; geo lists are attached as include/exclude associations after the audience is created.
       operationId: AudiencesController_create_v1
@@ -166,7 +166,7 @@ paths:
                 $ref: '#/components/schemas/AudienceSingleResponseDto_Output'
       summary: Create an audience
       tags:
-      - audiences
+      - Audiences
   /api/v1/audiences/campaign/{campaignId}:
     get:
       description: Returns the audience linked to the given campaign ID.
@@ -255,7 +255,7 @@ paths:
                 $ref: '#/components/schemas/AudienceSingleResponseDto_Output'
       summary: Get audience by campaign
       tags:
-      - audiences
+      - Audiences
   /api/v1/audiences/keywords:
     get:
       operationId: AudiencesController_searchKeywords_v1
@@ -298,7 +298,7 @@ paths:
                 $ref: '#/components/schemas/KeywordsSearchResponseDto_Output'
       summary: Search keywords
       tags:
-      - audiences
+      - Audiences
   /api/v1/audiences/locations:
     get:
       description: 'Returns geo locations from the US geo catalog.
@@ -390,7 +390,7 @@ paths:
                 $ref: '#/components/schemas/PaginatedLocationsResponseDto_Output'
       summary: List/Search Geo Locations
       tags:
-      - audiences
+      - Audiences
   /api/v1/audiences/{id}:
     get:
       description: Returns a single audience by ID.
@@ -450,7 +450,7 @@ paths:
                 $ref: '#/components/schemas/AudienceSingleResponseDto_Output'
       summary: Get an audience
       tags:
-      - audiences
+      - Audiences
     patch:
       description: Updates parts of an audience and returns the refreshed audience.
       operationId: audiences.patch
@@ -504,7 +504,7 @@ paths:
                 $ref: '#/components/schemas/AudienceSingleResponseDto_Output'
       summary: Patch an audience
       tags:
-      - audiences
+      - Audiences
   /api/v1/audiences/{id}/geo-lists/disassociate:
     post:
       description: 'Removes one or more geo-list associations from an audience.
@@ -545,7 +545,7 @@ paths:
                 $ref: '#/components/schemas/DisassociateGeoListsSingleResponseDto_Output'
       summary: Disassociate geo-lists from an audience
       tags:
-      - audiences
+      - Audiences
   /api/v1/audiences/{id}/geo-lists/{geoListId}:
     delete:
       description: Removes one geo-list association from an audience. The geo-list itself is not deleted.
@@ -568,7 +568,7 @@ paths:
           description: Geo-list disassociated.
       summary: Disassociate a geo-list from an audience
       tags:
-      - audiences
+      - Audiences
   /api/v1/audiences/geo-lists:
     get:
       description: 'Returns geo-lists for an advertiser.
@@ -624,7 +624,7 @@ paths:
                 $ref: '#/components/schemas/PaginatedGeoListsResponseDto_Output'
       summary: List geo-lists
       tags:
-      - audiences
+      - Audiences
     post:
       description: 'Creates a reusable geo-list for advertiser targeting and returns the created list metadata.
 
@@ -663,7 +663,7 @@ paths:
                 $ref: '#/components/schemas/GeoListCreatedSingleResponseDto_Output'
       summary: Create a geo-list
       tags:
-      - audiences
+      - Audiences
   /api/v1/audiences/geo-lists/{id}/locations:
     get:
       description: 'Returns the locations contained in a geo list as a list of `{ id, name }` items.
@@ -726,34 +726,327 @@ paths:
                 $ref: '#/components/schemas/GeoListLocationsResponseDto_Output'
       summary: Get geo-list locations
       tags:
-      - audiences
+      - Audiences
 components:
   schemas:
-    GeoListCreatedSingleResponseDto_Output:
+    DisassociateGeoListsDto:
+      type: object
+      properties:
+        geoListIds:
+          minItems: 1
+          type: array
+          items:
+            type: number
+            exclusiveMinimum: true
+            description: Positive integer entity identifier.
+            minimum: 0
+          description: Geo-list identifiers to remove from the audience.
+      required:
+      - geoListIds
+      description: Geo-list ids to disassociate from an audience.
+      additionalProperties: false
+    AudienceSingleResponseDto_Output:
       type: object
       properties:
         data:
           type: object
           properties:
-            name:
-              type: string
-              description: Display name of the created geo-list.
             id:
               type: number
-              description: Identifier assigned to the new geo-list.
-            createTime:
+              description: Audience identifier.
+            name:
+              type: string
+              description: Display name of the audience.
+            totalUsers:
+              type:
+              - number
+              - 'null'
+              description: Estimated audience size, or null when unavailable.
+            createdAt:
+              type: string
+              description: Timestamp the audience was created (ISO-8601).
+            geoLists:
+              type:
+              - object
+              - 'null'
+              properties:
+                include:
+                  type: array
+                  items:
+                    type: integer
+                    exclusiveMinimum: true
+                    maximum: 9007199254740991
+                    minimum: 0
+                  description: Geo-list identifiers to include in audience targeting.
+                exclude:
+                  type: array
+                  items:
+                    type: integer
+                    exclusiveMinimum: true
+                    maximum: 9007199254740991
+                    minimum: 0
+                  description: Geo-list identifiers to exclude from audience targeting.
+              required:
+              - include
+              - exclude
+              additionalProperties: false
+              description: Geo-list associations. Null when the audience has no geo-list expression.
+            geo:
+              type:
+              - object
+              - 'null'
+              properties:
+                include:
+                  type: array
+                  items:
+                    type: integer
+                    exclusiveMinimum: true
+                    maximum: 9007199254740991
+                    minimum: 0
+                  description: Geo-list identifiers to include in audience targeting.
+                exclude:
+                  type: array
+                  items:
+                    type: integer
+                    exclusiveMinimum: true
+                    maximum: 9007199254740991
+                    minimum: 0
+                  description: Geo-list identifiers to exclude from audience targeting.
+              required:
+              - include
+              - exclude
+              additionalProperties: false
+              description: Geo selector expression (resolved location IDs). Null when the audience has no geo expression.
+            updatedTime:
               type:
               - string
               - 'null'
-              description: Timestamp the geo-list was created (ISO-8601).
+              description: Timestamp the audience was last updated (ISO-8601).
+            isTest:
+              type: boolean
+              description: True when the audience is flagged as a test.
+            keywords:
+              type: object
+              properties:
+                include:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      keyword:
+                        type: string
+                      selected:
+                        type: boolean
+                      isCustom:
+                        type: boolean
+                    required:
+                    - keyword
+                    - selected
+                    - isCustom
+                    additionalProperties: false
+              required:
+              - include
+              additionalProperties: false
+            geoLocations:
+              description: Resolved geo locations from the audience's `geo` expression. Present only when the request includes `?expand[]=geoLocations`.
+              type: object
+              properties:
+                include:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        minimum: -9007199254740991
+                        maximum: 9007199254740991
+                        description: Location identifier.
+                      name:
+                        type: string
+                        description: Display name of the location.
+                      geoType:
+                        type:
+                        - object
+                        - 'null'
+                        properties:
+                          id:
+                            type: integer
+                            minimum: -9007199254740991
+                            maximum: 9007199254740991
+                            description: Location type identifier.
+                          name:
+                            type: string
+                            description: Location type name (e.g. State / Region, City, Media Market).
+                        required:
+                        - id
+                        - name
+                        additionalProperties: false
+                        description: Location type reference. Present only when the request includes `?expand=geoType`. Null when the location has no resolvable type.
+                    required:
+                    - id
+                    - name
+                    additionalProperties: false
+                  description: Resolved location objects for `geo.include` IDs.
+                exclude:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        minimum: -9007199254740991
+                        maximum: 9007199254740991
+                        description: Location identifier.
+                      name:
+                        type: string
+                        description: Display name of the location.
+                      geoType:
+                        type:
+                        - object
+                        - 'null'
+                        properties:
+                          id:
+                            type: integer
+                            minimum: -9007199254740991
+                            maximum: 9007199254740991
+                            description: Location type identifier.
+                          name:
+                            type: string
+                            description: Location type name (e.g. State / Region, City, Media Market).
+                        required:
+                        - id
+                        - name
+                        additionalProperties: false
+                        description: Location type reference. Present only when the request includes `?expand=geoType`. Null when the location has no resolvable type.
+                    required:
+                    - id
+                    - name
+                    additionalProperties: false
+                  description: Resolved location objects for `geo.exclude` IDs.
+              required:
+              - include
+              - exclude
+              additionalProperties: false
           required:
-          - name
           - id
-          - createTime
+          - name
+          - totalUsers
+          - createdAt
+          - geoLists
+          - geo
+          - updatedTime
+          - isTest
           additionalProperties: false
       required:
       - data
       additionalProperties: false
+    UpdateAudienceDto:
+      type: object
+      properties:
+        geoLists:
+          type:
+          - object
+          - 'null'
+          properties:
+            include:
+              type: array
+              items:
+                type: number
+                exclusiveMinimum: true
+                description: Positive integer entity identifier.
+                minimum: 0
+            exclude:
+              type: array
+              items:
+                type: number
+                exclusiveMinimum: true
+                description: Positive integer entity identifier.
+                minimum: 0
+          additionalProperties: false
+          description: Set the geo list ids to include (positive) or exclude (negative). Both are associations on the audience; ids appear under the matching polarity in the GET response.
+        keywords:
+          description: Parent keywords to save. Server resolves children and builds the audience expression.
+          type: object
+          properties:
+            include:
+              type: array
+              items:
+                type: object
+                properties:
+                  keyword:
+                    type: string
+                  selected:
+                    type: boolean
+                  isCustom:
+                    default: false
+                    type: boolean
+                required:
+                - keyword
+                - selected
+      description: Updatable parts of an audience.
+      additionalProperties: false
+    CreateGeoListDto:
+      type: object
+      properties:
+        advertiserId:
+          type: number
+          exclusiveMinimum: true
+          description: Advertiser identifier that will own the geo list.
+          minimum: 0
+        name:
+          type: string
+          description: Display name for the geo list.
+        geo:
+          minItems: 1
+          type: array
+          items:
+            anyOf:
+            - type: object
+              properties:
+                geoType:
+                  type: string
+                  enum:
+                  - City
+                  - Country
+                  - Country Code
+                  - Media Market
+                  - State / Region
+                  - Postal Code
+                values:
+                  minItems: 1
+                  type: array
+                  items:
+                    type: string
+                  description: Selector values (e.g. state abbreviations, Media Market codes, city names, ZIP codes). Resolved through mapi `/v1/locations`.
+              required:
+              - geoType
+              - values
+            - type: object
+              properties:
+                geoType:
+                  type: integer
+                  exclusiveMinimum: true
+                  maximum: 9007199254740991
+                  description: '`geo.location_types.location_type_id`. Documents the type of the supplied `location_id`s; not validated.'
+                  minimum: 0
+                values:
+                  minItems: 1
+                  type: array
+                  items:
+                    type: integer
+                    exclusiveMinimum: true
+                    maximum: 9007199254740991
+                    minimum: 0
+                  description: Pre-resolved `geo.locations.location_id` values. Passed through to audience-service untranslated; invalid ids surface as upstream errors.
+              required:
+              - geoType
+              - values
+          description: 'Geo selector blocks. Each entry is either the legacy string form (`{ geoType: "Media Market"|"State / Region" etc. values: string[] }`, pair with `GET /api/v1/reference/geo/types` for the picker) or the numeric form (`{ geoType: location_type_id, values: location_id[] }`, pair with `GET /api/v1/reference/geo/types` and `GET /api/v1/audiences/locations` for the picker). The two forms may be mixed within a single request.'
+      required:
+      - advertiserId
+      - name
+      - geo
+      description: Advertiser context, geo-list name, and one or more geo selectors to resolve into location IDs.
     DisassociateGeoListsSingleResponseDto_Output:
       type: object
       properties:
@@ -782,6 +1075,247 @@ components:
           additionalProperties: false
       required:
       - data
+      additionalProperties: false
+    KeywordsSearchResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              keyword:
+                type: string
+                description: Parent keyword text (serves as the identifier)
+              description:
+                type:
+                - string
+                - 'null'
+                description: Human-readable description
+              size:
+                type: integer
+                minimum: -9007199254740991
+                maximum: 9007199254740991
+                description: Estimated audience size (from eval_batch)
+            required:
+            - keyword
+            - description
+            - size
+            additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
+    PaginatedLocationsResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                minimum: -9007199254740991
+                maximum: 9007199254740991
+                description: Location identifier.
+              name:
+                type: string
+                description: Display name of the location.
+              location:
+                type: string
+                description: Canonical location text (the underlying source value behind `name`).
+              isoCode:
+                type:
+                - string
+                - 'null'
+                description: Per-location ISO code (e.g. US state abbreviation). Null when not applicable.
+              geoType:
+                description: Location type reference for this row. Present only when the request includes `?expand[]=geoType`.
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                    description: Location type identifier.
+                  name:
+                    type: string
+                    description: Location type name (e.g. `STATE`, `CITY`, `Media Market`).
+                required:
+                - id
+                - name
+                additionalProperties: false
+            required:
+            - id
+            - name
+            - location
+            - isoCode
+            additionalProperties: false
+        pagination:
+          type: object
+          properties:
+            total:
+              type: integer
+              minimum: 0
+              maximum: 9007199254740991
+              description: Total rows available for this query.
+            perPage:
+              type: integer
+              exclusiveMinimum: true
+              maximum: 9007199254740991
+              description: Maximum rows per page.
+              minimum: 0
+            page:
+              default: 1
+              description: Current 1-based page index.
+              type: integer
+              exclusiveMinimum: true
+              maximum: 9007199254740991
+              minimum: 0
+            previousPageUrl:
+              type:
+              - string
+              - 'null'
+              description: URL for the previous page, or null when none.
+            nextPageUrl:
+              type:
+              - string
+              - 'null'
+              description: URL for the next page, or null when none.
+          required:
+          - total
+          - perPage
+          - page
+          - previousPageUrl
+          - nextPageUrl
+          additionalProperties: false
+      required:
+      - data
+      - pagination
+      additionalProperties: false
+    GeoListLocationsResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                minimum: -9007199254740991
+                maximum: 9007199254740991
+                description: Location identifier.
+              name:
+                type: string
+                description: Display name of the location.
+              geoType:
+                type:
+                - object
+                - 'null'
+                properties:
+                  id:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                    description: Location type identifier.
+                  name:
+                    type: string
+                    description: Location type name (e.g. State / Region, City, Media Market).
+                required:
+                - id
+                - name
+                additionalProperties: false
+                description: Location type reference. Present only when the request includes `?expand=geoType`. Null when the location has no resolvable type.
+            required:
+            - id
+            - name
+            additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
+    GeoListCreatedSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Display name of the created geo-list.
+            id:
+              type: number
+              description: Identifier assigned to the new geo-list.
+            createTime:
+              type:
+              - string
+              - 'null'
+              description: Timestamp the geo-list was created (ISO-8601).
+          required:
+          - name
+          - id
+          - createTime
+          additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
+    CreateAudienceDto:
+      type: object
+      properties:
+        advertiserId:
+          type: number
+          exclusiveMinimum: true
+          description: Advertiser identifier that will own the new audience.
+          minimum: 0
+        name:
+          type: string
+          minLength: 1
+          description: Display name for the audience.
+        keywords:
+          description: Parent keywords to save. Server resolves children and builds the audience expression.
+          type: object
+          properties:
+            include:
+              type: array
+              items:
+                type: object
+                properties:
+                  keyword:
+                    type: string
+                  selected:
+                    type: boolean
+                  isCustom:
+                    default: false
+                    type: boolean
+                required:
+                - keyword
+                - selected
+        geoLists:
+          description: Geo list ids to attach as include / exclude associations after the audience is created.
+          type: object
+          properties:
+            include:
+              type: array
+              items:
+                type: number
+                exclusiveMinimum: true
+                description: Positive integer entity identifier.
+                minimum: 0
+            exclude:
+              type: array
+              items:
+                type: number
+                exclusiveMinimum: true
+                description: Positive integer entity identifier.
+                minimum: 0
+          additionalProperties: false
+        isTest:
+          description: When true, the audience is created as a test audience. Defaults to false.
+          type: boolean
+      required:
+      - advertiserId
+      - name
+      description: Inputs for creating a new audience.
       additionalProperties: false
     PaginatedAudiencesResponseDto_Output:
       type: object
@@ -1019,51 +1553,6 @@ components:
       - data
       - pagination
       additionalProperties: false
-    UpdateAudienceDto:
-      type: object
-      properties:
-        geoLists:
-          type:
-          - object
-          - 'null'
-          properties:
-            include:
-              type: array
-              items:
-                type: number
-                exclusiveMinimum: true
-                description: Positive integer entity identifier.
-                minimum: 0
-            exclude:
-              type: array
-              items:
-                type: number
-                exclusiveMinimum: true
-                description: Positive integer entity identifier.
-                minimum: 0
-          additionalProperties: false
-          description: Set the geo list ids to include (positive) or exclude (negative). Both are associations on the audience; ids appear under the matching polarity in the GET response.
-        keywords:
-          description: Parent keywords to save. Server resolves children and builds the audience expression.
-          type: object
-          properties:
-            include:
-              type: array
-              items:
-                type: object
-                properties:
-                  keyword:
-                    type: string
-                  selected:
-                    type: boolean
-                  isCustom:
-                    default: false
-                    type: boolean
-                required:
-                - keyword
-                - selected
-      description: Updatable parts of an audience.
-      additionalProperties: false
     PaginatedGeoListsResponseDto_Output:
       type: object
       properties:
@@ -1128,495 +1617,6 @@ components:
       - data
       - pagination
       additionalProperties: false
-    GeoListLocationsResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: integer
-                minimum: -9007199254740991
-                maximum: 9007199254740991
-                description: Location identifier.
-              name:
-                type: string
-                description: Display name of the location.
-              geoType:
-                type:
-                - object
-                - 'null'
-                properties:
-                  id:
-                    type: integer
-                    minimum: -9007199254740991
-                    maximum: 9007199254740991
-                    description: Location type identifier.
-                  name:
-                    type: string
-                    description: Location type name (e.g. State / Region, City, Media Market).
-                required:
-                - id
-                - name
-                additionalProperties: false
-                description: Location type reference. Present only when the request includes `?expand=geoType`. Null when the location has no resolvable type.
-            required:
-            - id
-            - name
-            additionalProperties: false
-      required:
-      - data
-      additionalProperties: false
-    DisassociateGeoListsDto:
-      type: object
-      properties:
-        geoListIds:
-          minItems: 1
-          type: array
-          items:
-            type: number
-            exclusiveMinimum: true
-            description: Positive integer entity identifier.
-            minimum: 0
-          description: Geo-list identifiers to remove from the audience.
-      required:
-      - geoListIds
-      description: Geo-list ids to disassociate from an audience.
-      additionalProperties: false
-    KeywordsSearchResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              keyword:
-                type: string
-                description: Parent keyword text (serves as the identifier)
-              description:
-                type:
-                - string
-                - 'null'
-                description: Human-readable description
-              size:
-                type: integer
-                minimum: -9007199254740991
-                maximum: 9007199254740991
-                description: Estimated audience size (from eval_batch)
-            required:
-            - keyword
-            - description
-            - size
-            additionalProperties: false
-      required:
-      - data
-      additionalProperties: false
-    CreateAudienceDto:
-      type: object
-      properties:
-        advertiserId:
-          type: number
-          exclusiveMinimum: true
-          description: Advertiser identifier that will own the new audience.
-          minimum: 0
-        name:
-          type: string
-          minLength: 1
-          description: Display name for the audience.
-        keywords:
-          description: Parent keywords to save. Server resolves children and builds the audience expression.
-          type: object
-          properties:
-            include:
-              type: array
-              items:
-                type: object
-                properties:
-                  keyword:
-                    type: string
-                  selected:
-                    type: boolean
-                  isCustom:
-                    default: false
-                    type: boolean
-                required:
-                - keyword
-                - selected
-        geoLists:
-          description: Geo list ids to attach as include / exclude associations after the audience is created.
-          type: object
-          properties:
-            include:
-              type: array
-              items:
-                type: number
-                exclusiveMinimum: true
-                description: Positive integer entity identifier.
-                minimum: 0
-            exclude:
-              type: array
-              items:
-                type: number
-                exclusiveMinimum: true
-                description: Positive integer entity identifier.
-                minimum: 0
-          additionalProperties: false
-        isTest:
-          description: When true, the audience is created as a test audience. Defaults to false.
-          type: boolean
-      required:
-      - advertiserId
-      - name
-      description: Inputs for creating a new audience.
-      additionalProperties: false
-    PaginatedLocationsResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: integer
-                minimum: -9007199254740991
-                maximum: 9007199254740991
-                description: Location identifier.
-              name:
-                type: string
-                description: Display name of the location.
-              location:
-                type: string
-                description: Canonical location text (the underlying source value behind `name`).
-              isoCode:
-                type:
-                - string
-                - 'null'
-                description: Per-location ISO code (e.g. US state abbreviation). Null when not applicable.
-              geoType:
-                description: Location type reference for this row. Present only when the request includes `?expand[]=geoType`.
-                type: object
-                properties:
-                  id:
-                    type: integer
-                    minimum: -9007199254740991
-                    maximum: 9007199254740991
-                    description: Location type identifier.
-                  name:
-                    type: string
-                    description: Location type name (e.g. `STATE`, `CITY`, `Media Market`).
-                required:
-                - id
-                - name
-                additionalProperties: false
-            required:
-            - id
-            - name
-            - location
-            - isoCode
-            additionalProperties: false
-        pagination:
-          type: object
-          properties:
-            total:
-              type: integer
-              minimum: 0
-              maximum: 9007199254740991
-              description: Total rows available for this query.
-            perPage:
-              type: integer
-              exclusiveMinimum: true
-              maximum: 9007199254740991
-              description: Maximum rows per page.
-              minimum: 0
-            page:
-              default: 1
-              description: Current 1-based page index.
-              type: integer
-              exclusiveMinimum: true
-              maximum: 9007199254740991
-              minimum: 0
-            previousPageUrl:
-              type:
-              - string
-              - 'null'
-              description: URL for the previous page, or null when none.
-            nextPageUrl:
-              type:
-              - string
-              - 'null'
-              description: URL for the next page, or null when none.
-          required:
-          - total
-          - perPage
-          - page
-          - previousPageUrl
-          - nextPageUrl
-          additionalProperties: false
-      required:
-      - data
-      - pagination
-      additionalProperties: false
-    AudienceSingleResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            id:
-              type: number
-              description: Audience identifier.
-            name:
-              type: string
-              description: Display name of the audience.
-            totalUsers:
-              type:
-              - number
-              - 'null'
-              description: Estimated audience size, or null when unavailable.
-            createdAt:
-              type: string
-              description: Timestamp the audience was created (ISO-8601).
-            geoLists:
-              type:
-              - object
-              - 'null'
-              properties:
-                include:
-                  type: array
-                  items:
-                    type: integer
-                    exclusiveMinimum: true
-                    maximum: 9007199254740991
-                    minimum: 0
-                  description: Geo-list identifiers to include in audience targeting.
-                exclude:
-                  type: array
-                  items:
-                    type: integer
-                    exclusiveMinimum: true
-                    maximum: 9007199254740991
-                    minimum: 0
-                  description: Geo-list identifiers to exclude from audience targeting.
-              required:
-              - include
-              - exclude
-              additionalProperties: false
-              description: Geo-list associations. Null when the audience has no geo-list expression.
-            geo:
-              type:
-              - object
-              - 'null'
-              properties:
-                include:
-                  type: array
-                  items:
-                    type: integer
-                    exclusiveMinimum: true
-                    maximum: 9007199254740991
-                    minimum: 0
-                  description: Geo-list identifiers to include in audience targeting.
-                exclude:
-                  type: array
-                  items:
-                    type: integer
-                    exclusiveMinimum: true
-                    maximum: 9007199254740991
-                    minimum: 0
-                  description: Geo-list identifiers to exclude from audience targeting.
-              required:
-              - include
-              - exclude
-              additionalProperties: false
-              description: Geo selector expression (resolved location IDs). Null when the audience has no geo expression.
-            updatedTime:
-              type:
-              - string
-              - 'null'
-              description: Timestamp the audience was last updated (ISO-8601).
-            isTest:
-              type: boolean
-              description: True when the audience is flagged as a test.
-            keywords:
-              type: object
-              properties:
-                include:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      keyword:
-                        type: string
-                      selected:
-                        type: boolean
-                      isCustom:
-                        type: boolean
-                    required:
-                    - keyword
-                    - selected
-                    - isCustom
-                    additionalProperties: false
-              required:
-              - include
-              additionalProperties: false
-            geoLocations:
-              description: Resolved geo locations from the audience's `geo` expression. Present only when the request includes `?expand[]=geoLocations`.
-              type: object
-              properties:
-                include:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                        minimum: -9007199254740991
-                        maximum: 9007199254740991
-                        description: Location identifier.
-                      name:
-                        type: string
-                        description: Display name of the location.
-                      geoType:
-                        type:
-                        - object
-                        - 'null'
-                        properties:
-                          id:
-                            type: integer
-                            minimum: -9007199254740991
-                            maximum: 9007199254740991
-                            description: Location type identifier.
-                          name:
-                            type: string
-                            description: Location type name (e.g. State / Region, City, Media Market).
-                        required:
-                        - id
-                        - name
-                        additionalProperties: false
-                        description: Location type reference. Present only when the request includes `?expand=geoType`. Null when the location has no resolvable type.
-                    required:
-                    - id
-                    - name
-                    additionalProperties: false
-                  description: Resolved location objects for `geo.include` IDs.
-                exclude:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                        minimum: -9007199254740991
-                        maximum: 9007199254740991
-                        description: Location identifier.
-                      name:
-                        type: string
-                        description: Display name of the location.
-                      geoType:
-                        type:
-                        - object
-                        - 'null'
-                        properties:
-                          id:
-                            type: integer
-                            minimum: -9007199254740991
-                            maximum: 9007199254740991
-                            description: Location type identifier.
-                          name:
-                            type: string
-                            description: Location type name (e.g. State / Region, City, Media Market).
-                        required:
-                        - id
-                        - name
-                        additionalProperties: false
-                        description: Location type reference. Present only when the request includes `?expand=geoType`. Null when the location has no resolvable type.
-                    required:
-                    - id
-                    - name
-                    additionalProperties: false
-                  description: Resolved location objects for `geo.exclude` IDs.
-              required:
-              - include
-              - exclude
-              additionalProperties: false
-          required:
-          - id
-          - name
-          - totalUsers
-          - createdAt
-          - geoLists
-          - geo
-          - updatedTime
-          - isTest
-          additionalProperties: false
-      required:
-      - data
-      additionalProperties: false
-    CreateGeoListDto:
-      type: object
-      properties:
-        advertiserId:
-          type: number
-          exclusiveMinimum: true
-          description: Advertiser identifier that will own the geo list.
-          minimum: 0
-        name:
-          type: string
-          description: Display name for the geo list.
-        geo:
-          minItems: 1
-          type: array
-          items:
-            anyOf:
-            - type: object
-              properties:
-                geoType:
-                  type: string
-                  enum:
-                  - City
-                  - Country
-                  - Country Code
-                  - Media Market
-                  - State / Region
-                  - Postal Code
-                values:
-                  minItems: 1
-                  type: array
-                  items:
-                    type: string
-                  description: Selector values (e.g. state abbreviations, Media Market codes, city names, ZIP codes). Resolved through mapi `/v1/locations`.
-              required:
-              - geoType
-              - values
-            - type: object
-              properties:
-                geoType:
-                  type: integer
-                  exclusiveMinimum: true
-                  maximum: 9007199254740991
-                  description: '`geo.location_types.location_type_id`. Documents the type of the supplied `location_id`s; not validated.'
-                  minimum: 0
-                values:
-                  minItems: 1
-                  type: array
-                  items:
-                    type: integer
-                    exclusiveMinimum: true
-                    maximum: 9007199254740991
-                    minimum: 0
-                  description: Pre-resolved `geo.locations.location_id` values. Passed through to audience-service untranslated; invalid ids surface as upstream errors.
-              required:
-              - geoType
-              - values
-          description: 'Geo selector blocks. Each entry is either the legacy string form (`{ geoType: "Media Market"|"State / Region" etc. values: string[] }`, pair with `GET /api/v1/reference/geo/types` for the picker) or the numeric form (`{ geoType: location_type_id, values: location_id[] }`, pair with `GET /api/v1/reference/geo/types` and `GET /api/v1/audiences/locations` for the picker). The two forms may be mixed within a single request.'
-      required:
-      - advertiserId
-      - name
-      - geo
-      description: Advertiser context, geo-list name, and one or more geo selectors to resolve into location IDs.
   securitySchemes:
     Bearer:
       scheme: bearer
@@ -1626,3 +1626,21 @@ components:
       type: apiKey
       in: header
       name: X-API-Key
+x-tagGroups:
+- name: v1
+  tags:
+  - advertisers
+  - attribution
+  - audiences
+  - campaigns
+  - creatives
+  - flights
+  - reporting
+  - pixel
+  - organizations
+  - reference
+  - pmp-deals
+  - pmp-deal-groups
+  - pmp-partners
+  - pmp-campaign-deals
+  - pmp-channels

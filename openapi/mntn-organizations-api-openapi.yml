@@ -11,12 +11,12 @@ info:
     name: Proprietary
 servers:
 - url: https://api.mountain.com/ptv
-  description: MNTN Performance TV API gateway
+  description: API gateway
 security:
 - Bearer: []
 - API Key: []
 tags:
-- name: organizations
+- name: Organizations
   description: Organization name and mode updates (proxied to advertiser-service).
 paths:
   /api/v1/orgs/{publicOrgId}/mode:
@@ -59,7 +59,7 @@ paths:
                 $ref: '#/components/schemas/OrganizationSingleResponseDto_Output'
       summary: Update organization mode
       tags:
-      - organizations
+      - Organizations
   /api/v1/orgs/{publicOrgId}:
     patch:
       description: Updates the organization display name. Proxies to advertiser PATCH /orgs/:id with a name-only body.
@@ -100,20 +100,9 @@ paths:
                 $ref: '#/components/schemas/OrganizationSingleResponseDto_Output'
       summary: Update organization name
       tags:
-      - organizations
+      - Organizations
 components:
   schemas:
-    PatchOrganizationNameBodyDto:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 255
-          description: Display name of the organization.
-      required:
-      - name
-      additionalProperties: false
     OrganizationSingleResponseDto_Output:
       type: object
       properties:
@@ -157,17 +146,16 @@ components:
       required:
       - data
       additionalProperties: false
-    UpdateOrganizationModeBodyDto:
+    PatchOrganizationNameBodyDto:
       type: object
       properties:
-        mode:
+        name:
           type: string
-          enum:
-          - multi
-          - single
-          description: 'Organization mode: multi (multi-advertiser) or single (single-advertiser).'
+          minLength: 1
+          maxLength: 255
+          description: Display name of the organization.
       required:
-      - mode
+      - name
       additionalProperties: false
     OrganizationSingleResponseDto:
       type: object
@@ -210,6 +198,18 @@ components:
           - updatedAt
       required:
       - data
+    UpdateOrganizationModeBodyDto:
+      type: object
+      properties:
+        mode:
+          type: string
+          enum:
+          - multi
+          - single
+          description: 'Organization mode: multi (multi-advertiser) or single (single-advertiser).'
+      required:
+      - mode
+      additionalProperties: false
   securitySchemes:
     Bearer:
       scheme: bearer
@@ -219,3 +219,21 @@ components:
       type: apiKey
       in: header
       name: X-API-Key
+x-tagGroups:
+- name: v1
+  tags:
+  - advertisers
+  - attribution
+  - audiences
+  - campaigns
+  - creatives
+  - flights
+  - reporting
+  - pixel
+  - organizations
+  - reference
+  - pmp-deals
+  - pmp-deal-groups
+  - pmp-partners
+  - pmp-campaign-deals
+  - pmp-channels
