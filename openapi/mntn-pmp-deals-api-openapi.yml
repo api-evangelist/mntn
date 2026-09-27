@@ -242,70 +242,48 @@ paths:
       x-hide-from-docs: true
 components:
   schemas:
-    UpdateDealBodyDto:
+    DealGroupLinksListResponseDto_Output:
       type: object
       properties:
-        name:
-          type: string
-          minLength: 1
-          description: Deal name.
-        floorPrice:
-          type: number
-          minimum: 0
-          description: Floor price in USD (≥ 0).
-        startTime:
-          type: string
-          format: date-time
-          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
-          description: Deal start time.
-        endTime:
-          type: string
-          format: date-time
-          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
-          description: Deal end time.
-        active:
-          type: boolean
-          description: Whether the deal is active.
-        pricingModel:
-          type: string
-          enum:
-          - BIDDABLE
-          - FIXED
-          description: Pricing model.
-        partnershipDealType:
-          type: string
-          enum:
-          - EXCLUSIVE
-          - SSP
-          - PUB_DIRECT
-          description: Partnership deal type.
-        dspPartnerId:
-          type: integer
-          exclusiveMinimum: true
-          maximum: 9007199254740991
-          description: DSP partner ID.
-          minimum: 0
-        publisherId:
-          type: integer
-          exclusiveMinimum: true
-          maximum: 9007199254740991
-          description: Publisher ID.
-          minimum: 0
-    DealBulkDeactivateBodyDto:
-      type: object
-      properties:
-        pmpDealIds:
-          minItems: 1
-          maxItems: 1000
+        data:
           type: array
           items:
-            type: integer
-            exclusiveMinimum: true
-            maximum: 9007199254740991
-            minimum: 0
-          description: PMP deal IDs to deactivate (1–1000 per request).
+            type: object
+            properties:
+              pmpDealId:
+                type: integer
+                minimum: -9007199254740991
+                maximum: 9007199254740991
+                description: PMP deal ID.
+              dealGroupId:
+                type: integer
+                minimum: -9007199254740991
+                maximum: 9007199254740991
+                description: Deal group ID.
+              createTime:
+                type: string
+                description: Link creation timestamp (ISO8601).
+              updateTime:
+                type: string
+                description: Link last update timestamp (ISO8601).
+              createdBy:
+                type:
+                - integer
+                - 'null'
+                minimum: -9007199254740991
+                maximum: 9007199254740991
+                description: User who created the link.
+            required:
+            - pmpDealId
+            - dealGroupId
+            - createTime
+            - updateTime
+            - createdBy
+            additionalProperties: false
+            description: A deal <-> deal-group membership link.
       required:
-      - pmpDealIds
+      - data
+      additionalProperties: false
     PaginatedDealsResponseDto_Output:
       type: object
       properties:
@@ -492,6 +470,88 @@ components:
       - data
       - pagination
       additionalProperties: false
+    UpdateDealBodyDto:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Deal name.
+        floorPrice:
+          type: number
+          minimum: 0
+          description: Floor price in USD (≥ 0).
+        startTime:
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+          description: Deal start time.
+        endTime:
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+          description: Deal end time.
+        active:
+          type: boolean
+          description: Whether the deal is active.
+        pricingModel:
+          type: string
+          enum:
+          - BIDDABLE
+          - FIXED
+          description: Pricing model.
+        partnershipDealType:
+          type: string
+          enum:
+          - EXCLUSIVE
+          - SSP
+          - PUB_DIRECT
+          description: Partnership deal type.
+        dspPartnerId:
+          type: integer
+          exclusiveMinimum: true
+          maximum: 9007199254740991
+          description: DSP partner ID.
+          minimum: 0
+        publisherId:
+          type: integer
+          exclusiveMinimum: true
+          maximum: 9007199254740991
+          description: Publisher ID.
+          minimum: 0
+    DealBulkDeactivateResultResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            dealsUpdated:
+              type: integer
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: Rows matched by the update.
+          required:
+          - dealsUpdated
+          additionalProperties: false
+          description: Bulk deactivate result.
+      required:
+      - data
+      additionalProperties: false
+    DealBulkDeactivateBodyDto:
+      type: object
+      properties:
+        pmpDealIds:
+          minItems: 1
+          maxItems: 1000
+          type: array
+          items:
+            type: integer
+            exclusiveMinimum: true
+            maximum: 9007199254740991
+            minimum: 0
+          description: PMP deal IDs to deactivate (1–1000 per request).
+      required:
+      - pmpDealIds
     DealResponseDto_Output:
       type: object
       properties:
@@ -637,48 +697,6 @@ components:
       required:
       - data
       additionalProperties: false
-    DealGroupLinksListResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              pmpDealId:
-                type: integer
-                minimum: -9007199254740991
-                maximum: 9007199254740991
-                description: PMP deal ID.
-              dealGroupId:
-                type: integer
-                minimum: -9007199254740991
-                maximum: 9007199254740991
-                description: Deal group ID.
-              createTime:
-                type: string
-                description: Link creation timestamp (ISO8601).
-              updateTime:
-                type: string
-                description: Link last update timestamp (ISO8601).
-              createdBy:
-                type:
-                - integer
-                - 'null'
-                minimum: -9007199254740991
-                maximum: 9007199254740991
-                description: User who created the link.
-            required:
-            - pmpDealId
-            - dealGroupId
-            - createTime
-            - updateTime
-            - createdBy
-            additionalProperties: false
-            description: A deal <-> deal-group membership link.
-      required:
-      - data
-      additionalProperties: false
     CreateDealBodyDto:
       type: object
       properties:
@@ -748,24 +766,6 @@ components:
       - dspPartnerId
       - pricingModel
       - partnershipDealType
-    DealBulkDeactivateResultResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            dealsUpdated:
-              type: integer
-              minimum: -9007199254740991
-              maximum: 9007199254740991
-              description: Rows matched by the update.
-          required:
-          - dealsUpdated
-          additionalProperties: false
-          description: Bulk deactivate result.
-      required:
-      - data
-      additionalProperties: false
   securitySchemes:
     Bearer:
       scheme: bearer

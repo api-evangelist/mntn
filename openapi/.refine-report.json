@@ -22,9 +22,12 @@
     "mntn-pmp-partners-api-openapi.yml",
     "mntn-reference-api-openapi.yml",
     "mntn-reporting-api-openapi.yml",
-    "mntn-api-api-openapi.yml"
+    "mntn-apidata-api-openapi.yml",
+    "mntn-apilist-api-openapi.yml"
   ],
-  "archived": [],
+  "archived": [
+    "deleted 1 superseded output(s) from the previous generation"
+  ],
   "errors": [],
   "warnings": [],
   "notes": [
@@ -33,7 +36,13 @@
     "mntn-batch-export-api-openapi.json: upgraded openapi 3.0.1 -> OpenAPI 3.2.0; renamed 1 component key(s) illegal in 3.x (e.g. API Key)",
     "mntn-ptv-openapi.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0; renamed 1 component key(s) illegal in 3.x (e.g. API Key)",
     "mntn-reporting-api-openapi.json: upgraded openapi 3.0.1 -> OpenAPI 3.2.0; renamed 1 component key(s) illegal in 3.x (e.g. API Key)",
-    "apis.yml register: already-registered"
+    "mntn-reporting-api-openapi.json: tagged paths GET /apidata -> Apidata",
+    "mntn-reporting-api-openapi.json: tagged paths POST /apidata -> Apidata",
+    "mntn-reporting-api-openapi.json: tagged paths GET /apilist -> Apilist",
+    "mntn-reporting-api-openapi.json: declared missing tag: Apidata",
+    "mntn-reporting-api-openapi.json: declared missing tag: Apilist",
+    "superseded outputs removed: mntn-api-api-openapi.yml",
+    "apis.yml register: written (+2 apis, 18 total)"
   ],
   "skipped": [
     "_original/mntn-ptv-reporting-openapi.yml: archived document superseded by a larger archived document",

@@ -329,7 +329,7 @@ components:
       required:
       - data
       additionalProperties: false
-    ReferenceBudgetTypesListResponseDto_Output:
+    ReferenceGoalsListResponseDto_Output:
       type: object
       properties:
         data:
@@ -377,7 +377,7 @@ components:
       required:
       - data
       additionalProperties: false
-    ReferenceGoalsListResponseDto_Output:
+    ReferenceBudgetTypesListResponseDto_Output:
       type: object
       properties:
         data:

@@ -233,6 +233,78 @@ paths:
       - Creatives
 components:
   schemas:
+    CreativeSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: Creative identifier (mycreative_video_group_id).
+            name:
+              type: string
+              description: Display name of the creative.
+            status:
+              type: string
+              description: 'Normalized processing status: `processing`, `ready`, `rejected`, or `in_review`. Treat any unknown value as non-terminal.'
+            videoUrl:
+              type:
+              - string
+              - 'null'
+              description: Full CDN URL of the stored video asset, or null when none.
+            posterUrl:
+              type:
+              - string
+              - 'null'
+              description: Full CDN URL of the poster image, or null when none.
+            durationSeconds:
+              type:
+              - number
+              - 'null'
+              description: Creative duration in seconds, or null when unknown.
+            rejectionReasons:
+              type:
+              - array
+              - 'null'
+              items:
+                type: object
+                properties:
+                  reason:
+                    type: string
+                    description: Rejection category reported by analysis.
+                  description:
+                    type: array
+                    items:
+                      type: string
+                    description: Human-readable detail lines for the rejection.
+                required:
+                - reason
+                - description
+                additionalProperties: false
+              description: Present only when `status` is `rejected`; otherwise null.
+            advertiserId:
+              type:
+              - integer
+              - 'null'
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: Advertiser that owns the creative.
+            createdAt:
+              type:
+              - string
+              - 'null'
+              description: Creation timestamp (ISO-8601), or null when unknown.
+          required:
+          - id
+          - name
+          - status
+          additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
     PaginatedCreativesResponseDto_Output:
       type: object
       properties:
@@ -345,78 +417,6 @@ components:
       required:
       - data
       - pagination
-      additionalProperties: false
-    CreativeSingleResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            id:
-              type: integer
-              minimum: -9007199254740991
-              maximum: 9007199254740991
-              description: Creative identifier (mycreative_video_group_id).
-            name:
-              type: string
-              description: Display name of the creative.
-            status:
-              type: string
-              description: 'Normalized processing status: `processing`, `ready`, `rejected`, or `in_review`. Treat any unknown value as non-terminal.'
-            videoUrl:
-              type:
-              - string
-              - 'null'
-              description: Full CDN URL of the stored video asset, or null when none.
-            posterUrl:
-              type:
-              - string
-              - 'null'
-              description: Full CDN URL of the poster image, or null when none.
-            durationSeconds:
-              type:
-              - number
-              - 'null'
-              description: Creative duration in seconds, or null when unknown.
-            rejectionReasons:
-              type:
-              - array
-              - 'null'
-              items:
-                type: object
-                properties:
-                  reason:
-                    type: string
-                    description: Rejection category reported by analysis.
-                  description:
-                    type: array
-                    items:
-                      type: string
-                    description: Human-readable detail lines for the rejection.
-                required:
-                - reason
-                - description
-                additionalProperties: false
-              description: Present only when `status` is `rejected`; otherwise null.
-            advertiserId:
-              type:
-              - integer
-              - 'null'
-              minimum: -9007199254740991
-              maximum: 9007199254740991
-              description: Advertiser that owns the creative.
-            createdAt:
-              type:
-              - string
-              - 'null'
-              description: Creation timestamp (ISO-8601), or null when unknown.
-          required:
-          - id
-          - name
-          - status
-          additionalProperties: false
-      required:
-      - data
       additionalProperties: false
   securitySchemes:
     Bearer:

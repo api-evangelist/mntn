@@ -125,25 +125,6 @@ apis:
     url: data-model/mntn-data-model.yml
   - type: APIReference
     url: https://api3.mountain.com/docs
-- aid: mntn:mntn-api-api
-  name: MNTN API
-  description: Public reporting data (`/apidata`)
-  humanURL: https://api.mountain.com/docs
-  baseURL: https://api.mountain.com/ptv
-  tags: []
-  tags_raw:
-  - API
-  properties:
-  - type: OpenAPI
-    url: openapi/mntn-api-api-openapi.yml
-  - type: APIReference
-    url: https://api.mountain.com/docs
-  - type: Documentation
-    url: https://api.mountain.com/docs
-  - type: DataModel
-    url: data-model/mntn-data-model.yml
-  - type: APIReference
-    url: https://api3.mountain.com/docs
 - aid: mntn:mntn-attribution-api
   name: MNTN Attribution API
   description: >-
@@ -407,6 +388,42 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/mntn-reference-api-openapi.yml
+  - type: APIReference
+    url: https://api.mountain.com/docs
+  - type: Documentation
+    url: https://api.mountain.com/docs
+  - type: DataModel
+    url: data-model/mntn-data-model.yml
+  - type: APIReference
+    url: https://api3.mountain.com/docs
+- aid: mntn:mntn-apidata-api
+  name: MNTN Apidata API
+  description: The Apidata API from MNTN — 1 operation(s) for apidata.
+  humanURL: https://api3.mountain.com/docs
+  baseURL: https://api3.mountain.com
+  tags:
+  - Apidata
+  properties:
+  - type: OpenAPI
+    url: openapi/mntn-apidata-api-openapi.yml
+  - type: APIReference
+    url: https://api.mountain.com/docs
+  - type: Documentation
+    url: https://api.mountain.com/docs
+  - type: DataModel
+    url: data-model/mntn-data-model.yml
+  - type: APIReference
+    url: https://api3.mountain.com/docs
+- aid: mntn:mntn-apilist-api
+  name: MNTN Apilist API
+  description: The Apilist API from MNTN — 1 operation(s) for apilist.
+  humanURL: https://api3.mountain.com/docs
+  baseURL: https://api3.mountain.com
+  tags:
+  - Apilist
+  properties:
+  - type: OpenAPI
+    url: openapi/mntn-apilist-api-openapi.yml
   - type: APIReference
     url: https://api.mountain.com/docs
   - type: Documentation

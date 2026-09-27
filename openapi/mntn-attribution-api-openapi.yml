@@ -349,6 +349,121 @@ components:
       - prospectingWindowMinutes
       - conversionWindowMinutes
       description: Filter for visit and conversion estimates by objective. All window fields are minutes.
+    PatchAttributionWindowsBodyDto:
+      type: object
+      properties:
+        retargetingVerifiedViewWindow:
+          type: object
+          properties:
+            days:
+              type: integer
+              minimum: 0
+              maximum: 9007199254740991
+              description: Days component of the window.
+            hours:
+              type: integer
+              minimum: 0
+              maximum: 23
+              description: Hours component of the window (0–23).
+            minutes:
+              type: integer
+              minimum: 0
+              maximum: 59
+              description: Minutes component of the window (0–59).
+          required:
+          - days
+          - hours
+          - minutes
+          description: Attribution time window expressed as days, hours, and minutes.
+        prospectingVerifiedViewWindow:
+          type: object
+          properties:
+            days:
+              type: integer
+              minimum: 0
+              maximum: 9007199254740991
+              description: Days component of the window.
+            hours:
+              type: integer
+              minimum: 0
+              maximum: 23
+              description: Hours component of the window (0–23).
+            minutes:
+              type: integer
+              minimum: 0
+              maximum: 59
+              description: Minutes component of the window (0–59).
+          required:
+          - days
+          - hours
+          - minutes
+          description: Attribution time window expressed as days, hours, and minutes.
+        conversionWindow:
+          type: object
+          properties:
+            days:
+              type: integer
+              minimum: 0
+              maximum: 9007199254740991
+              description: Days component of the window.
+            hours:
+              type: integer
+              minimum: 0
+              maximum: 23
+              description: Hours component of the window (0–23).
+            minutes:
+              type: integer
+              minimum: 0
+              maximum: 59
+              description: Minutes component of the window (0–59).
+          required:
+          - days
+          - hours
+          - minutes
+          description: Attribution time window expressed as days, hours, and minutes.
+      description: Partial update for advertiser attribution windows.
+    SalesCycleSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            salesCycleLast30Days:
+              type:
+              - number
+              - 'null'
+              description: Sales-cycle length in days (fractional, max 2 decimal places) derived from the last 30 days of activity.
+            salesCycleLast30DaysText:
+              type:
+              - string
+              - 'null'
+              description: Human-readable sales-cycle duration from reporting (e.g. "4 days 14 hours 45 mins").
+          required:
+          - salesCycleLast30Days
+          - salesCycleLast30DaysText
+          additionalProperties: false
+          description: Current sales-cycle metric for the advertiser.
+      required:
+      - data
+      additionalProperties: false
+    BlacklistQueryParamsSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            blacklistQueryParams:
+              type: array
+              items:
+                type: string
+              description: Verified-visit blacklist query parameters.
+          required:
+          - blacklistQueryParams
+          additionalProperties: false
+          description: Verified-visit blacklist query parameters for the advertiser.
+      required:
+      - data
+      additionalProperties: false
     AttributionWindowsSingleResponseDto_Output:
       type: object
       properties:
@@ -436,121 +551,6 @@ components:
       required:
       - data
       additionalProperties: false
-    SalesCycleSingleResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            salesCycleLast30Days:
-              type:
-              - number
-              - 'null'
-              description: Sales-cycle length in days (fractional, max 2 decimal places) derived from the last 30 days of activity.
-            salesCycleLast30DaysText:
-              type:
-              - string
-              - 'null'
-              description: Human-readable sales-cycle duration from reporting (e.g. "4 days 14 hours 45 mins").
-          required:
-          - salesCycleLast30Days
-          - salesCycleLast30DaysText
-          additionalProperties: false
-          description: Current sales-cycle metric for the advertiser.
-      required:
-      - data
-      additionalProperties: false
-    BlacklistQueryParamsSingleResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            blacklistQueryParams:
-              type: array
-              items:
-                type: string
-              description: Verified-visit blacklist query parameters.
-          required:
-          - blacklistQueryParams
-          additionalProperties: false
-          description: Verified-visit blacklist query parameters for the advertiser.
-      required:
-      - data
-      additionalProperties: false
-    PatchAttributionWindowsBodyDto:
-      type: object
-      properties:
-        retargetingVerifiedViewWindow:
-          type: object
-          properties:
-            days:
-              type: integer
-              minimum: 0
-              maximum: 9007199254740991
-              description: Days component of the window.
-            hours:
-              type: integer
-              minimum: 0
-              maximum: 23
-              description: Hours component of the window (0–23).
-            minutes:
-              type: integer
-              minimum: 0
-              maximum: 59
-              description: Minutes component of the window (0–59).
-          required:
-          - days
-          - hours
-          - minutes
-          description: Attribution time window expressed as days, hours, and minutes.
-        prospectingVerifiedViewWindow:
-          type: object
-          properties:
-            days:
-              type: integer
-              minimum: 0
-              maximum: 9007199254740991
-              description: Days component of the window.
-            hours:
-              type: integer
-              minimum: 0
-              maximum: 23
-              description: Hours component of the window (0–23).
-            minutes:
-              type: integer
-              minimum: 0
-              maximum: 59
-              description: Minutes component of the window (0–59).
-          required:
-          - days
-          - hours
-          - minutes
-          description: Attribution time window expressed as days, hours, and minutes.
-        conversionWindow:
-          type: object
-          properties:
-            days:
-              type: integer
-              minimum: 0
-              maximum: 9007199254740991
-              description: Days component of the window.
-            hours:
-              type: integer
-              minimum: 0
-              maximum: 23
-              description: Hours component of the window (0–23).
-            minutes:
-              type: integer
-              minimum: 0
-              maximum: 59
-              description: Minutes component of the window (0–59).
-          required:
-          - days
-          - hours
-          - minutes
-          description: Attribution time window expressed as days, hours, and minutes.
-      description: Partial update for advertiser attribution windows.
     PutBlacklistQueryParamsBodyDto:
       type: object
       properties:

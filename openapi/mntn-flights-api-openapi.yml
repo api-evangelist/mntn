@@ -123,6 +123,24 @@ paths:
       - Flights
 components:
   schemas:
+    PatchFlightDto:
+      type: object
+      properties:
+        budget:
+          type: number
+          exclusiveMinimum: true
+          description: Updated flight budget amount in currency USD (dollars only).
+          minimum: 0
+        budgetType:
+          type: string
+          enum:
+          - FLIGHTED
+          - MONTHLY
+          description: Billing cadence for the selected flight.
+      required:
+      - budget
+      - budgetType
+      description: Requested budget amount and budget type to apply to the selected flight.
     FlightSingleResponseDto_Output:
       type: object
       properties:
@@ -186,24 +204,6 @@ components:
       required:
       - data
       additionalProperties: false
-    PatchFlightDto:
-      type: object
-      properties:
-        budget:
-          type: number
-          exclusiveMinimum: true
-          description: Updated flight budget amount in currency USD (dollars only).
-          minimum: 0
-        budgetType:
-          type: string
-          enum:
-          - FLIGHTED
-          - MONTHLY
-          description: Billing cadence for the selected flight.
-      required:
-      - budget
-      - budgetType
-      description: Requested budget amount and budget type to apply to the selected flight.
   securitySchemes:
     Bearer:
       scheme: bearer

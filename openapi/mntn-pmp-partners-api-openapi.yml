@@ -187,31 +187,6 @@ components:
           minLength: 2
           maxLength: 3
           description: Beeswax deal-sync identifier (2-3 characters). Omit to leave unchanged; send `null` to clear it.
-    CreatePartnerBodyDto:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: Partner name.
-        description:
-          description: Partner description.
-          type: string
-        partnerType:
-          type: string
-          enum:
-          - DSP
-          - SSP
-          - MOBILE_ATTRIBUTION
-          description: Partner type.
-        beeswaxDealPrefix:
-          description: Beeswax deal-sync identifier (2-3 characters); omit when not BW-synced.
-          type: string
-          minLength: 2
-          maxLength: 3
-      required:
-      - name
-      - partnerType
     PartnerResponseDto_Output:
       type: object
       properties:
@@ -349,6 +324,31 @@ components:
       - data
       - pagination
       additionalProperties: false
+    CreatePartnerBodyDto:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Partner name.
+        description:
+          description: Partner description.
+          type: string
+        partnerType:
+          type: string
+          enum:
+          - DSP
+          - SSP
+          - MOBILE_ATTRIBUTION
+          description: Partner type.
+        beeswaxDealPrefix:
+          description: Beeswax deal-sync identifier (2-3 characters); omit when not BW-synced.
+          type: string
+          minLength: 2
+          maxLength: 3
+      required:
+      - name
+      - partnerType
   securitySchemes:
     Bearer:
       scheme: bearer

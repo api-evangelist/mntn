@@ -985,81 +985,6 @@ components:
       required:
       - data
       additionalProperties: false
-    PauseCampaignBodyDto:
-      type: object
-      properties:
-        pause_reason:
-          description: Optional operator-provided reason for pausing the campaign.
-          type: string
-    CreateRecommendedAudienceDto:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: Display name for the audience.
-        isTest:
-          description: When true, the audience is created as a test audience. Defaults to false.
-          type: boolean
-      required:
-      - name
-      description: Inputs for creating a recommended audience.
-      additionalProperties: false
-    UpdateCampaignDto:
-      type: object
-      properties:
-        name:
-          description: Updated campaign display name.
-          type: string
-        audienceIds:
-          description: Updated audience assignment. At most one audience is supported.
-          maxItems: 1
-          type: array
-          items:
-            type: number
-            exclusiveMinimum: true
-            description: Positive integer entity identifier.
-            minimum: 0
-        goalType:
-          description: Updated optimization goal type.
-          type: string
-        goalValue:
-          description: Updated numeric target value for goalType.
-          type: number
-        objective:
-          type: object
-          properties:
-            type:
-              type: string
-              description: Immutable objective type field. Included for compatibility.
-          required:
-          - type
-          description: Objective payload. Objective updates are currently rejected.
-        creatives:
-          description: 'Declarative full set of the campaign''s creatives: entries not yet attached are attached, currently-attached creatives missing from the array are detached, and weights are applied to the survivors (explicit weights verbatim, omitted ones splitting the remainder of 100 equally). Unlike `audienceIds`, an empty array is rejected — omit the field to leave creatives unchanged.'
-          minItems: 1
-          maxItems: 20
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: integer
-                exclusiveMinimum: true
-                maximum: 9007199254740991
-                description: Creative identifier from the creative library (the `id` returned by `GET /v1/creatives`). A numeric string is also accepted.
-                minimum: 0
-              clickUrl:
-                description: Click-through (landing page) URL applied to this creative on this campaign. Optional at attach time, but a creative without a click URL cannot be approved or launched until one is set.
-                type: string
-                format: uri
-              weight:
-                description: Serving weight, 1–100. Explicit weights are used verbatim; creatives without one split the remaining share of 100 equally. If every creative carries a weight they must sum to exactly 100; otherwise the explicit weights must leave at least 1 for each unweighted creative. The applied weights are echoed in the response.
-                type: integer
-                minimum: 1
-                maximum: 100
-            required:
-            - id
     CampaignSingleResponseDto_Output:
       type: object
       properties:
@@ -1458,27 +1383,14 @@ components:
       required:
       - data
       additionalProperties: false
-    CreateCampaignDto:
+    UpdateCampaignDto:
       type: object
       properties:
         name:
-          description: Optional campaign display name. A provider default is used when omitted.
+          description: Updated campaign display name.
           type: string
-        objective:
-          type: string
-          enum:
-          - CONVERSIONS
-          - RETARGETING
-          - PROSPECTING
-          - AWARENESS
-          description: Campaign objective used for optimization strategy.
-        advertiserId:
-          type: number
-          exclusiveMinimum: true
-          description: Owning advertiser identifier for the campaign.
-          minimum: 0
         audienceIds:
-          description: Optional audience assignment. At most one audience is supported.
+          description: Updated audience assignment. At most one audience is supported.
           maxItems: 1
           type: array
           items:
@@ -1487,44 +1399,23 @@ components:
             description: Positive integer entity identifier.
             minimum: 0
         goalType:
-          description: Optional optimization goal type.
+          description: Updated optimization goal type.
           type: string
         goalValue:
-          description: Optional numeric target value for goalType.
+          description: Updated numeric target value for goalType.
           type: number
-        budget:
+        objective:
           type: object
           properties:
             type:
               type: string
-              enum:
-              - TOTAL
-              - MONTHLY
-              description: Budget mode for the created campaign.
-            amount:
-              type: number
-              exclusiveMinimum: true
-              description: Budget amount in currency USD (dollars only).
-              minimum: 0
-            schedule:
-              type: object
-              properties:
-                startTime:
-                  type: string
-                  description: Inclusive budget start timestamp (ISO-8601).
-                endTime:
-                  description: Optional budget end timestamp (ISO-8601).
-                  type: string
-              required:
-              - startTime
-              description: Optional time range for budget enforcement.
+              description: Immutable objective type field. Included for compatibility.
           required:
           - type
-          - amount
-          description: Optional initial budget to create with the campaign.
+          description: Objective payload. Objective updates are currently rejected.
         creatives:
-          description: Optional creatives to attach after the campaign is created, each with an optional click-through URL and an optional serving weight (omitted weights split the remainder of 100 equally). If any step of creation fails, the campaign is rolled back (no partially-created campaign survives).
-          minItems: 0
+          description: 'Declarative full set of the campaign''s creatives: entries not yet attached are attached, currently-attached creatives missing from the array are detached, and weights are applied to the survivors (explicit weights verbatim, omitted ones splitting the remainder of 100 equally). Unlike `audienceIds`, an empty array is rejected — omit the field to leave creatives unchanged.'
+          minItems: 1
           maxItems: 20
           type: array
           items:
@@ -1547,9 +1438,6 @@ components:
                 maximum: 100
             required:
             - id
-      required:
-      - objective
-      - advertiserId
     PaginatedCampaignsResponseDto_Output:
       type: object
       properties:
@@ -1989,6 +1877,118 @@ components:
       - data
       - pagination
       additionalProperties: false
+    CreateRecommendedAudienceDto:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Display name for the audience.
+        isTest:
+          description: When true, the audience is created as a test audience. Defaults to false.
+          type: boolean
+      required:
+      - name
+      description: Inputs for creating a recommended audience.
+      additionalProperties: false
+    PauseCampaignBodyDto:
+      type: object
+      properties:
+        pause_reason:
+          description: Optional operator-provided reason for pausing the campaign.
+          type: string
+    CreateCampaignDto:
+      type: object
+      properties:
+        name:
+          description: Optional campaign display name. A provider default is used when omitted.
+          type: string
+        objective:
+          type: string
+          enum:
+          - CONVERSIONS
+          - RETARGETING
+          - PROSPECTING
+          - AWARENESS
+          description: Campaign objective used for optimization strategy.
+        advertiserId:
+          type: number
+          exclusiveMinimum: true
+          description: Owning advertiser identifier for the campaign.
+          minimum: 0
+        audienceIds:
+          description: Optional audience assignment. At most one audience is supported.
+          maxItems: 1
+          type: array
+          items:
+            type: number
+            exclusiveMinimum: true
+            description: Positive integer entity identifier.
+            minimum: 0
+        goalType:
+          description: Optional optimization goal type.
+          type: string
+        goalValue:
+          description: Optional numeric target value for goalType.
+          type: number
+        budget:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+              - TOTAL
+              - MONTHLY
+              description: Budget mode for the created campaign.
+            amount:
+              type: number
+              exclusiveMinimum: true
+              description: Budget amount in currency USD (dollars only).
+              minimum: 0
+            schedule:
+              type: object
+              properties:
+                startTime:
+                  type: string
+                  description: Inclusive budget start timestamp (ISO-8601).
+                endTime:
+                  description: Optional budget end timestamp (ISO-8601).
+                  type: string
+              required:
+              - startTime
+              description: Optional time range for budget enforcement.
+          required:
+          - type
+          - amount
+          description: Optional initial budget to create with the campaign.
+        creatives:
+          description: Optional creatives to attach after the campaign is created, each with an optional click-through URL and an optional serving weight (omitted weights split the remainder of 100 equally). If any step of creation fails, the campaign is rolled back (no partially-created campaign survives).
+          minItems: 0
+          maxItems: 20
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                exclusiveMinimum: true
+                maximum: 9007199254740991
+                description: Creative identifier from the creative library (the `id` returned by `GET /v1/creatives`). A numeric string is also accepted.
+                minimum: 0
+              clickUrl:
+                description: Click-through (landing page) URL applied to this creative on this campaign. Optional at attach time, but a creative without a click URL cannot be approved or launched until one is set.
+                type: string
+                format: uri
+              weight:
+                description: Serving weight, 1–100. Explicit weights are used verbatim; creatives without one split the remaining share of 100 equally. If every creative carries a weight they must sum to exactly 100; otherwise the explicit weights must leave at least 1 for each unweighted creative. The applied weights are echoed in the response.
+                type: integer
+                minimum: 1
+                maximum: 100
+            required:
+            - id
+      required:
+      - objective
+      - advertiserId
   securitySchemes:
     Bearer:
       scheme: bearer
