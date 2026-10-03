@@ -790,6 +790,20 @@ paths:
       - Campaigns
 components:
   schemas:
+    CreateRecommendedAudienceDto:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Display name for the audience.
+        isTest:
+          description: When true, the audience is created as a test audience. Defaults to false.
+          type: boolean
+      required:
+      - name
+      description: Inputs for creating a recommended audience.
+      additionalProperties: false
     AudienceSingleResponseDto_Output:
       type: object
       properties:
@@ -1876,20 +1890,6 @@ components:
       required:
       - data
       - pagination
-      additionalProperties: false
-    CreateRecommendedAudienceDto:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: Display name for the audience.
-        isTest:
-          description: When true, the audience is created as a test audience. Defaults to false.
-          type: boolean
-      required:
-      - name
-      description: Inputs for creating a recommended audience.
       additionalProperties: false
     PauseCampaignBodyDto:
       type: object

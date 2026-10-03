@@ -103,6 +103,60 @@ paths:
       - Organizations
 components:
   schemas:
+    OrganizationSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            publicId:
+              type: string
+              format: uuid
+              pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+            name:
+              type: string
+            mode:
+              type: string
+              enum:
+              - multi
+              - single
+            status:
+              type: string
+              enum:
+              - active
+              - suspended
+            setupStatus:
+              type: string
+              enum:
+              - complete
+              - incomplete
+            createdAt:
+              type: string
+            updatedAt:
+              type: string
+          required:
+          - publicId
+          - name
+          - mode
+          - status
+          - setupStatus
+          - createdAt
+          - updatedAt
+          additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
+    PatchOrganizationNameBodyDto:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Display name of the organization.
+      required:
+      - name
+      additionalProperties: false
     OrganizationSingleResponseDto:
       type: object
       properties:
@@ -155,60 +209,6 @@ components:
           description: 'Organization mode: multi (multi-advertiser) or single (single-advertiser).'
       required:
       - mode
-      additionalProperties: false
-    PatchOrganizationNameBodyDto:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 255
-          description: Display name of the organization.
-      required:
-      - name
-      additionalProperties: false
-    OrganizationSingleResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            publicId:
-              type: string
-              format: uuid
-              pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
-            name:
-              type: string
-            mode:
-              type: string
-              enum:
-              - multi
-              - single
-            status:
-              type: string
-              enum:
-              - active
-              - suspended
-            setupStatus:
-              type: string
-              enum:
-              - complete
-              - incomplete
-            createdAt:
-              type: string
-            updatedAt:
-              type: string
-          required:
-          - publicId
-          - name
-          - mode
-          - status
-          - setupStatus
-          - createdAt
-          - updatedAt
-          additionalProperties: false
-      required:
-      - data
       additionalProperties: false
   securitySchemes:
     Bearer:

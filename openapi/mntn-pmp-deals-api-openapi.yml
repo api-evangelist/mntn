@@ -242,6 +242,253 @@ paths:
       x-hide-from-docs: true
 components:
   schemas:
+    DealBulkDeactivateResultResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            dealsUpdated:
+              type: integer
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: Rows matched by the update.
+          required:
+          - dealsUpdated
+          additionalProperties: false
+          description: Bulk deactivate result.
+      required:
+      - data
+      additionalProperties: false
+    DealBulkDeactivateBodyDto:
+      type: object
+      properties:
+        pmpDealIds:
+          minItems: 1
+          maxItems: 1000
+          type: array
+          items:
+            type: integer
+            exclusiveMinimum: true
+            maximum: 9007199254740991
+            minimum: 0
+          description: PMP deal IDs to deactivate (1–1000 per request).
+      required:
+      - pmpDealIds
+    CreateDealBodyDto:
+      type: object
+      properties:
+        partnerDealId:
+          type: string
+          minLength: 1
+          description: Partner-assigned deal ID.
+        floorPrice:
+          description: Floor price in USD (≥ 0).
+          type: number
+          minimum: 0
+        name:
+          description: Deal name.
+          type: string
+          minLength: 1
+        partnerId:
+          type: integer
+          exclusiveMinimum: true
+          maximum: 9007199254740991
+          description: Partner ID.
+          minimum: 0
+        startTime:
+          description: Deal start time.
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+        endTime:
+          description: Deal end time.
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+        active:
+          type: boolean
+          description: Whether the deal is active on create.
+        dspPartnerId:
+          type: integer
+          exclusiveMinimum: true
+          maximum: 9007199254740991
+          description: DSP partner ID.
+          minimum: 0
+        pricingModel:
+          type: string
+          enum:
+          - BIDDABLE
+          - FIXED
+          description: Pricing model.
+        partnershipDealType:
+          type: string
+          enum:
+          - EXCLUSIVE
+          - SSP
+          - PUB_DIRECT
+          description: Partnership deal type.
+        publisherId:
+          description: Publisher ID; required for EXCLUSIVE deals.
+          type: integer
+          exclusiveMinimum: true
+          maximum: 9007199254740991
+          minimum: 0
+        generateDealGroup:
+          description: When true, PAPI also creates a matching deal group and links this deal to it.
+          type: boolean
+      required:
+      - partnerDealId
+      - partnerId
+      - active
+      - dspPartnerId
+      - pricingModel
+      - partnershipDealType
+    DealResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            pmpDealId:
+              type: integer
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: PMP deal ID.
+            partnerDealId:
+              type: string
+              description: Partner-assigned deal ID.
+            createdBy:
+              type: integer
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: User who created the deal.
+            floorPrice:
+              type:
+              - number
+              - 'null'
+              description: Floor price (USD); null when unset.
+            name:
+              type:
+              - string
+              - 'null'
+              description: Deal name; null when unset.
+            partnerId:
+              type: integer
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: Partner ID.
+            startTime:
+              type:
+              - string
+              - 'null'
+              description: Start time (ISO8601); null when unset.
+            endTime:
+              type:
+              - string
+              - 'null'
+              description: End time (ISO8601); null when unset.
+            active:
+              type: boolean
+              description: Whether the deal is currently active.
+            createTime:
+              type: string
+              description: Creation timestamp (ISO8601).
+            updateTime:
+              type: string
+              description: Last update timestamp (ISO8601).
+            dspPartnerId:
+              type: integer
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: DSP partner ID.
+            updatedBy:
+              type:
+              - integer
+              - 'null'
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: User who last modified the deal.
+            pricingModel:
+              type: string
+              enum:
+              - BIDDABLE
+              - FIXED
+              description: Pricing model.
+            partnershipDealType:
+              type: string
+              enum:
+              - EXCLUSIVE
+              - SSP
+              - PUB_DIRECT
+              description: Partnership deal type.
+            publisherId:
+              type:
+              - integer
+              - 'null'
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: Publisher ID; null when not exclusive.
+            channelId:
+              type: integer
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: Channel ID.
+            status:
+              type: string
+              enum:
+              - active
+              - inactive
+              - scheduled
+              - ended
+              description: Status derived from active + start/end window.
+            channelName:
+              type: string
+              description: Resolved channel name.
+            dealGroups:
+              type: array
+              items:
+                type: object
+                properties:
+                  dealGroupId:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                    description: Deal group ID.
+                  name:
+                    type: string
+                    description: Deal group name.
+                required:
+                - dealGroupId
+                - name
+                additionalProperties: false
+              description: Deal groups this deal belongs to; empty without deal-group read permission.
+          required:
+          - pmpDealId
+          - partnerDealId
+          - createdBy
+          - floorPrice
+          - name
+          - partnerId
+          - startTime
+          - endTime
+          - active
+          - createTime
+          - updateTime
+          - dspPartnerId
+          - updatedBy
+          - pricingModel
+          - partnershipDealType
+          - publisherId
+          - channelId
+          - status
+          - channelName
+          - dealGroups
+          additionalProperties: false
+          description: A PMP deal.
+      required:
+      - data
+      additionalProperties: false
     DealGroupLinksListResponseDto_Output:
       type: object
       properties:
@@ -284,6 +531,55 @@ components:
       required:
       - data
       additionalProperties: false
+    UpdateDealBodyDto:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Deal name.
+        floorPrice:
+          type: number
+          minimum: 0
+          description: Floor price in USD (≥ 0).
+        startTime:
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+          description: Deal start time.
+        endTime:
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+          description: Deal end time.
+        active:
+          type: boolean
+          description: Whether the deal is active.
+        pricingModel:
+          type: string
+          enum:
+          - BIDDABLE
+          - FIXED
+          description: Pricing model.
+        partnershipDealType:
+          type: string
+          enum:
+          - EXCLUSIVE
+          - SSP
+          - PUB_DIRECT
+          description: Partnership deal type.
+        dspPartnerId:
+          type: integer
+          exclusiveMinimum: true
+          maximum: 9007199254740991
+          description: DSP partner ID.
+          minimum: 0
+        publisherId:
+          type: integer
+          exclusiveMinimum: true
+          maximum: 9007199254740991
+          description: Publisher ID.
+          minimum: 0
     PaginatedDealsResponseDto_Output:
       type: object
       properties:
@@ -470,302 +766,6 @@ components:
       - data
       - pagination
       additionalProperties: false
-    UpdateDealBodyDto:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: Deal name.
-        floorPrice:
-          type: number
-          minimum: 0
-          description: Floor price in USD (≥ 0).
-        startTime:
-          type: string
-          format: date-time
-          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
-          description: Deal start time.
-        endTime:
-          type: string
-          format: date-time
-          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
-          description: Deal end time.
-        active:
-          type: boolean
-          description: Whether the deal is active.
-        pricingModel:
-          type: string
-          enum:
-          - BIDDABLE
-          - FIXED
-          description: Pricing model.
-        partnershipDealType:
-          type: string
-          enum:
-          - EXCLUSIVE
-          - SSP
-          - PUB_DIRECT
-          description: Partnership deal type.
-        dspPartnerId:
-          type: integer
-          exclusiveMinimum: true
-          maximum: 9007199254740991
-          description: DSP partner ID.
-          minimum: 0
-        publisherId:
-          type: integer
-          exclusiveMinimum: true
-          maximum: 9007199254740991
-          description: Publisher ID.
-          minimum: 0
-    DealBulkDeactivateResultResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            dealsUpdated:
-              type: integer
-              minimum: -9007199254740991
-              maximum: 9007199254740991
-              description: Rows matched by the update.
-          required:
-          - dealsUpdated
-          additionalProperties: false
-          description: Bulk deactivate result.
-      required:
-      - data
-      additionalProperties: false
-    DealBulkDeactivateBodyDto:
-      type: object
-      properties:
-        pmpDealIds:
-          minItems: 1
-          maxItems: 1000
-          type: array
-          items:
-            type: integer
-            exclusiveMinimum: true
-            maximum: 9007199254740991
-            minimum: 0
-          description: PMP deal IDs to deactivate (1–1000 per request).
-      required:
-      - pmpDealIds
-    DealResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            pmpDealId:
-              type: integer
-              minimum: -9007199254740991
-              maximum: 9007199254740991
-              description: PMP deal ID.
-            partnerDealId:
-              type: string
-              description: Partner-assigned deal ID.
-            createdBy:
-              type: integer
-              minimum: -9007199254740991
-              maximum: 9007199254740991
-              description: User who created the deal.
-            floorPrice:
-              type:
-              - number
-              - 'null'
-              description: Floor price (USD); null when unset.
-            name:
-              type:
-              - string
-              - 'null'
-              description: Deal name; null when unset.
-            partnerId:
-              type: integer
-              minimum: -9007199254740991
-              maximum: 9007199254740991
-              description: Partner ID.
-            startTime:
-              type:
-              - string
-              - 'null'
-              description: Start time (ISO8601); null when unset.
-            endTime:
-              type:
-              - string
-              - 'null'
-              description: End time (ISO8601); null when unset.
-            active:
-              type: boolean
-              description: Whether the deal is currently active.
-            createTime:
-              type: string
-              description: Creation timestamp (ISO8601).
-            updateTime:
-              type: string
-              description: Last update timestamp (ISO8601).
-            dspPartnerId:
-              type: integer
-              minimum: -9007199254740991
-              maximum: 9007199254740991
-              description: DSP partner ID.
-            updatedBy:
-              type:
-              - integer
-              - 'null'
-              minimum: -9007199254740991
-              maximum: 9007199254740991
-              description: User who last modified the deal.
-            pricingModel:
-              type: string
-              enum:
-              - BIDDABLE
-              - FIXED
-              description: Pricing model.
-            partnershipDealType:
-              type: string
-              enum:
-              - EXCLUSIVE
-              - SSP
-              - PUB_DIRECT
-              description: Partnership deal type.
-            publisherId:
-              type:
-              - integer
-              - 'null'
-              minimum: -9007199254740991
-              maximum: 9007199254740991
-              description: Publisher ID; null when not exclusive.
-            channelId:
-              type: integer
-              minimum: -9007199254740991
-              maximum: 9007199254740991
-              description: Channel ID.
-            status:
-              type: string
-              enum:
-              - active
-              - inactive
-              - scheduled
-              - ended
-              description: Status derived from active + start/end window.
-            channelName:
-              type: string
-              description: Resolved channel name.
-            dealGroups:
-              type: array
-              items:
-                type: object
-                properties:
-                  dealGroupId:
-                    type: integer
-                    minimum: -9007199254740991
-                    maximum: 9007199254740991
-                    description: Deal group ID.
-                  name:
-                    type: string
-                    description: Deal group name.
-                required:
-                - dealGroupId
-                - name
-                additionalProperties: false
-              description: Deal groups this deal belongs to; empty without deal-group read permission.
-          required:
-          - pmpDealId
-          - partnerDealId
-          - createdBy
-          - floorPrice
-          - name
-          - partnerId
-          - startTime
-          - endTime
-          - active
-          - createTime
-          - updateTime
-          - dspPartnerId
-          - updatedBy
-          - pricingModel
-          - partnershipDealType
-          - publisherId
-          - channelId
-          - status
-          - channelName
-          - dealGroups
-          additionalProperties: false
-          description: A PMP deal.
-      required:
-      - data
-      additionalProperties: false
-    CreateDealBodyDto:
-      type: object
-      properties:
-        partnerDealId:
-          type: string
-          minLength: 1
-          description: Partner-assigned deal ID.
-        floorPrice:
-          description: Floor price in USD (≥ 0).
-          type: number
-          minimum: 0
-        name:
-          description: Deal name.
-          type: string
-          minLength: 1
-        partnerId:
-          type: integer
-          exclusiveMinimum: true
-          maximum: 9007199254740991
-          description: Partner ID.
-          minimum: 0
-        startTime:
-          description: Deal start time.
-          type: string
-          format: date-time
-          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
-        endTime:
-          description: Deal end time.
-          type: string
-          format: date-time
-          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
-        active:
-          type: boolean
-          description: Whether the deal is active on create.
-        dspPartnerId:
-          type: integer
-          exclusiveMinimum: true
-          maximum: 9007199254740991
-          description: DSP partner ID.
-          minimum: 0
-        pricingModel:
-          type: string
-          enum:
-          - BIDDABLE
-          - FIXED
-          description: Pricing model.
-        partnershipDealType:
-          type: string
-          enum:
-          - EXCLUSIVE
-          - SSP
-          - PUB_DIRECT
-          description: Partnership deal type.
-        publisherId:
-          description: Publisher ID; required for EXCLUSIVE deals.
-          type: integer
-          exclusiveMinimum: true
-          maximum: 9007199254740991
-          minimum: 0
-        generateDealGroup:
-          description: When true, PAPI also creates a matching deal group and links this deal to it.
-          type: boolean
-      required:
-      - partnerDealId
-      - partnerId
-      - active
-      - dspPartnerId
-      - pricingModel
-      - partnershipDealType
   securitySchemes:
     Bearer:
       scheme: bearer

@@ -25,9 +25,7 @@
     "mntn-apidata-api-openapi.yml",
     "mntn-apilist-api-openapi.yml"
   ],
-  "archived": [
-    "deleted 1 superseded output(s) from the previous generation"
-  ],
+  "archived": [],
   "errors": [],
   "warnings": [],
   "notes": [
@@ -41,8 +39,7 @@
     "mntn-reporting-api-openapi.json: tagged paths GET /apilist -> Apilist",
     "mntn-reporting-api-openapi.json: declared missing tag: Apidata",
     "mntn-reporting-api-openapi.json: declared missing tag: Apilist",
-    "superseded outputs removed: mntn-api-api-openapi.yml",
-    "apis.yml register: written (+2 apis, 18 total)"
+    "apis.yml register: already-registered"
   ],
   "skipped": [
     "_original/mntn-ptv-reporting-openapi.yml: archived document superseded by a larger archived document",
@@ -62,7 +59,8 @@
     "_original/mntn-ptv-advertisers-openapi.yml: archived document superseded by a larger archived document",
     "_original/mntn-batch-export-openapi.yml: archived document superseded by a larger archived document",
     "mntn-advertisers-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "mntn-api-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "mntn-apidata-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "mntn-apilist-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "mntn-attribution-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "mntn-audiences-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "mntn-batch-api-openapi.yml: previously refined output, superseded by openapi/_original/",

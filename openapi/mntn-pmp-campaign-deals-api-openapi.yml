@@ -83,40 +83,6 @@ paths:
       - pmp-campaign-deals
 components:
   schemas:
-    CampaignDealGroupLinkResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            campaignId:
-              type: integer
-              minimum: -9007199254740991
-              maximum: 9007199254740991
-              description: Campaign ID.
-            dealGroupId:
-              type:
-              - integer
-              - 'null'
-              minimum: -9007199254740991
-              maximum: 9007199254740991
-              description: Deal group ID; null when unset.
-            createTime:
-              type: string
-              description: Link creation timestamp (ISO8601).
-            updateTime:
-              type: string
-              description: Link last update timestamp (ISO8601).
-          required:
-          - campaignId
-          - dealGroupId
-          - createTime
-          - updateTime
-          additionalProperties: false
-          description: A campaign <-> deal-group link.
-      required:
-      - data
-      additionalProperties: false
     CampaignDealGroupLinksResponseDto_Output:
       type: object
       properties:
@@ -150,6 +116,40 @@ components:
             - updateTime
             additionalProperties: false
             description: A campaign <-> deal-group link.
+      required:
+      - data
+      additionalProperties: false
+    CampaignDealGroupLinkResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            campaignId:
+              type: integer
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: Campaign ID.
+            dealGroupId:
+              type:
+              - integer
+              - 'null'
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: Deal group ID; null when unset.
+            createTime:
+              type: string
+              description: Link creation timestamp (ISO8601).
+            updateTime:
+              type: string
+              description: Link last update timestamp (ISO8601).
+          required:
+          - campaignId
+          - dealGroupId
+          - createTime
+          - updateTime
+          additionalProperties: false
+          description: A campaign <-> deal-group link.
       required:
       - data
       additionalProperties: false

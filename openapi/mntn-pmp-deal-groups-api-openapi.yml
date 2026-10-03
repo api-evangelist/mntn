@@ -237,54 +237,6 @@ paths:
       x-hide-from-docs: true
 components:
   schemas:
-    UpdateDealGroupBodyDto:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: Group name.
-        startTime:
-          type: string
-          format: date-time
-          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
-          description: Group start time.
-        endTime:
-          type: string
-          format: date-time
-          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
-          description: Group end time.
-        channelId:
-          type: integer
-          exclusiveMinimum: true
-          maximum: 9007199254740991
-          description: Channel ID.
-          minimum: 0
-        partnershipDealType:
-          type: string
-          enum:
-          - EXCLUSIVE
-          - SSP
-          - PUB_DIRECT
-          description: Accepted only when the group has no deals, or all deals already share this type.
-    DealGroupBulkDeleteResultResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            groupsDeleted:
-              type: integer
-              minimum: -9007199254740991
-              maximum: 9007199254740991
-              description: Number of groups deleted.
-          required:
-          - groupsDeleted
-          additionalProperties: false
-          description: Bulk delete result.
-      required:
-      - data
-      additionalProperties: false
     DealGroupBulkDeleteBodyDto:
       type: object
       properties:
@@ -429,6 +381,36 @@ components:
       - data
       - pagination
       additionalProperties: false
+    UpdateDealGroupBodyDto:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Group name.
+        startTime:
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+          description: Group start time.
+        endTime:
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+          description: Group end time.
+        channelId:
+          type: integer
+          exclusiveMinimum: true
+          maximum: 9007199254740991
+          description: Channel ID.
+          minimum: 0
+        partnershipDealType:
+          type: string
+          enum:
+          - EXCLUSIVE
+          - SSP
+          - PUB_DIRECT
+          description: Accepted only when the group has no deals, or all deals already share this type.
     DealGroupLinkResponseDto_Output:
       type: object
       properties:
@@ -502,6 +484,24 @@ components:
       required:
       - name
       - channelId
+    DealGroupBulkDeleteResultResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            groupsDeleted:
+              type: integer
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+              description: Number of groups deleted.
+          required:
+          - groupsDeleted
+          additionalProperties: false
+          description: Bulk delete result.
+      required:
+      - data
+      additionalProperties: false
     DealGroupResponseDto_Output:
       type: object
       properties:

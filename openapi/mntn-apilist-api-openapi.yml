@@ -122,24 +122,6 @@ paths:
                 $ref: '#/components/schemas/ExcelListResponse'
 components:
   schemas:
-    CsvListResponse:
-      title: CSV Metadata Response
-      type: string
-      description: 'Response format when format=csv is specified. Returns one row per column with no header row. Note: this output is comma-delimited but fields are not CSV-escaped (help text and tags may contain commas); use format=json for machine parsing.'
-      example: 'Inventory.Day,The date of the data,
-
-        Inventory.SoldImpressions,Number of impressions sold,
-
-        Inventory.RemainingImpressions,Number of impressions remaining,
-
-        DealInfo.DealId,Unique identifier for the deal,
-
-        DealInfo.DealName,Name of the deal,'
-    ExcelListResponse:
-      title: Excel Metadata Response
-      type: string
-      description: Response format when format=excel is specified. Returns a downloadable attachment with .xlsx filename; for `/apilist` this currently contains the same CSV rows as format=csv (not a native XLSX workbook).
-      format: binary
     ProblemDetail:
       title: Problem Detail (RFC 9457)
       type: object
@@ -198,10 +180,6 @@ components:
 
         See: https://www.rfc-editor.org/rfc/rfc9457.html'
       example: '{Invalid API Key (401)={type=https://api3.mntn.com/problems/authorization-error, title=Invalid API Key, status=401, detail=The provided API key ''abc123...'' is not valid, instance=/apidata, timestamp=2026-01-08T17:21:59.445461Z, errorCode=INVALID_API_KEY, traceId=64a8b3c2d1e0f9876543210abcdef123}, Validation Error (400)={type=https://api3.mntn.com/problems/general-request-error, title=Bad Request, status=400, detail=Request validation failed, instance=/apidata, timestamp=2026-01-08T17:21:59.445461Z, errorCode=GENERAL_REQUEST_ERROR, errors=[{field=aid, message=Advertiser ID is required}, {field=begin, message=Start date is required}]}, Metadata Error (400)={type=https://api3.mntn.com/problems/metadata-error, title=Metadata Error, status=400, detail=Table ''Inventory1'' does not exist, instance=/apidata?aid=12345, timestamp=2026-01-08T17:21:59.445461Z, errorCode=METADATA_ERROR, traceId=64a8b3c2d1e0f9876543210abcdef123}, Query Timeout (504)={type=https://api3.mntn.com/problems/query-timeout, title=Gateway Timeout, status=504, detail=Gateway Timeout, instance=/apidata?aid=12345&begin=2020-01-01&end=2025-12-31, timestamp=2026-01-08T17:21:59.445461Z, traceId=64a8b3c2d1e0f9876543210abcdef123}, Resource Limit Exceeded (400)={type=https://api3.mntn.com/problems/resource-limit-exceeded, title=Resource Limit Exceeded, status=400, detail=Query returned too many rows. Please narrow your date range or refine `filter`., instance=/data?aid=12345&begin=2020-01-01&end=2025-12-31, timestamp=2026-01-08T17:21:59.445461Z, errorCode=RESOURCE_LIMIT_EXCEEDED, traceId=64a8b3c2d1e0f9876543210abcdef123}, Internal Server Error (500)={type=https://api3.mntn.com/problems/internal-error, title=Internal Server Error, status=500, detail=An unexpected error occurred while processing the request, instance=/apidata, timestamp=2026-01-08T17:21:59.445461Z, errorCode=NA, traceId=64a8b3c2d1e0f9876543210abcdef123}}'
-    ErrorResponse:
-      description: HTTP error / validation payload (RFC 9457); same schema as ProblemDetail
-      allOf:
-      - $ref: '#/components/schemas/ProblemDetail'
     ListMetadataResponse:
       title: List Metadata Response
       type: object
@@ -265,6 +243,28 @@ components:
       type: string
       description: 'Response format when format=human is specified (default). Returns a formatted text table: each table name followed by its indented columns, column help text, and optional [tags].'
       example: "Inventory\n  Day                    The date of the data\n  SoldImpressions        Number of impressions sold\n  RemainingImpressions   Number of impressions remaining\n\nDealInfo\n  DealId                 Unique identifier for the deal\n  DealName               Name of the deal"
+    ExcelListResponse:
+      title: Excel Metadata Response
+      type: string
+      description: Response format when format=excel is specified. Returns a downloadable attachment with .xlsx filename; for `/apilist` this currently contains the same CSV rows as format=csv (not a native XLSX workbook).
+      format: binary
+    ErrorResponse:
+      description: HTTP error / validation payload (RFC 9457); same schema as ProblemDetail
+      allOf:
+      - $ref: '#/components/schemas/ProblemDetail'
+    CsvListResponse:
+      title: CSV Metadata Response
+      type: string
+      description: 'Response format when format=csv is specified. Returns one row per column with no header row. Note: this output is comma-delimited but fields are not CSV-escaped (help text and tags may contain commas); use format=json for machine parsing.'
+      example: 'Inventory.Day,The date of the data,
+
+        Inventory.SoldImpressions,Number of impressions sold,
+
+        Inventory.RemainingImpressions,Number of impressions remaining,
+
+        DealInfo.DealId,Unique identifier for the deal,
+
+        DealInfo.DealName,Name of the deal,'
   securitySchemes:
     API_Key:
       type: apiKey

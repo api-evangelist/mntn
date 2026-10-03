@@ -257,7 +257,7 @@ paths:
       - Reference
 components:
   schemas:
-    ReferenceAudienceSegmentTypesListResponseDto_Output:
+    ReferenceGoalsListResponseDto_Output:
       type: object
       properties:
         data:
@@ -273,30 +273,6 @@ components:
                 description: Stable machine-friendly name of the reference value.
               description:
                 description: Human-readable description of the reference value. Omitted on lists sourced directly from upstream catalogs (e.g. `geo/types`).
-                type: string
-            required:
-            - id
-            - name
-            additionalProperties: false
-      required:
-      - data
-      additionalProperties: false
-    ReferenceCampaignObjectivesListResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                description: String identifier for the reference value.
-              name:
-                type: string
-                description: Stable machine-friendly name of the reference value.
-              description:
-                description: Human-readable description of the reference value. May be omitted on lists sourced from upstream catalogs.
                 type: string
             required:
             - id
@@ -306,30 +282,6 @@ components:
       - data
       additionalProperties: false
     ReferenceGeoTypesListResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: number
-                description: Numeric identifier for the reference value.
-              name:
-                type: string
-                description: Stable machine-friendly name of the reference value.
-              description:
-                description: Human-readable description of the reference value. Omitted on lists sourced directly from upstream catalogs (e.g. `geo/types`).
-                type: string
-            required:
-            - id
-            - name
-            additionalProperties: false
-      required:
-      - data
-      additionalProperties: false
-    ReferenceGoalsListResponseDto_Output:
       type: object
       properties:
         data:
@@ -377,6 +329,30 @@ components:
       required:
       - data
       additionalProperties: false
+    ReferenceAudienceSegmentTypesListResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+                description: Numeric identifier for the reference value.
+              name:
+                type: string
+                description: Stable machine-friendly name of the reference value.
+              description:
+                description: Human-readable description of the reference value. Omitted on lists sourced directly from upstream catalogs (e.g. `geo/types`).
+                type: string
+            required:
+            - id
+            - name
+            additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
     ReferenceBudgetTypesListResponseDto_Output:
       type: object
       properties:
@@ -393,6 +369,30 @@ components:
                 description: Stable machine-friendly name of the reference value.
               description:
                 description: Human-readable description of the reference value. Omitted on lists sourced directly from upstream catalogs (e.g. `geo/types`).
+                type: string
+            required:
+            - id
+            - name
+            additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
+    ReferenceCampaignObjectivesListResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: String identifier for the reference value.
+              name:
+                type: string
+                description: Stable machine-friendly name of the reference value.
+              description:
+                description: Human-readable description of the reference value. May be omitted on lists sourced from upstream catalogs.
                 type: string
             required:
             - id

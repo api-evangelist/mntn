@@ -112,6 +112,125 @@ paths:
       - Advertisers
 components:
   schemas:
+    AdvertiserSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            advertiserId:
+              type: number
+              description: Unique advertiser identifier.
+            companyName:
+              type: string
+              description: Display name of the advertiser.
+            companyUrl:
+              type:
+              - string
+              - 'null'
+              description: Primary URL for the advertiser.
+            timezone:
+              description: IANA timezone of the advertiser.
+              type: string
+          required:
+          - advertiserId
+          - companyName
+          - companyUrl
+          additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
+    AdvertiserSingleResponseDto:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            advertiserId:
+              type: number
+              description: Unique advertiser identifier.
+            companyName:
+              type: string
+              description: Display name of the advertiser.
+            companyUrl:
+              type:
+              - string
+              - 'null'
+              description: Primary URL for the advertiser.
+            timezone:
+              description: IANA timezone of the advertiser.
+              type: string
+          required:
+          - advertiserId
+          - companyName
+          - companyUrl
+      required:
+      - data
+    AdvertiserPaginatedResponseDto:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              advertiserId:
+                type: number
+                description: Unique advertiser identifier.
+              companyName:
+                type: string
+                description: Display name of the advertiser.
+              companyUrl:
+                type:
+                - string
+                - 'null'
+                description: Primary URL for the advertiser.
+              timezone:
+                description: IANA timezone of the advertiser.
+                type: string
+            required:
+            - advertiserId
+            - companyName
+            - companyUrl
+        pagination:
+          type: object
+          properties:
+            total:
+              type: integer
+              minimum: 0
+              maximum: 9007199254740991
+              description: Total rows available for this query.
+            perPage:
+              type: integer
+              exclusiveMinimum: true
+              maximum: 9007199254740991
+              description: Maximum rows per page.
+              minimum: 0
+            page:
+              default: 1
+              description: Current 1-based page index.
+              type: integer
+              exclusiveMinimum: true
+              maximum: 9007199254740991
+              minimum: 0
+            previousPageUrl:
+              type:
+              - string
+              - 'null'
+              description: URL for the previous page, or null when none.
+            nextPageUrl:
+              type:
+              - string
+              - 'null'
+              description: URL for the next page, or null when none.
+          required:
+          - total
+          - perPage
+          - previousPageUrl
+          - nextPageUrl
+      required:
+      - data
+      - pagination
     AdvertiserPaginatedResponseDto_Output:
       type: object
       properties:
@@ -181,125 +300,6 @@ components:
       - data
       - pagination
       additionalProperties: false
-    AdvertiserSingleResponseDto:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            advertiserId:
-              type: number
-              description: Unique advertiser identifier.
-            companyName:
-              type: string
-              description: Display name of the advertiser.
-            companyUrl:
-              type:
-              - string
-              - 'null'
-              description: Primary URL for the advertiser.
-            timezone:
-              description: IANA timezone of the advertiser.
-              type: string
-          required:
-          - advertiserId
-          - companyName
-          - companyUrl
-      required:
-      - data
-    AdvertiserSingleResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            advertiserId:
-              type: number
-              description: Unique advertiser identifier.
-            companyName:
-              type: string
-              description: Display name of the advertiser.
-            companyUrl:
-              type:
-              - string
-              - 'null'
-              description: Primary URL for the advertiser.
-            timezone:
-              description: IANA timezone of the advertiser.
-              type: string
-          required:
-          - advertiserId
-          - companyName
-          - companyUrl
-          additionalProperties: false
-      required:
-      - data
-      additionalProperties: false
-    AdvertiserPaginatedResponseDto:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              advertiserId:
-                type: number
-                description: Unique advertiser identifier.
-              companyName:
-                type: string
-                description: Display name of the advertiser.
-              companyUrl:
-                type:
-                - string
-                - 'null'
-                description: Primary URL for the advertiser.
-              timezone:
-                description: IANA timezone of the advertiser.
-                type: string
-            required:
-            - advertiserId
-            - companyName
-            - companyUrl
-        pagination:
-          type: object
-          properties:
-            total:
-              type: integer
-              minimum: 0
-              maximum: 9007199254740991
-              description: Total rows available for this query.
-            perPage:
-              type: integer
-              exclusiveMinimum: true
-              maximum: 9007199254740991
-              description: Maximum rows per page.
-              minimum: 0
-            page:
-              default: 1
-              description: Current 1-based page index.
-              type: integer
-              exclusiveMinimum: true
-              maximum: 9007199254740991
-              minimum: 0
-            previousPageUrl:
-              type:
-              - string
-              - 'null'
-              description: URL for the previous page, or null when none.
-            nextPageUrl:
-              type:
-              - string
-              - 'null'
-              description: URL for the next page, or null when none.
-          required:
-          - total
-          - perPage
-          - previousPageUrl
-          - nextPageUrl
-      required:
-      - data
-      - pagination
   securitySchemes:
     Bearer:
       scheme: bearer
