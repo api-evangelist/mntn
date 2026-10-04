@@ -420,6 +420,8 @@ apis:
   humanURL: https://api3.mountain.com/docs
   baseURL: https://api3.mountain.com
   tags:
+  - API List
+  tags_raw:
   - Apilist
   properties:
   - type: OpenAPI
@@ -438,6 +440,9 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: CapabilityMap
+  url: capabilities/mntn-capability-edges.yml
+  name: MNTN Business Capability Map
 - type: Overlay
   url: overlays/mntn-ptv-overlay.yaml
 - type: Overlay
