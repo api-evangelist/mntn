@@ -112,60 +112,6 @@ paths:
       - Advertisers
 components:
   schemas:
-    AdvertiserSingleResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            advertiserId:
-              type: number
-              description: Unique advertiser identifier.
-            companyName:
-              type: string
-              description: Display name of the advertiser.
-            companyUrl:
-              type:
-              - string
-              - 'null'
-              description: Primary URL for the advertiser.
-            timezone:
-              description: IANA timezone of the advertiser.
-              type: string
-          required:
-          - advertiserId
-          - companyName
-          - companyUrl
-          additionalProperties: false
-      required:
-      - data
-      additionalProperties: false
-    AdvertiserSingleResponseDto:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            advertiserId:
-              type: number
-              description: Unique advertiser identifier.
-            companyName:
-              type: string
-              description: Display name of the advertiser.
-            companyUrl:
-              type:
-              - string
-              - 'null'
-              description: Primary URL for the advertiser.
-            timezone:
-              description: IANA timezone of the advertiser.
-              type: string
-          required:
-          - advertiserId
-          - companyName
-          - companyUrl
-      required:
-      - data
     AdvertiserPaginatedResponseDto:
       type: object
       properties:
@@ -299,6 +245,60 @@ components:
       required:
       - data
       - pagination
+      additionalProperties: false
+    AdvertiserSingleResponseDto:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            advertiserId:
+              type: number
+              description: Unique advertiser identifier.
+            companyName:
+              type: string
+              description: Display name of the advertiser.
+            companyUrl:
+              type:
+              - string
+              - 'null'
+              description: Primary URL for the advertiser.
+            timezone:
+              description: IANA timezone of the advertiser.
+              type: string
+          required:
+          - advertiserId
+          - companyName
+          - companyUrl
+      required:
+      - data
+    AdvertiserSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            advertiserId:
+              type: number
+              description: Unique advertiser identifier.
+            companyName:
+              type: string
+              description: Display name of the advertiser.
+            companyUrl:
+              type:
+              - string
+              - 'null'
+              description: Primary URL for the advertiser.
+            timezone:
+              description: IANA timezone of the advertiser.
+              type: string
+          required:
+          - advertiserId
+          - companyName
+          - companyUrl
+          additionalProperties: false
+      required:
+      - data
       additionalProperties: false
   securitySchemes:
     Bearer:

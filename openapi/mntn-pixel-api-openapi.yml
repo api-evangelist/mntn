@@ -457,6 +457,40 @@ paths:
       x-hide-from-docs: true
 components:
   schemas:
+    PixelHealthOverviewBodyDto:
+      type: object
+      properties:
+        url:
+          type: string
+          minLength: 1
+          description: Advertiser site URL to evaluate.
+        fresh:
+          description: When true, bypass cached health data (`mode=fresh`).
+          type: boolean
+      required:
+      - url
+      description: Pixel health overview request body.
+    PixelSignalStrategiesListResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              signal:
+                type:
+                - string
+                - 'null'
+              strategy:
+                type:
+                - string
+                - 'null'
+            additionalProperties: false
+            description: Recommended pixel signal strategy.
+      required:
+      - data
+      additionalProperties: false
     PixelListenPageviewsBodyDto:
       type: object
       properties:
@@ -473,35 +507,6 @@ components:
           maximum: 9007199254740991
           minimum: 0
       description: Pixel verification listener request body.
-    PixelConversionOptOutBodyDto:
-      type: object
-      properties:
-        optOut:
-          type: boolean
-          description: Whether conversion pixel opt-out is enabled.
-      required:
-      - optOut
-      description: Conversion pixel opt-out request body.
-    PixelPassthroughSingleResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: object
-          additionalProperties: {}
-          description: Passthrough pixel verification payload.
-      required:
-      - data
-      additionalProperties: false
-    PixelCheckRedisEventsBodyDto:
-      type: object
-      properties:
-        lookbackSeconds:
-          description: Redis lookback window in seconds. Defaults to 300.
-          type: integer
-          exclusiveMinimum: true
-          maximum: 9007199254740991
-          minimum: 0
-      description: Check recent Redis pixel events request body.
     PixelVerificationEventsApiSingleResponseDto_Output:
       type: object
       properties:
@@ -584,27 +589,25 @@ components:
       required:
       - data
       additionalProperties: false
-    PixelSignalStrategiesListResponseDto_Output:
+    PixelConversionOptOutBodyDto:
       type: object
       properties:
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              signal:
-                type:
-                - string
-                - 'null'
-              strategy:
-                type:
-                - string
-                - 'null'
-            additionalProperties: false
-            description: Recommended pixel signal strategy.
+        optOut:
+          type: boolean
+          description: Whether conversion pixel opt-out is enabled.
       required:
-      - data
-      additionalProperties: false
+      - optOut
+      description: Conversion pixel opt-out request body.
+    PixelCheckRedisEventsBodyDto:
+      type: object
+      properties:
+        lookbackSeconds:
+          description: Redis lookback window in seconds. Defaults to 300.
+          type: integer
+          exclusiveMinimum: true
+          maximum: 9007199254740991
+          minimum: 0
+      description: Check recent Redis pixel events request body.
     PixelStoreGa4IdsBodyDto:
       type: object
       properties:
@@ -617,35 +620,6 @@ components:
       required:
       - ga4Ids
       description: Store GA4 measurement IDs request body.
-    PixelWarningsCheckBodyDto:
-      type: object
-      properties:
-        urls:
-          minItems: 1
-          type: array
-          items:
-            type: string
-            minLength: 1
-          description: Site URLs to evaluate for pixel warnings.
-      required:
-      - urls
-      description: Pixel warnings check request body.
-    PixelListenConversionsBodyDto:
-      type: object
-      properties:
-        timeoutSeconds:
-          description: Listener timeout in seconds. Defaults to 100.
-          type: integer
-          exclusiveMinimum: true
-          maximum: 9007199254740991
-          minimum: 0
-        count:
-          description: Number of events to wait for. Defaults to 1.
-          type: integer
-          exclusiveMinimum: true
-          maximum: 9007199254740991
-          minimum: 0
-      description: Pixel verification listener request body.
     PixelGa4IdsSingleResponseDto_Output:
       type: object
       properties:
@@ -745,19 +719,45 @@ components:
       required:
       - data
       additionalProperties: false
-    PixelHealthOverviewBodyDto:
+    PixelPassthroughSingleResponseDto_Output:
       type: object
       properties:
-        url:
-          type: string
-          minLength: 1
-          description: Advertiser site URL to evaluate.
-        fresh:
-          description: When true, bypass cached health data (`mode=fresh`).
-          type: boolean
+        data:
+          type: object
+          additionalProperties: {}
+          description: Passthrough pixel verification payload.
       required:
-      - url
-      description: Pixel health overview request body.
+      - data
+      additionalProperties: false
+    PixelListenConversionsBodyDto:
+      type: object
+      properties:
+        timeoutSeconds:
+          description: Listener timeout in seconds. Defaults to 100.
+          type: integer
+          exclusiveMinimum: true
+          maximum: 9007199254740991
+          minimum: 0
+        count:
+          description: Number of events to wait for. Defaults to 1.
+          type: integer
+          exclusiveMinimum: true
+          maximum: 9007199254740991
+          minimum: 0
+      description: Pixel verification listener request body.
+    PixelWarningsCheckBodyDto:
+      type: object
+      properties:
+        urls:
+          minItems: 1
+          type: array
+          items:
+            type: string
+            minLength: 1
+          description: Site URLs to evaluate for pixel warnings.
+      required:
+      - urls
+      description: Pixel warnings check request body.
   securitySchemes:
     Bearer:
       scheme: bearer

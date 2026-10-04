@@ -193,175 +193,6 @@ paths:
                     3:    2025-07-03          1600000                400000   26200.00'
 components:
   schemas:
-    ProblemDetail:
-      title: Problem Detail (RFC 9457)
-      type: object
-      properties:
-        type:
-          type: string
-          description: A URI reference that identifies the problem type
-          example: https://api3.mntn.com/problems/query-timeout
-        title:
-          type: string
-          description: A short, human-readable summary of the problem type (stable across occurrences)
-          example: Gateway Timeout
-        status:
-          type: integer
-          description: The HTTP status code
-          format: int32
-          example: 504
-        detail:
-          type: string
-          description: A human-readable explanation specific to this occurrence of the problem
-          example: Gateway Timeout
-        instance:
-          type: string
-          description: A URI reference that identifies the specific occurrence of the problem (request path)
-          example: /data?aid=12345
-        timestamp:
-          type: string
-          description: ISO 8601 timestamp when the error occurred
-          example: '2026-01-08T17:21:59.445461Z'
-        errorCode:
-          type: string
-          description: Internal error code for support reference
-          example: QUERY_TIMEOUT
-        traceId:
-          type: string
-          description: OpenTelemetry trace ID for debugging and support
-          example: 64a8b3c2d1e0f9876543210abcdef123
-        errors:
-          type: array
-          description: Array of validation errors (for 400 Bad Request responses)
-          items:
-            type: object
-            properties:
-              field:
-                type: string
-                description: Field name that failed validation
-                example: aid
-              message:
-                type: string
-                description: Error message
-                example: Advertiser ID is required
-      description: 'Standard error response format following RFC 9457 (Problem Details for HTTP APIs).
-
-
-        All error responses include machine-readable problem types and human-readable details.
-
-        See: https://www.rfc-editor.org/rfc/rfc9457.html'
-      example: '{Invalid API Key (401)={type=https://api3.mntn.com/problems/authorization-error, title=Invalid API Key, status=401, detail=The provided API key ''abc123...'' is not valid, instance=/apidata, timestamp=2026-01-08T17:21:59.445461Z, errorCode=INVALID_API_KEY, traceId=64a8b3c2d1e0f9876543210abcdef123}, Validation Error (400)={type=https://api3.mntn.com/problems/general-request-error, title=Bad Request, status=400, detail=Request validation failed, instance=/apidata, timestamp=2026-01-08T17:21:59.445461Z, errorCode=GENERAL_REQUEST_ERROR, errors=[{field=aid, message=Advertiser ID is required}, {field=begin, message=Start date is required}]}, Metadata Error (400)={type=https://api3.mntn.com/problems/metadata-error, title=Metadata Error, status=400, detail=Table ''Inventory1'' does not exist, instance=/apidata?aid=12345, timestamp=2026-01-08T17:21:59.445461Z, errorCode=METADATA_ERROR, traceId=64a8b3c2d1e0f9876543210abcdef123}, Query Timeout (504)={type=https://api3.mntn.com/problems/query-timeout, title=Gateway Timeout, status=504, detail=Gateway Timeout, instance=/apidata?aid=12345&begin=2020-01-01&end=2025-12-31, timestamp=2026-01-08T17:21:59.445461Z, traceId=64a8b3c2d1e0f9876543210abcdef123}, Resource Limit Exceeded (400)={type=https://api3.mntn.com/problems/resource-limit-exceeded, title=Resource Limit Exceeded, status=400, detail=Query returned too many rows. Please narrow your date range or refine `filter`., instance=/data?aid=12345&begin=2020-01-01&end=2025-12-31, timestamp=2026-01-08T17:21:59.445461Z, errorCode=RESOURCE_LIMIT_EXCEEDED, traceId=64a8b3c2d1e0f9876543210abcdef123}, Internal Server Error (500)={type=https://api3.mntn.com/problems/internal-error, title=Internal Server Error, status=500, detail=An unexpected error occurred while processing the request, instance=/apidata, timestamp=2026-01-08T17:21:59.445461Z, errorCode=NA, traceId=64a8b3c2d1e0f9876543210abcdef123}}'
-    HumanDataResponse:
-      title: Human-Readable Data Response
-      type: string
-      description: Response format when format=human is specified (default). Returns data in a formatted text table.
-      example: '             Day Sold Impressions Remaining Impressions      Sales
-
-        1:    2025-07-01          1500000                500000   25000.50
-
-        2:    2025-07-02          1750000                250000   28500.75
-
-        3:    2025-07-03          1600000                400000   26200.00'
-    ApidataDataColumnItem:
-      title: ApidataDataColumnItem
-      description: Either a column identifier string or a filtered column object (POST `data[]` elements and JSON-array GET `data`). Use **GET /apilist** to discover valid column identifiers (for `data`, `sum`, and `filter`).
-      oneOf:
-      - type: string
-        description: Column identifier (`table.column`). Use **GET /apilist** to discover valid column identifiers (for `data`, `sum`, and `filter`).
-        example: graph.impressions
-      - $ref: '#/components/schemas/ApidataFilteredDataColumn'
-    JsonDataResponse:
-      title: JSON Data Response
-      type: object
-      properties:
-        report-name:
-          type: string
-          description: Name of the report
-          example: Report
-        publisher-name:
-          type: string
-          description: Name of the advertiser or 'Grouped Advertisers'
-          example: Example Advertiser
-        begin:
-          type: string
-          description: Start date/time of the data range
-          example: '2025-07-01T00:00:00'
-        end:
-          type: string
-          description: End date/time of the data range
-          example: '2025-08-15T23:59:59'
-        columns:
-          type: array
-          description: Metadata about each column in the response
-          items:
-            type: object
-            properties:
-              table:
-                type: string
-                description: Table name in lowercase
-                example: inventory
-              name:
-                type: string
-                description: Column name in lowercase
-                example: day
-              friendly:
-                type: string
-                description: User-friendly column name
-                example: Day
-              alias:
-                type: string
-                description: Column alias (if applicable)
-                example: Day
-              help:
-                type: string
-                description: Column description
-                example: The date of the data
-              format:
-                type: string
-                description: Data format type (date, number, text, percentage, etc.)
-                example: date
-              icon:
-                type: string
-                description: Icon type for UI display
-                example: calendar
-              friendly-suffix:
-                type: string
-                description: Suffix for display (e.g., '%' for percentages)
-                example: ''
-              target_direction_negative:
-                description: Whether lower values are better
-                example: false
-        rows:
-          type: array
-          description: Array of data rows, each containing column name-value pairs
-          items:
-            type: object
-            description: Each row contains key-value pairs where keys are column names
-            example: '{Day=2025-07-01, SoldImpressions=1500000, RemainingImpressions=500000, Sales=25000.50}'
-      description: Response format when format=json is specified
-      example: '{report-name=Report, advertiser-name=Example Publisher, begin=2025-07-01T00:00:00, end=2025-08-15T23:59:59, columns=[{table=inventory, name=day, friendly=Day, alias=Day, help=The date of the data, format=date, icon=calendar, friendly-suffix=}, {table=inventory, name=soldimpressions, friendly=Sold Impressions, alias=SoldImpressions, help=Number of impressions sold, format=number, icon=chart, friendly-suffix=}, {table=inventory, name=remainingimpressions, friendly=Remaining Impressions, alias=RemainingImpressions, help=Number of impressions remaining, format=number, icon=chart, friendly-suffix=}, {table=inventory, name=sales, friendly=Sales, alias=Sales, help=Total sales amount, format=currency, icon=dollar, friendly-suffix=$}], rows=[{Day=2025-07-01, SoldImpressions=1500000, RemainingImpressions=500000, Sales=25000.50}, {Day=2025-07-02, SoldImpressions=1750000, RemainingImpressions=250000, Sales=28500.75}, {Day=2025-07-03, SoldImpressions=1600000, RemainingImpressions=400000, Sales=26200.00}]}'
-    ApidataFilteredDataColumn:
-      title: ApidataFilteredDataColumn
-      required:
-      - filter
-      - name
-      type: object
-      properties:
-        name:
-          type: string
-          description: Fully qualified column identifier.
-          example: graph.impressions
-        filter:
-          $ref: '#/components/schemas/Filter'
-        alias:
-          type: string
-          description: Alternate column header in the response
-        friendly:
-          type: string
-          description: Human-friendly column label
-        nullReplacement:
-          description: Value used when the metric cell is null
-      description: Column with an embedded filter (same predicate shape as top-level `filter`). Optional response labeling.
     Filter:
       title: Filter
       type: object
@@ -386,6 +217,28 @@ components:
 
         Use **GET /apilist** to discover valid column identifiers (for `data`, `sum`, and `filter`).'
       example: '{"campaigninfo.id":{"in":["28915"]},"OR":{"campaigninfo.status":{"equals":"Live"},"graph.impressions":{"gte":1000}}}'
+    ApidataFilteredDataColumn:
+      title: ApidataFilteredDataColumn
+      required:
+      - filter
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: Fully qualified column identifier.
+          example: graph.impressions
+        filter:
+          $ref: '#/components/schemas/Filter'
+        alias:
+          type: string
+          description: Alternate column header in the response
+        friendly:
+          type: string
+          description: Human-friendly column label
+        nullReplacement:
+          description: Value used when the metric cell is null
+      description: Column with an embedded filter (same predicate shape as top-level `filter`). Optional response labeling.
     GetRequest:
       title: Data Request (GET)
       required:
@@ -465,6 +318,157 @@ components:
             type: integer
             format: int32
       description: GET /apidata query parameters. Use **GET /apilist** to discover valid column identifiers (for `data`, `sum`, and `filter`).
+    CsvDataResponse:
+      title: CSV Data Response
+      type: string
+      description: Response format when format=csv is specified. Returns data in CSV format with headers.
+      example: 'Day,Sold Impressions,Remaining Impressions,Sales
+
+        2025-07-01,1500000,500000,25000.50
+
+        2025-07-02,1750000,250000,28500.75
+
+        2025-07-03,1600000,400000,26200.00'
+    ProblemDetail:
+      title: Problem Detail (RFC 9457)
+      type: object
+      properties:
+        type:
+          type: string
+          description: A URI reference that identifies the problem type
+          example: https://api3.mntn.com/problems/query-timeout
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type (stable across occurrences)
+          example: Gateway Timeout
+        status:
+          type: integer
+          description: The HTTP status code
+          format: int32
+          example: 504
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem
+          example: Gateway Timeout
+        instance:
+          type: string
+          description: A URI reference that identifies the specific occurrence of the problem (request path)
+          example: /data?aid=12345
+        timestamp:
+          type: string
+          description: ISO 8601 timestamp when the error occurred
+          example: '2026-01-08T17:21:59.445461Z'
+        errorCode:
+          type: string
+          description: Internal error code for support reference
+          example: QUERY_TIMEOUT
+        traceId:
+          type: string
+          description: OpenTelemetry trace ID for debugging and support
+          example: 64a8b3c2d1e0f9876543210abcdef123
+        errors:
+          type: array
+          description: Array of validation errors (for 400 Bad Request responses)
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                description: Field name that failed validation
+                example: aid
+              message:
+                type: string
+                description: Error message
+                example: Advertiser ID is required
+      description: 'Standard error response format following RFC 9457 (Problem Details for HTTP APIs).
+
+
+        All error responses include machine-readable problem types and human-readable details.
+
+        See: https://www.rfc-editor.org/rfc/rfc9457.html'
+      example: '{Invalid API Key (401)={type=https://api3.mntn.com/problems/authorization-error, title=Invalid API Key, status=401, detail=The provided API key ''abc123...'' is not valid, instance=/apidata, timestamp=2026-01-08T17:21:59.445461Z, errorCode=INVALID_API_KEY, traceId=64a8b3c2d1e0f9876543210abcdef123}, Validation Error (400)={type=https://api3.mntn.com/problems/general-request-error, title=Bad Request, status=400, detail=Request validation failed, instance=/apidata, timestamp=2026-01-08T17:21:59.445461Z, errorCode=GENERAL_REQUEST_ERROR, errors=[{field=aid, message=Advertiser ID is required}, {field=begin, message=Start date is required}]}, Metadata Error (400)={type=https://api3.mntn.com/problems/metadata-error, title=Metadata Error, status=400, detail=Table ''Inventory1'' does not exist, instance=/apidata?aid=12345, timestamp=2026-01-08T17:21:59.445461Z, errorCode=METADATA_ERROR, traceId=64a8b3c2d1e0f9876543210abcdef123}, Query Timeout (504)={type=https://api3.mntn.com/problems/query-timeout, title=Gateway Timeout, status=504, detail=Gateway Timeout, instance=/apidata?aid=12345&begin=2020-01-01&end=2025-12-31, timestamp=2026-01-08T17:21:59.445461Z, traceId=64a8b3c2d1e0f9876543210abcdef123}, Resource Limit Exceeded (400)={type=https://api3.mntn.com/problems/resource-limit-exceeded, title=Resource Limit Exceeded, status=400, detail=Query returned too many rows. Please narrow your date range or refine `filter`., instance=/data?aid=12345&begin=2020-01-01&end=2025-12-31, timestamp=2026-01-08T17:21:59.445461Z, errorCode=RESOURCE_LIMIT_EXCEEDED, traceId=64a8b3c2d1e0f9876543210abcdef123}, Internal Server Error (500)={type=https://api3.mntn.com/problems/internal-error, title=Internal Server Error, status=500, detail=An unexpected error occurred while processing the request, instance=/apidata, timestamp=2026-01-08T17:21:59.445461Z, errorCode=NA, traceId=64a8b3c2d1e0f9876543210abcdef123}}'
+    JsonDataResponse:
+      title: JSON Data Response
+      type: object
+      properties:
+        report-name:
+          type: string
+          description: Name of the report
+          example: Report
+        publisher-name:
+          type: string
+          description: Name of the advertiser or 'Grouped Advertisers'
+          example: Example Advertiser
+        begin:
+          type: string
+          description: Start date/time of the data range
+          example: '2025-07-01T00:00:00'
+        end:
+          type: string
+          description: End date/time of the data range
+          example: '2025-08-15T23:59:59'
+        columns:
+          type: array
+          description: Metadata about each column in the response
+          items:
+            type: object
+            properties:
+              table:
+                type: string
+                description: Table name in lowercase
+                example: inventory
+              name:
+                type: string
+                description: Column name in lowercase
+                example: day
+              friendly:
+                type: string
+                description: User-friendly column name
+                example: Day
+              alias:
+                type: string
+                description: Column alias (if applicable)
+                example: Day
+              help:
+                type: string
+                description: Column description
+                example: The date of the data
+              format:
+                type: string
+                description: Data format type (date, number, text, percentage, etc.)
+                example: date
+              icon:
+                type: string
+                description: Icon type for UI display
+                example: calendar
+              friendly-suffix:
+                type: string
+                description: Suffix for display (e.g., '%' for percentages)
+                example: ''
+              target_direction_negative:
+                description: Whether lower values are better
+                example: false
+        rows:
+          type: array
+          description: Array of data rows, each containing column name-value pairs
+          items:
+            type: object
+            description: Each row contains key-value pairs where keys are column names
+            example: '{Day=2025-07-01, SoldImpressions=1500000, RemainingImpressions=500000, Sales=25000.50}'
+      description: Response format when format=json is specified
+      example: '{report-name=Report, advertiser-name=Example Publisher, begin=2025-07-01T00:00:00, end=2025-08-15T23:59:59, columns=[{table=inventory, name=day, friendly=Day, alias=Day, help=The date of the data, format=date, icon=calendar, friendly-suffix=}, {table=inventory, name=soldimpressions, friendly=Sold Impressions, alias=SoldImpressions, help=Number of impressions sold, format=number, icon=chart, friendly-suffix=}, {table=inventory, name=remainingimpressions, friendly=Remaining Impressions, alias=RemainingImpressions, help=Number of impressions remaining, format=number, icon=chart, friendly-suffix=}, {table=inventory, name=sales, friendly=Sales, alias=Sales, help=Total sales amount, format=currency, icon=dollar, friendly-suffix=$}], rows=[{Day=2025-07-01, SoldImpressions=1500000, RemainingImpressions=500000, Sales=25000.50}, {Day=2025-07-02, SoldImpressions=1750000, RemainingImpressions=250000, Sales=28500.75}, {Day=2025-07-03, SoldImpressions=1600000, RemainingImpressions=400000, Sales=26200.00}]}'
+    ErrorResponse:
+      description: HTTP error / validation payload (RFC 9457); same schema as ProblemDetail
+      allOf:
+      - $ref: '#/components/schemas/ProblemDetail'
+    ApidataDataColumnItem:
+      title: ApidataDataColumnItem
+      description: Either a column identifier string or a filtered column object (POST `data[]` elements and JSON-array GET `data`). Use **GET /apilist** to discover valid column identifiers (for `data`, `sum`, and `filter`).
+      oneOf:
+      - type: string
+        description: Column identifier (`table.column`). Use **GET /apilist** to discover valid column identifiers (for `data`, `sum`, and `filter`).
+        example: graph.impressions
+      - $ref: '#/components/schemas/ApidataFilteredDataColumn'
     DataRequest:
       title: Data Request (POST)
       required:
@@ -553,21 +557,17 @@ components:
           campaigninfo.id:
             in:
             - '28915'
-    CsvDataResponse:
-      title: CSV Data Response
+    HumanDataResponse:
+      title: Human-Readable Data Response
       type: string
-      description: Response format when format=csv is specified. Returns data in CSV format with headers.
-      example: 'Day,Sold Impressions,Remaining Impressions,Sales
+      description: Response format when format=human is specified (default). Returns data in a formatted text table.
+      example: '             Day Sold Impressions Remaining Impressions      Sales
 
-        2025-07-01,1500000,500000,25000.50
+        1:    2025-07-01          1500000                500000   25000.50
 
-        2025-07-02,1750000,250000,28500.75
+        2:    2025-07-02          1750000                250000   28500.75
 
-        2025-07-03,1600000,400000,26200.00'
-    ErrorResponse:
-      description: HTTP error / validation payload (RFC 9457); same schema as ProblemDetail
-      allOf:
-      - $ref: '#/components/schemas/ProblemDetail'
+        3:    2025-07-03          1600000                400000   26200.00'
   securitySchemes:
     API_Key:
       type: apiKey

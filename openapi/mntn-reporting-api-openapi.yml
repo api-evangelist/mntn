@@ -301,68 +301,6 @@ paths:
       - Reporting
 components:
   schemas:
-    RegenerateBatchUrlSingleResponseDto:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            downloadUrl:
-              description: Freshly-signed download URL for the result file.
-              type: string
-            downloadExpiresAt:
-              description: Timestamp when `downloadUrl` expires (ISO-8601).
-              type: string
-      required:
-      - data
-    ReportSingleResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            report-name:
-              type: string
-            advertiser-name:
-              type: string
-            begin:
-              type: string
-            end:
-              type: string
-            columns:
-              type: array
-              items:
-                type: object
-                properties:
-                  table:
-                    type: string
-                  name:
-                    type: string
-                  friendly:
-                    type: string
-                  help:
-                    type: string
-                  format:
-                    type: string
-                  alias:
-                    type: string
-                required:
-                - name
-                additionalProperties: false
-            rows:
-              type: array
-              items:
-                type: object
-                additionalProperties:
-                  anyOf:
-                  - type: string
-                  - type: number
-                  - type: boolean
-          additionalProperties: false
-          description: Report response body.
-      required:
-      - data
-      additionalProperties: false
     CustomReportBody:
       type: object
       properties:
@@ -453,6 +391,123 @@ components:
       description: Custom report body to fulfill various reporting needs.
       required:
       - data
+    RegenerateBatchUrlSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            downloadUrl:
+              description: Freshly-signed download URL for the result file.
+              type: string
+            downloadExpiresAt:
+              description: Timestamp when `downloadUrl` expires (ISO-8601).
+              type: string
+          additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
+    BatchExportSubmitSingleResponseDto:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            batchId:
+              type: number
+              description: Identifier assigned to the queued batch.
+            status:
+              type: string
+              description: Initial job status, typically `QUEUED`.
+            submittedAt:
+              description: Timestamp the job was queued (ISO-8601).
+              type: string
+            reportName:
+              description: Optional report name echoed back from submission.
+              type: string
+          required:
+          - batchId
+          - status
+      required:
+      - data
+    ReportMetaSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            tables:
+              type: array
+              items:
+                type: object
+                properties:
+                  table:
+                    type: string
+                  type:
+                    type: string
+                  friendly:
+                    type: string
+                  exclude-list:
+                    type: array
+                    items:
+                      type: string
+                  columns:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        friendly:
+                          type: string
+                        format:
+                          type: string
+                        help:
+                          type: string
+                        hide:
+                          type: boolean
+                        icon:
+                          type: string
+                        friendly-suffix:
+                          type: string
+                        period:
+                          type: string
+                        target_direction_negative:
+                          type: boolean
+                        compatible-dimensions:
+                          type: array
+                          items:
+                            type: string
+                        column_filters:
+                          type: array
+                          items:
+                            type: string
+                        tags:
+                          type: array
+                          items:
+                            type: string
+                      required:
+                      - name
+                      - friendly
+                      - format
+                      - help
+                      - hide
+                      - icon
+                      - friendly-suffix
+                      - column_filters
+                      additionalProperties: false
+                required:
+                - table
+                - type
+                - friendly
+                - columns
+                additionalProperties: false
+          required:
+          - tables
+          additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
     PaginatedBatchExportsResponseDto:
       type: object
       properties:
@@ -544,74 +599,54 @@ components:
       required:
       - data
       - pagination
-    RegenerateBatchUrlSingleResponseDto_Output:
+    ReportSingleResponseDto_Output:
       type: object
       properties:
         data:
           type: object
           properties:
-            downloadUrl:
-              description: Freshly-signed download URL for the result file.
+            report-name:
               type: string
-            downloadExpiresAt:
-              description: Timestamp when `downloadUrl` expires (ISO-8601).
+            advertiser-name:
               type: string
+            begin:
+              type: string
+            end:
+              type: string
+            columns:
+              type: array
+              items:
+                type: object
+                properties:
+                  table:
+                    type: string
+                  name:
+                    type: string
+                  friendly:
+                    type: string
+                  help:
+                    type: string
+                  format:
+                    type: string
+                  alias:
+                    type: string
+                required:
+                - name
+                additionalProperties: false
+            rows:
+              type: array
+              items:
+                type: object
+                additionalProperties:
+                  anyOf:
+                  - type: string
+                  - type: number
+                  - type: boolean
           additionalProperties: false
+          description: Report response body.
       required:
       - data
       additionalProperties: false
-    BatchExportStatusSingleResponseDto:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            batchId:
-              type: number
-              description: Batch identifier.
-            status:
-              type: string
-              description: Current status, e.g. `QUEUED`, `PROCESSING`, `SUCCEEDED`, `FAILED`.
-            submittedAt:
-              description: Timestamp the job was queued (ISO-8601).
-              type: string
-            reportName:
-              description: Optional report name.
-              type: string
-            requestParams:
-              description: 'Snapshot of the original request body as parsed JSON. When chapi returns a stringified body, papi parses it; if parsing fails the raw string is wrapped as `{ raw: <string> }`.'
-              type: object
-              additionalProperties: {}
-            startedAt:
-              description: Timestamp the job started executing (ISO-8601).
-              type: string
-            completedAt:
-              description: Timestamp the job finished (ISO-8601).
-              type: string
-            downloadUrl:
-              description: Time-limited signed URL for the result file. Regenerated on every read; clients must not treat it as stable.
-              type: string
-            downloadExpiresAt:
-              description: Timestamp when `downloadUrl` expires (ISO-8601).
-              type: string
-            error:
-              description: Error details when `status` is `FAILED`.
-              type: object
-              properties:
-                code:
-                  description: Upstream error code.
-                  type: string
-                message:
-                  description: Human-readable error message.
-                  type: string
-                retryable:
-                  description: Whether the failure is retryable.
-                  type: boolean
-          required:
-          - batchId
-          - status
-      required:
-      - data
     PaginatedBatchExportsResponseDto_Output:
       type: object
       properties:
@@ -708,7 +743,7 @@ components:
       - data
       - pagination
       additionalProperties: false
-    BatchExportSubmitSingleResponseDto_Output:
+    BatchExportStatusSingleResponseDto:
       type: object
       properties:
         data:
@@ -716,16 +751,172 @@ components:
           properties:
             batchId:
               type: number
-              description: Identifier assigned to the queued batch.
+              description: Batch identifier.
             status:
               type: string
-              description: Initial job status, typically `QUEUED`.
+              description: Current status, e.g. `QUEUED`, `PROCESSING`, `SUCCEEDED`, `FAILED`.
             submittedAt:
               description: Timestamp the job was queued (ISO-8601).
               type: string
             reportName:
-              description: Optional report name echoed back from submission.
+              description: Optional report name.
               type: string
+            requestParams:
+              description: 'Snapshot of the original request body as parsed JSON. When chapi returns a stringified body, papi parses it; if parsing fails the raw string is wrapped as `{ raw: <string> }`.'
+              type: object
+              additionalProperties: {}
+            startedAt:
+              description: Timestamp the job started executing (ISO-8601).
+              type: string
+            completedAt:
+              description: Timestamp the job finished (ISO-8601).
+              type: string
+            downloadUrl:
+              description: Time-limited signed URL for the result file. Regenerated on every read; clients must not treat it as stable.
+              type: string
+            downloadExpiresAt:
+              description: Timestamp when `downloadUrl` expires (ISO-8601).
+              type: string
+            error:
+              description: Error details when `status` is `FAILED`.
+              type: object
+              properties:
+                code:
+                  description: Upstream error code.
+                  type: string
+                message:
+                  description: Human-readable error message.
+                  type: string
+                retryable:
+                  description: Whether the failure is retryable.
+                  type: boolean
+          required:
+          - batchId
+          - status
+      required:
+      - data
+    ReportMetaSingleResponseDto:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            tables:
+              type: array
+              items:
+                type: object
+                properties:
+                  table:
+                    type: string
+                  type:
+                    type: string
+                  friendly:
+                    type: string
+                  exclude-list:
+                    type: array
+                    items:
+                      type: string
+                  columns:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        friendly:
+                          type: string
+                        format:
+                          type: string
+                        help:
+                          type: string
+                        hide:
+                          type: boolean
+                        icon:
+                          type: string
+                        friendly-suffix:
+                          type: string
+                        period:
+                          type: string
+                        target_direction_negative:
+                          type: boolean
+                        compatible-dimensions:
+                          type: array
+                          items:
+                            type: string
+                        column_filters:
+                          type: array
+                          items:
+                            type: string
+                        tags:
+                          type: array
+                          items:
+                            type: string
+                      required:
+                      - name
+                      - friendly
+                      - format
+                      - help
+                      - hide
+                      - icon
+                      - friendly-suffix
+                      - column_filters
+                required:
+                - table
+                - type
+                - friendly
+                - columns
+          required:
+          - tables
+      required:
+      - data
+    BatchExportStatusSingleResponseDto_Output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            batchId:
+              type: number
+              description: Batch identifier.
+            status:
+              type: string
+              description: Current status, e.g. `QUEUED`, `PROCESSING`, `SUCCEEDED`, `FAILED`.
+            submittedAt:
+              description: Timestamp the job was queued (ISO-8601).
+              type: string
+            reportName:
+              description: Optional report name.
+              type: string
+            requestParams:
+              description: 'Snapshot of the original request body as parsed JSON. When chapi returns a stringified body, papi parses it; if parsing fails the raw string is wrapped as `{ raw: <string> }`.'
+              type: object
+              additionalProperties: {}
+            startedAt:
+              description: Timestamp the job started executing (ISO-8601).
+              type: string
+            completedAt:
+              description: Timestamp the job finished (ISO-8601).
+              type: string
+            downloadUrl:
+              description: Time-limited signed URL for the result file. Regenerated on every read; clients must not treat it as stable.
+              type: string
+            downloadExpiresAt:
+              description: Timestamp when `downloadUrl` expires (ISO-8601).
+              type: string
+            error:
+              description: Error details when `status` is `FAILED`.
+              type: object
+              properties:
+                code:
+                  description: Upstream error code.
+                  type: string
+                message:
+                  description: Human-readable error message.
+                  type: string
+                retryable:
+                  description: Whether the failure is retryable.
+                  type: boolean
+              additionalProperties: false
           required:
           - batchId
           - status
@@ -733,6 +924,51 @@ components:
       required:
       - data
       additionalProperties: false
+    ReportSingleResponseDto:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            report-name:
+              type: string
+            advertiser-name:
+              type: string
+            begin:
+              type: string
+            end:
+              type: string
+            columns:
+              type: array
+              items:
+                type: object
+                properties:
+                  table:
+                    type: string
+                  name:
+                    type: string
+                  friendly:
+                    type: string
+                  help:
+                    type: string
+                  format:
+                    type: string
+                  alias:
+                    type: string
+                required:
+                - name
+            rows:
+              type: array
+              items:
+                type: object
+                additionalProperties:
+                  anyOf:
+                  - type: string
+                  - type: number
+                  - type: boolean
+          description: Report response body.
+      required:
+      - data
     BatchExportBody:
       type: object
       properties:
@@ -826,7 +1062,7 @@ components:
       description: Async CSV export request body.
       required:
       - data
-    BatchExportSubmitSingleResponseDto:
+    BatchExportSubmitSingleResponseDto_Output:
       type: object
       properties:
         data:
@@ -847,260 +1083,24 @@ components:
           required:
           - batchId
           - status
+          additionalProperties: false
       required:
       - data
-    BatchExportStatusSingleResponseDto_Output:
+      additionalProperties: false
+    RegenerateBatchUrlSingleResponseDto:
       type: object
       properties:
         data:
           type: object
           properties:
-            batchId:
-              type: number
-              description: Batch identifier.
-            status:
-              type: string
-              description: Current status, e.g. `QUEUED`, `PROCESSING`, `SUCCEEDED`, `FAILED`.
-            submittedAt:
-              description: Timestamp the job was queued (ISO-8601).
-              type: string
-            reportName:
-              description: Optional report name.
-              type: string
-            requestParams:
-              description: 'Snapshot of the original request body as parsed JSON. When chapi returns a stringified body, papi parses it; if parsing fails the raw string is wrapped as `{ raw: <string> }`.'
-              type: object
-              additionalProperties: {}
-            startedAt:
-              description: Timestamp the job started executing (ISO-8601).
-              type: string
-            completedAt:
-              description: Timestamp the job finished (ISO-8601).
-              type: string
             downloadUrl:
-              description: Time-limited signed URL for the result file. Regenerated on every read; clients must not treat it as stable.
+              description: Freshly-signed download URL for the result file.
               type: string
             downloadExpiresAt:
               description: Timestamp when `downloadUrl` expires (ISO-8601).
               type: string
-            error:
-              description: Error details when `status` is `FAILED`.
-              type: object
-              properties:
-                code:
-                  description: Upstream error code.
-                  type: string
-                message:
-                  description: Human-readable error message.
-                  type: string
-                retryable:
-                  description: Whether the failure is retryable.
-                  type: boolean
-              additionalProperties: false
-          required:
-          - batchId
-          - status
-          additionalProperties: false
       required:
       - data
-      additionalProperties: false
-    ReportMetaSingleResponseDto:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            tables:
-              type: array
-              items:
-                type: object
-                properties:
-                  table:
-                    type: string
-                  type:
-                    type: string
-                  friendly:
-                    type: string
-                  exclude-list:
-                    type: array
-                    items:
-                      type: string
-                  columns:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        name:
-                          type: string
-                        friendly:
-                          type: string
-                        format:
-                          type: string
-                        help:
-                          type: string
-                        hide:
-                          type: boolean
-                        icon:
-                          type: string
-                        friendly-suffix:
-                          type: string
-                        period:
-                          type: string
-                        target_direction_negative:
-                          type: boolean
-                        compatible-dimensions:
-                          type: array
-                          items:
-                            type: string
-                        column_filters:
-                          type: array
-                          items:
-                            type: string
-                        tags:
-                          type: array
-                          items:
-                            type: string
-                      required:
-                      - name
-                      - friendly
-                      - format
-                      - help
-                      - hide
-                      - icon
-                      - friendly-suffix
-                      - column_filters
-                required:
-                - table
-                - type
-                - friendly
-                - columns
-          required:
-          - tables
-      required:
-      - data
-    ReportSingleResponseDto:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            report-name:
-              type: string
-            advertiser-name:
-              type: string
-            begin:
-              type: string
-            end:
-              type: string
-            columns:
-              type: array
-              items:
-                type: object
-                properties:
-                  table:
-                    type: string
-                  name:
-                    type: string
-                  friendly:
-                    type: string
-                  help:
-                    type: string
-                  format:
-                    type: string
-                  alias:
-                    type: string
-                required:
-                - name
-            rows:
-              type: array
-              items:
-                type: object
-                additionalProperties:
-                  anyOf:
-                  - type: string
-                  - type: number
-                  - type: boolean
-          description: Report response body.
-      required:
-      - data
-    ReportMetaSingleResponseDto_Output:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            tables:
-              type: array
-              items:
-                type: object
-                properties:
-                  table:
-                    type: string
-                  type:
-                    type: string
-                  friendly:
-                    type: string
-                  exclude-list:
-                    type: array
-                    items:
-                      type: string
-                  columns:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        name:
-                          type: string
-                        friendly:
-                          type: string
-                        format:
-                          type: string
-                        help:
-                          type: string
-                        hide:
-                          type: boolean
-                        icon:
-                          type: string
-                        friendly-suffix:
-                          type: string
-                        period:
-                          type: string
-                        target_direction_negative:
-                          type: boolean
-                        compatible-dimensions:
-                          type: array
-                          items:
-                            type: string
-                        column_filters:
-                          type: array
-                          items:
-                            type: string
-                        tags:
-                          type: array
-                          items:
-                            type: string
-                      required:
-                      - name
-                      - friendly
-                      - format
-                      - help
-                      - hide
-                      - icon
-                      - friendly-suffix
-                      - column_filters
-                      additionalProperties: false
-                required:
-                - table
-                - type
-                - friendly
-                - columns
-                additionalProperties: false
-          required:
-          - tables
-          additionalProperties: false
-      required:
-      - data
-      additionalProperties: false
   securitySchemes:
     Bearer:
       scheme: bearer

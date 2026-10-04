@@ -281,7 +281,7 @@ components:
       required:
       - data
       additionalProperties: false
-    ReferenceGeoTypesListResponseDto_Output:
+    ReferenceBudgetTypesListResponseDto_Output:
       type: object
       properties:
         data:
@@ -305,7 +305,7 @@ components:
       required:
       - data
       additionalProperties: false
-    ReferenceCampaignStatusesListResponseDto_Output:
+    ReferenceGeoTypesListResponseDto_Output:
       type: object
       properties:
         data:
@@ -314,13 +314,13 @@ components:
             type: object
             properties:
               id:
-                type: string
-                description: String identifier for the reference value.
+                type: number
+                description: Numeric identifier for the reference value.
               name:
                 type: string
                 description: Stable machine-friendly name of the reference value.
               description:
-                description: Human-readable description of the reference value. May be omitted on lists sourced from upstream catalogs.
+                description: Human-readable description of the reference value. Omitted on lists sourced directly from upstream catalogs (e.g. `geo/types`).
                 type: string
             required:
             - id
@@ -353,7 +353,7 @@ components:
       required:
       - data
       additionalProperties: false
-    ReferenceBudgetTypesListResponseDto_Output:
+    ReferenceCampaignObjectivesListResponseDto_Output:
       type: object
       properties:
         data:
@@ -362,13 +362,13 @@ components:
             type: object
             properties:
               id:
-                type: number
-                description: Numeric identifier for the reference value.
+                type: string
+                description: String identifier for the reference value.
               name:
                 type: string
                 description: Stable machine-friendly name of the reference value.
               description:
-                description: Human-readable description of the reference value. Omitted on lists sourced directly from upstream catalogs (e.g. `geo/types`).
+                description: Human-readable description of the reference value. May be omitted on lists sourced from upstream catalogs.
                 type: string
             required:
             - id
@@ -377,7 +377,7 @@ components:
       required:
       - data
       additionalProperties: false
-    ReferenceCampaignObjectivesListResponseDto_Output:
+    ReferenceCampaignStatusesListResponseDto_Output:
       type: object
       properties:
         data:
