@@ -74,6 +74,23 @@ edges:
       status: released
   detected_by: sweep-cdp.py
   first_seen: '2026-10-19'
+- partner_name: HubSpot (own)
+  partner: hubspot
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://ecosystem.hubspot.com/marketplace/listing/mntn
+  mirror_of: hubspot/integrations/hubspot-integration-edges.yml
+  apps:
+  - MNTN
+  listing_count: 1
+  detected: '2026-10-21'
+  detected_by: mirror-platform-listings.py
+  category: ADVERTISING
 method: searched
 checked:
 - https://connectors.airbyte.com/files/registries/v0/cloud_registry.json
@@ -81,6 +98,7 @@ checked:
 - https://fivetran.com/docs-sitemap.xml
 - https://fivetran.com/docs/connectors/partner-built-program
 - https://hightouch.com/docs/destinations/mntn
+- hubspot/integrations/hubspot-integration-edges.yml
 source:
 - https://connectors.airbyte.com/files/registries/v0/cloud_registry.json
 - https://connectors.airbyte.com/files/registries/v0/oss_registry.json

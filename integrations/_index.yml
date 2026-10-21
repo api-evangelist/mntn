@@ -71,3 +71,16 @@
   relationship: connector-coverage
   status: not-a-workflow
   arazzo: null
+- slug: mntn-hubspot-own
+  label: HubSpot (own)
+  partner: hubspot
+  partner_name: HubSpot (own)
+  category: ADVERTISING
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://ecosystem.hubspot.com/marketplace/listing/mntn
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
